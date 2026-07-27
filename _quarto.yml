@@ -16,13 +16,14 @@ book:
       This book was built with <a href=https://quarto.org/>Quarto</a>.
   cover-image: cover.png
   favicon: cover.png
-  site-url: http://rafalab.dfci.harvard.edu/dsbook-part-1
-  repo-url: https://github.com/rafalab/dsbook-part-1
+  site-url: https://intro-to-behds.github.io/behdsbook-part-1/
+  repo-url: https://github.com/intro-to-behds/behdsbook-part-1
   repo-branch: main
   repo-actions: [source, issue]
+  downloads: [pdf]
   sidebar:
     collapse-level: 1
-  
+
   chapters:
     - index.qmd
 

@@ -48,7 +48,7 @@ Most web-based R consoles also provide a pane to edit scripts, but not all permi
 
 All the R scripts used to generate this book can be found on GitHub[^getting-started-6].
 
-[^getting-started-6]: <https://github.com/rafalab/dsbook-part-1>
+[^getting-started-6]: <https://github.com/intro-to-behds/behdsbook-part-1>
 
 ## RStudio {#sec-rstudio}
 

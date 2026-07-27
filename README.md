@@ -10,7 +10,7 @@ For updates follow
   href="https://twitter.com/rafalab">
  @rafalab</a>
 
-[Book web page](https://rafalab.github.io/dsbook-part-1/)
+[Book web page](https://intro-to-behds.github.io/behdsbook-part-1/)
 
 [PDF version](https://leanpub.com/datasciencebook)
 

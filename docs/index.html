@@ -2,17 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.7.31">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Rafael A. Irizarry">
+<meta name="author" content="Rafael A. Irizarry (original); adapted by Giorgio Arcara for Behavioural Data Science">
 
-<title>Introduction to Data Science</title>
+<title>Introduction to Behavioural Data Science</title>
 <style>
-/* Default styles provided by pandoc.
-** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
-*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -42,10 +39,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-2f71e96512c2b414696ba17842295890.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-314d552717907458410b1a40a915f399.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -101,9 +98,10 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Introduction to Data Science</a> 
-        <div class="sidebar-tools-main">
-    <a href="https://github.com/rafalab/dsbook-part-1" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+      <a href="./">Introduction to Behavioural Data Science</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/intro-to-behds/behdsbook-part-1" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="./Introduction-to-Behavioural-Data-Science.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -306,16 +304,18 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#preface" id="toc-preface" class="nav-link active" data-scroll-target="#preface">Preface</a></li>
+  <li><a href="#preface-to-the-original-edition" id="toc-preface-to-the-original-edition" class="nav-link" data-scroll-target="#preface-to-the-original-edition">Preface to the Original Edition</a></li>
   <li><a href="#acknowledgments" id="toc-acknowledgments" class="nav-link" data-scroll-target="#acknowledgments">Acknowledgments</a></li>
+  <li><a href="#acknowledgments-to-the-original-edition" id="toc-acknowledgments-to-the-original-edition" class="nav-link" data-scroll-target="#acknowledgments-to-the-original-edition">Acknowledgments to the Original Edition</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/rafalab/dsbook-part-1/blob/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/rafalab/dsbook-part-1/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/intro-to-behds/behdsbook-part-1/blob/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/intro-to-behds/behdsbook-part-1/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Introduction to Data Science</h1>
+<h1 class="title">Introduction to Behavioural Data Science</h1>
 <p class="subtitle lead">Data Wrangling and Visualization with R</p>
 </div>
 
@@ -335,20 +335,44 @@ ul.task-list li input[type="checkbox"] {
 
 
 <section id="preface" class="level1 unnumbered">
-<h1 class="unnumbered">Preface</h1><p><img src="cover.png" title="Introduction to Data Science" class="quarto-cover-image nolightbox img-fluid"></p>
-<p>This is the website for the <strong>Data Wrangling and Visualization with R</strong> part of <strong>Introduction to Data Science</strong>.</p>
+<h1 class="unnumbered">Preface</h1><p><img src="cover.png" title="Introduction to Behavioural Data Science" class="quarto-cover-image nolightbox img-fluid"></p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+About this adaptation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This book is an adaptation of Rafael A. Irizarry’s <em>Introduction to Data Science</em> (<a href="https://rafalab.github.io/dsbook-part-1/" class="uri">https://rafalab.github.io/dsbook-part-1/</a>), created by Giorgio Arcara for the <em>Behavioural Data Science</em> course (PS0000002, University of Padua). Substantive changes — replaced datasets and case studies, new chapters, retitling — are documented in <a href="https://github.com/intro-to-behds/behdsbook-part-1/blob/main/CHANGELOG.md">CHANGELOG.md</a>.</p>
+<p>This work remains licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>, consistent with the original.</p>
+</div>
+</div>
+<p>This is the website for the <strong>Data Wrangling and Visualization with R</strong> part of <strong>Introduction to Behavioural Data Science</strong>, an adaptation of <strong>Introduction to Data Science</strong>.</p>
 <p>The website for the <strong>Statistics and Prediction Algorithms Through Case Studies</strong> part is <a href="http://rafalab.dfci.harvard.edu/dsbook-part-2/">here</a><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
-<p>We make announcements related to the book on Twitter. For updates follow <a href="https://twitter.com/rafalab">@rafalab</a><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
-<p>This book started out as the class notes used in the HarvardX <a href="https://www.edx.org/professional-certificate/harvardx-data-science">Data Science Series</a><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<p>The Quarto files used to generate this adaptation are available on <a href="https://github.com/intro-to-behds/behdsbook-part-1">GitHub</a><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+</section>
+<section id="preface-to-the-original-edition" class="level1 unnumbered">
+<h1 class="unnumbered">Preface to the Original Edition</h1>
+<p><em>The following is Rafael A. Irizarry’s preface to the original</em> Introduction to Data Science<em>, unchanged except where noted.</em></p>
+<p>We make announcements related to the book on Twitter. For updates follow <a href="https://twitter.com/rafalab">@rafalab</a><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<p>This book started out as the class notes used in the HarvardX <a href="https://www.edx.org/professional-certificate/harvardx-data-science">Data Science Series</a><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
 <!-- A hardcopy version of the book is available from [CRC Press](https://www.crcpress.com/Introduction-to-Data-Science-Data-Analysis-and-Prediction-Algorithms-with/Irizarry/p/book/9780367357986)^[https://www.crcpress.com/Introduction-to-Data-Science-Data-Analysis-and-Prediction-Algorithms-with/Irizarry/p/book/9780367357986]. -->
 <!-- A free PDF of the October 24, 2019 version of the book is available from [Leanpub](https://leanpub.com/datasciencebook)^[https://leanpub.com/datasciencebook].-->
-<p>The Quarto files used to generate the book is available on <a href="https://github.com/rafalab/dsbook-part-1">GitHub</a><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. Note that, the graphical theme used for plots throughout the book can be recreated using the <code>ds_theme_set()</code> function from <strong>dslabs</strong> package.</p>
-<p>This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International <a href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a><a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
-<p>A hardcopy version of the book is available from <a href="https://www.routledge.com/Introduction-to-Data-Science-Data-Wrangling-and-Visualization-with-R/Irizarry/p/book/9781032116556">CRC Press</a><a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p>
-<p>A free PDF of the October 24, 2019 version of the book is available from <a href="https://leanpub.com/datasciencebook">Leanpub</a><a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>.</p>
+<p>The Quarto files used to generate the original book is available on <a href="https://github.com/rafalab/dsbook-part-1">GitHub</a><a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. Note that, the graphical theme used for plots throughout the book can be recreated using the <code>ds_theme_set()</code> function from <strong>dslabs</strong> package.</p>
+<p>This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International <a href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a><a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p>
+<p>A hardcopy version of the book is available from <a href="https://www.routledge.com/Introduction-to-Data-Science-Data-Wrangling-and-Visualization-with-R/Irizarry/p/book/9781032116556">CRC Press</a><a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>.</p>
+<p>A free PDF of the October 24, 2019 version of the book is available from <a href="https://leanpub.com/datasciencebook">Leanpub</a><a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>.</p>
 </section>
 <section id="acknowledgments" class="level1 unnumbered">
 <h1 class="unnumbered">Acknowledgments</h1>
+<p>This behavioural-science adaptation, <em>Introduction to Behavioural Data Science</em>, was created by Giorgio Arcara for the <em>Behavioural Data Science</em> course (PS0000002, University of Padua).</p>
+</section>
+<section id="acknowledgments-to-the-original-edition" class="level1 unnumbered">
+<h1 class="unnumbered">Acknowledgments to the Original Edition</h1>
+<p><em>The following are Rafael A. Irizarry’s original acknowledgments, unchanged.</em></p>
 <p>This book is dedicated to all the people involved in building and maintaining R and the R packages we use in this book. A special thanks to the developers and maintainers of base R, the tidyverse, data.table, and the caret package.</p>
 <p>A special thanks to Jenna Landy for her careful editing and helpful advice on this book; to David Robinson for generously answering many questions about the tidyverse and aiding in my understanding of it; and to Amy Gill for dozens of comments, edits, and suggestions. Also, many thanks to Stephanie Hicks who twice served as a co-instructor in my data science classes and Yihui Xie who patiently put up with my many questions related to markdown. Thanks also to Karl Broman, from whom I borrowed ideas for the Data Visualization and Productivity Tools parts. Thanks to Peter Aldhous from whom I borrowed ideas for the principles of data visualization section and Jenny Bryan for writing <em>Happy Git and GitHub for the useR</em>, which influenced our Git chapters. Also, many thanks to Jeff Leek, Roger Peng, and Brian Caffo, whose onlile classes inspired the way this book is divided, to Garrett Grolemund and Hadley Wickham for making the markdown code for their R for Data Science book open, and the editors, John Kimmel and Lara Spieker, for their support. Finally, thanks to Alex Nones for proofreading the manuscript during its various stages.</p>
 <p>This book was conceived during the teaching of several applied statistics courses, starting over fifteen years ago. The teaching assistants working with me throughout the years made important indirect contributions to this book. The material was further refined during a HarvardX series coordinated by Heather Sternshein and Zofia Gajdos. We thank them for their contributions. We are also grateful to all the students whose questions and comments helped us improve the book. The courses were partially funded by NIH grant R25GM114818. We are very grateful to the National Institutes of Health for its support.</p>
@@ -360,12 +384,13 @@ ul.task-list li input[type="checkbox"] {
 <hr>
 <ol>
 <li id="fn1"><p><a href="http://rafalab.dfci.harvard.edu/dsbook-part-2/" class="uri">http://rafalab.dfci.harvard.edu/dsbook-part-2/</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p><a href="https://twitter.com/rafalab" class="uri">https://twitter.com/rafalab</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p><a href="https://www.edx.org/professional-certificate/harvardx-data-science" class="uri">https://www.edx.org/professional-certificate/harvardx-data-science</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p><a href="https://github.com/rafalab/dsbook-part-1" class="uri">https://github.com/rafalab/dsbook-part-1</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0" class="uri">https://creativecommons.org/licenses/by-nc-sa/4.0</a><a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p><a href="https://www.routledge.com/Introduction-to-Data-Science-Data-Wrangling-and-Visualization-with-R/Irizarry/p/book/9781032116556" class="uri">https://www.routledge.com/Introduction-to-Data-Science-Data-Wrangling-and-Visualization-with-R/Irizarry/p/book/9781032116556</a><a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn7"><p><a href="https://leanpub.com/datasciencebook" class="uri">https://leanpub.com/datasciencebook</a><a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p><a href="https://github.com/intro-to-behds/behdsbook-part-1" class="uri">https://github.com/intro-to-behds/behdsbook-part-1</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p><a href="https://twitter.com/rafalab" class="uri">https://twitter.com/rafalab</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p><a href="https://www.edx.org/professional-certificate/harvardx-data-science" class="uri">https://www.edx.org/professional-certificate/harvardx-data-science</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p><a href="https://github.com/rafalab/dsbook-part-1" class="uri">https://github.com/rafalab/dsbook-part-1</a><a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0" class="uri">https://creativecommons.org/licenses/by-nc-sa/4.0</a><a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p><a href="https://www.routledge.com/Introduction-to-Data-Science-Data-Wrangling-and-Visualization-with-R/Irizarry/p/book/9781032116556" class="uri">https://www.routledge.com/Introduction-to-Data-Science-Data-Wrangling-and-Visualization-with-R/Irizarry/p/book/9781032116556</a><a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p><a href="https://leanpub.com/datasciencebook" class="uri">https://leanpub.com/datasciencebook</a><a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -421,14 +446,13 @@ ul.task-list li input[type="checkbox"] {
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-      const outerScaffold = trigger.parentElement.cloneNode(true);
-      const codeEl = outerScaffold.querySelector('code');
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
         }
-      }
-      return codeEl.innerText;
+        return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -443,7 +467,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("http:\/\/rafalab\.dfci\.harvard\.edu\/dsbook-part-1");
+        var filterRegex = new RegExp("https:\/\/intro-to-behds\.github\.io\/behdsbook-part-1\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -783,11 +807,11 @@ ul.task-list li input[type="checkbox"] {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-<p>Introduction to Data Science was written by Rafael A. Irizarry</p>
+<p>Introduction to Behavioural Data Science, adapted from Rafael A. Irizarry’s Introduction to Data Science</p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/rafalab/dsbook-part-1/blob/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/rafalab/dsbook-part-1/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/intro-to-behds/behdsbook-part-1/blob/main/index.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/intro-to-behds/behdsbook-part-1/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

@@ -4,7 +4,7 @@ In this chapter we aim to provide some general principles we can use as a guide 
 
 The principles are mostly based on research related to how humans detect patterns and make visual comparisons. The preferred approaches are those that best fit the way our brains process visual information. When deciding on a visualization approach, it is also important to keep our goal in mind. We may be comparing a viewable number of quantities, describing distributions for categories or numeric values, comparing the data from two groups, or describing the relationship between two variables. As a final note, we want to emphasize that it is important to adapt and optimize graphs to the audience. For example, an exploratory plot made for ourselves will be different than a chart intended to communicate a finding to a general audience.
 
-In this chapter we focus on the principles and do not show code (code can be viewed on GitHub^[<https://github.com/rafalab/dsbook-part-1/blob/main/dataviz/dataviz-principles.qmd>]). In @sec-dataviz-in-practice, we apply these principles in case study and do show code. 
+In this chapter we focus on the principles and do not show code (code can be viewed on GitHub^[<https://github.com/intro-to-behds/behdsbook-part-1/blob/main/dataviz/dataviz-principles.qmd>]). In @sec-dataviz-in-practice, we apply these principles in case study and do show code. 
 
 
 ```{r, warning=FALSE, message=FALSE, cache=FALSE, echo=FALSE}

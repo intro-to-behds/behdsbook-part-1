@@ -9,6 +9,9 @@ under which this adaptation is distributed.
 
 ### Changed
 - Retitled to "Introduction to Behavioural Data Science".
+- Split `index.qmd` preface/acknowledgments into separate, clearly labeled sections for the adaptation vs. the original Irizarry edition.
+- Updated self-referential GitHub/site links (navbar, footnotes, git tutorial example) from the upstream `rafalab/dsbook-part-1` repo to this fork, `intro-to-behds/behdsbook-part-1`.
+- Enabled a PDF download button in the book navbar (`book: downloads: [pdf]`).
 
 ### Added
 - (new chapters land here as they're written)
