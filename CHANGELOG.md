@@ -12,6 +12,7 @@ under which this adaptation is distributed.
 - Split `index.qmd` preface/acknowledgments into separate, clearly labeled sections for the adaptation vs. the original Irizarry edition.
 - Updated self-referential GitHub/site links (navbar, footnotes, git tutorial example) from the upstream `rafalab/dsbook-part-1` repo to this fork, `intro-to-behds/behdsbook-part-1`.
 - Enabled a PDF download button in the book navbar (`book: downloads: [pdf]`).
+- Began migrating the book off the `dslabs` package name to `behdslabs` (its own fork, not on CRAN), chapter by chapter. `R/getting-started.qmd`: install instructions now use `remotes::install_github("intro-to-behds/behdslabs")` instead of `install.packages("dslabs")`, and `library(dslabs)` → `library(behdslabs)`. Remaining chapters are migrated incrementally in later sessions; both package names stay installed side by side in the meantime so nothing breaks.
 
 ### Added
 - (new chapters land here as they're written)
