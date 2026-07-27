@@ -1,6 +1,13 @@
 # Preface {.unnumbered}
 
-This is the website for the **Data Wrangling and Visualization with R** part of **Introduction to Data Science**.
+::: {.callout-note}
+## About this adaptation
+This book is an adaptation of Rafael A. Irizarry's *Introduction to Data Science* (<https://rafalab.github.io/dsbook-part-1/>), created by Giorgio Arcara for the *Behavioural Data Science* course (PS0000002, University of Padua). Substantive changes — replaced datasets and case studies, new chapters, retitling — are documented in [CHANGELOG.md](https://github.com/intro-to-behds/behdsbook-part-1/blob/main/CHANGELOG.md).
+
+This work remains licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0), consistent with the original.
+:::
+
+This is the website for the **Data Wrangling and Visualization with R** part of **Introduction to Behavioural Data Science**, an adaptation of **Introduction to Data Science**.
 
 The website for the **Statistics and Prediction Algorithms Through Case Studies** part is [here](http://rafalab.dfci.harvard.edu/dsbook-part-2/)[^index-1].
 
@@ -47,3 +54,5 @@ A special thanks goes to all those who edited the book via GitHub pull requests 
 `JimKay1941` (Jim Kay), 
 `devpowerplatform` (QuantScripter), `carvalhais` (André Carvalhais), `hbmaclean`, `GENHEN`, `whatchalookingat`, `readyready15728`,
 David D. Kane, El Mustapha El Abbassi, Vadim Zipunnikov, Anna Quaglieri, Chris Dong, Bowen Gu, Rick Schoenberg, and Robert Gentleman.
+
+This behavioural-science adaptation, *Introduction to Behavioural Data Science*, was created by Giorgio Arcara for the *Behavioural Data Science* course (PS0000002, University of Padua).

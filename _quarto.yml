@@ -6,12 +6,12 @@ execute:
   cache: true
 
 book:
-  title: Introduction to Data Science
+  title: Introduction to Behavioural Data Science
   subtitle: Data Wrangling and Visualization with R
   reader-mode: true
   page-footer:
     left: |
-      Introduction to Data Science was written by Rafael A. Irizarry
+      Introduction to Behavioural Data Science, adapted from Rafael A. Irizarry's Introduction to Data Science
     right: |
       This book was built with <a href=https://quarto.org/>Quarto</a>.
   cover-image: cover.png
@@ -71,7 +71,7 @@ format:
       - cosmo
       - r4ds.scss
     code-link: true
-    author-meta: Rafael A. Irizarry
+    author-meta: "Rafael A. Irizarry (original); adapted by Giorgio Arcara for Behavioural Data Science"
     callout-appearance: simple
   pdf: 
     documentclass: krantz

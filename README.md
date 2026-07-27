@@ -1,4 +1,4 @@
-This is the code for the first part of Introduction to Data Science book: [Data Wrangling and Visualization with R](https://rafalab.github.io/dsbook-part-1/). 
+This is the code for the first part of **Introduction to Behavioural Data Science**: *Data Wrangling and Visualization with R*, an adaptation of Rafael A. Irizarry's [Introduction to Data Science](https://rafalab.github.io/dsbook-part-1/), created by Giorgio Arcara for the *Behavioural Data Science* course (PS0000002, University of Padua). See [CHANGELOG.md](CHANGELOG.md) for a list of substantive changes from the original.
 
 The website for the second part is [here](http://rafalab.dfci.harvard.edu/dsbook-part-2/).
 
