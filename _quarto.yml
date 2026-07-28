@@ -12,7 +12,7 @@ book:
   reader-mode: true
   page-footer:
     left: |
-      Introduction to Behavioural Data Science, adapted from Rafael A. Irizarry's Introduction to Data Science
+      Introduction to Behavioural Data Science, adapted from Rafael A. Irizarry's <a href="https://rafalab.dfci.harvard.edu/dsbook/">Introduction to Data Science</a>
     right: |
       This book was built with <a href=https://quarto.org/>Quarto</a>.
   cover-image: cover.png
