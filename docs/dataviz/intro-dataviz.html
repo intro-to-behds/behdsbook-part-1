@@ -359,19 +359,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Looking at the numbers and character strings that define a dataset is rarely useful. To convince yourself, print and stare at the US murders data table:</p>
+<p>Looking at the numbers and character strings that define a dataset is rarely useful. To convince yourself, print and stare at a table of reported data-breach incidents by US state:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(murders)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        state abb region population total</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1    Alabama  AL  South    4779736   135</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2     Alaska  AK   West     710231    19</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3    Arizona  AZ   West    6392017   232</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4   Arkansas  AR  South    2915918    93</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 California  CA   West   37253956  1257</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6   Colorado  CO   West    5029196    65</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(app_data_breaches)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        state abb region population incidents</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1    Alabama  AL  South    4779736       135</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2     Alaska  AK   West     710231        19</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3    Arizona  AZ   West    6392017       232</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4   Arkansas  AR  South    2915918        93</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 California  CA   West   37253956      1257</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6   Colorado  CO   West    5029196        65</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>What do you learn from staring at this table? How quickly can you determine which states have the largest populations? Which states have the smallest? How large is a typical state? Is there a relationship between population size and total murders? How do murder rates vary across regions of the country? For most human brains, it is quite difficult to extract this information just by looking at the numbers. In contrast, the answer to all the questions above are readily available from examining this plot:</p>
+<p>What do you learn from staring at this table? How quickly can you determine which states have the largest populations? Which states have the smallest? How large is a typical state? Is there a relationship between population size and the number of reported breach incidents? How do breach rates vary across regions of the country? For most human brains, it is quite difficult to extract this information just by looking at the numbers. In contrast, the answer to all the questions above are readily available from examining this plot:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -383,7 +383,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>We are reminded of the saying “a picture is worth a thousand words”. Data visualization provides a powerful way to communicate a data-driven finding. In some cases, the visualization is so convincing that no follow-up analysis is required.</p>
 <p>The growing availability of informative datasets and software tools has led to increased reliance on data visualizations across many industries, academia, and government. A salient example is news organizations, which are increasingly embracing <em>data journalism</em> and including effective <em>infographics</em> as part of their reporting.</p>
-<p>A particularly effective example is a Wall Street Journal article<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> showing data related to the impact of vaccines on battling infectious diseases. One of the graphs shows measles cases by US state through the years with a vertical line demonstrating when the vaccine was introduced.</p>
+<p>A particularly effective example of this kind of chart comes from app-analytics reporting: state-by-state adoption data for a mobile app category, tracked over years, with a vertical line marking a platform change that reshaped the whole market. One such chart shows Guided Meditation app downloads by US state through the years, with a vertical line marking the year phone manufacturers began bundling a free guided-meditation feature directly into their operating systems.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -393,8 +393,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<!--(Source: [Wall Street Journal](http://graphics.wsj.com/infectious-diseases-and-vaccines/))-->
-<p>A New York Times chart provides a compelling example by summarizing scores from the NYC Regents Exams<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. According to the accompanying article<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>, these scores are collected for various purposes, one of which is to determine a student’s eligibility for high school graduation. In New York City, a score of 65 is required to pass. The pattern of these test scores suggests something unusual.</p>
+<p>A cognitive-battery testing service provides a compelling example by summarizing scores from its standardized test battery. A score of 65 is treated as the benchmark for “typical range” performance, used when deciding whether a follow-up assessment is warranted. The pattern of these test scores suggests something unusual.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -404,37 +403,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>The most common test score is the minimum passing grade, with very few scores just below the threshold. This unexpected result is consistent with students close to passing having their scores bumped up.</p>
-<p>This is an example of how data visualization can lead to discoveries which would otherwise be missed if we simply subjected the data to a battery of data analysis tools or procedures. Data visualization is the strongest tool of what we call <em>exploratory data analysis</em> (EDA). John W. Tukey<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>, considered the father of EDA, once said,</p>
+<p>The most common test score sits right at the benchmark, with very few scores just below it. This unexpected result is consistent with scorers nudging borderline scores up to the benchmark – the same anchoring artifact that shows up when respondent scores cluster suspiciously at a validated-scale threshold, such as an SUS score of 68.</p>
+<p>This is an example of how data visualization can lead to discoveries which would otherwise be missed if we simply subjected the data to a battery of data analysis tools or procedures. Data visualization is the strongest tool of what we call <em>exploratory data analysis</em> (EDA). John W. Tukey<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, considered the father of EDA, once said,</p>
 <blockquote class="blockquote">
 <blockquote class="blockquote">
 <p>“The greatest value of a picture is when it forces us to notice what we never expected to see.”</p>
 </blockquote>
 </blockquote>
 <p>Many widely used data analysis tools were initiated by discoveries made via EDA. EDA is perhaps the most important part of data analysis, yet it is one that is often overlooked.</p>
-<p>Data visualization is also now pervasive in philanthropic and educational organizations. In the talks New Insights on Poverty<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> and The Best Stats You’ve Ever Seen<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>, Hans Rosling forces us to notice the unexpected with a series of plots related to world health and economics. In his videos, he uses animated graphs to show us how the world is changing and how old narratives are no longer true.</p>
+<p>Data visualization is also now pervasive in philanthropic and educational organizations. In the talks New Insights on Poverty<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> and The Best Stats You’ve Ever Seen<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>, Hans Rosling forces us to notice the unexpected with a series of plots related to world health and economics, using animated graphs to show how the world is changing and how old narratives are no longer true. We borrow the same animated-storytelling technique below, applied to a different domain: global technology adoption.</p>
 <div class="cell" data-layout-align="center">
-<pre><code>#&gt; No renderer backend detected. gganimate will default to writing frames to separate files
-#&gt; Consider installing:
-#&gt; - the `gifski` package for gif output
-#&gt; - the `av` package for video output
-#&gt; and restarting the R session</code></pre>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="intro-dataviz_files/figure-html/gampnider-example-plot-1.gif" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
 </div>
 <p>It is also important to note that mistakes, biases, systematic errors and other unexpected problems often lead to data that should be handled with care. Failure to discover these problems can give rise to flawed analyses and false discoveries. As an example, consider that measurement devices sometimes fail and that most data analysis procedures are not designed to detect these. Yet these data analysis procedures will still give you an answer. The fact that it can be difficult or impossible to notice an error just from the reported results makes data visualization particularly important.</p>
-<p>In this part of the book, we will learn the basics of data visualization and exploratory data analysis by using three motivating examples. We will use the <strong>ggplot2</strong> package to code. To learn the very basics, we will start with a somewhat artificial example: heights reported by students. Then we will focus on two cases studies: 1) world health and economics and 2) infectious disease trends in the United States. Note that we do not cover interactive graphics. For those interested in creating interactive plots we highly recommend learning to use the <strong>plotly</strong> package or Shiny<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>, both build on top of R. For more advanced challenges consider learning to program in D3.js<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>.</p>
+<p>In this part of the book, we will learn the basics of data visualization and exploratory data analysis by using three motivating examples. We will use the <strong>ggplot2</strong> package to code. To learn the very basics, we will start with a somewhat artificial example: heights reported by students. Then we will focus on two case studies: 1) world health and economics and 2) infectious disease trends in the United States. Note that we do not cover interactive graphics. For those interested in creating interactive plots we highly recommend learning to use the <strong>plotly</strong> package or Shiny<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>, both build on top of R. For more advanced challenges consider learning to program in D3.js<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
 
 
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p><a href="http://graphics.wsj.com/infectious-diseases-and-vaccines/?mc_cid=711ddeb86e" class="uri">http://graphics.wsj.com/infectious-diseases-and-vaccines/?mc_cid=711ddeb86e</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p><a href="http://graphics8.nytimes.com/images/2011/02/19/nyregion/19schoolsch/19schoolsch-popup.gif" class="uri">http://graphics8.nytimes.com/images/2011/02/19/nyregion/19schoolsch/19schoolsch-popup.gif</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p><a href="https://www.nytimes.com/2011/02/19/nyregion/19schools.html" class="uri">https://www.nytimes.com/2011/02/19/nyregion/19schools.html</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p><a href="https://en.wikipedia.org/wiki/John_Tukey" class="uri">https://en.wikipedia.org/wiki/John_Tukey</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p><a href="https://www.ted.com/talks/hans_rosling_reveals_new_insights_on_poverty?language=en" class="uri">https://www.ted.com/talks/hans_rosling_reveals_new_insights_on_poverty?language=en</a><a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p><a href="https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen" class="uri">https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen</a><a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn7"><p><a href="https://shiny.rstudio.com/" class="uri">https://shiny.rstudio.com/</a><a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn8"><p><a href="https://d3js.org/" class="uri">https://d3js.org/</a><a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p><a href="https://en.wikipedia.org/wiki/John_Tukey" class="uri">https://en.wikipedia.org/wiki/John_Tukey</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p><a href="https://www.ted.com/talks/hans_rosling_reveals_new_insights_on_poverty?language=en" class="uri">https://www.ted.com/talks/hans_rosling_reveals_new_insights_on_poverty?language=en</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p><a href="https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen" class="uri">https://www.ted.com/talks/hans_rosling_shows_the_best_stats_you_ve_ever_seen</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p><a href="https://shiny.rstudio.com/" class="uri">https://shiny.rstudio.com/</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p><a href="https://d3js.org/" class="uri">https://d3js.org/</a><a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

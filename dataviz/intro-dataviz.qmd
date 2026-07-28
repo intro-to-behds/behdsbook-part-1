@@ -3,7 +3,7 @@
 Looking at the numbers and character strings that define a dataset is rarely useful. To convince yourself, print and stare at a table of reported data-breach incidents by US state:
 
 ```{r, message=FALSE, warning=FALSE}
-library(dslabs)
+library(behdslabs)
 head(app_data_breaches)
 ```
 
