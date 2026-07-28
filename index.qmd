@@ -9,13 +9,26 @@ This work remains licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/l
 
 This is the website for the **Data Wrangling and Visualization with R** part of **Introduction to Behavioural Data Science**, an adaptation of **Introduction to Data Science**.
 
-The website for the **Statistics and Prediction Algorithms Through Case Studies** part is [here](http://rafalab.dfci.harvard.edu/dsbook-part-2/)[^index-1].
-
-[^index-1]: <http://rafalab.dfci.harvard.edu/dsbook-part-2/>
+This behavioural-science adaptation, *Introduction to Behavioural Data Science*, was created by Giorgio Arcara for the *Behavioural Data Science* course (PS0000002, University of Padua).
 
 The Quarto files used to generate this adaptation are available on [GitHub](https://github.com/intro-to-behds/behdsbook-part-1)[^index-8].
 
 [^index-8]: <https://github.com/intro-to-behds/behdsbook-part-1>
+
+The website for the original book are the following:
+
+- Part 1 **Data Wrangling and Visualization with R** part is [here](http://rafalab.dfci.harvard.edu/dsbook-part-1/)[^index-1].
+- Part 2 **Statistics and Prediction Algorithms Through Case Studies** part is [here](http://rafalab.dfci.harvard.edu/dsbook-part-2/)[^index-2].
+
+[^index-1]: <http://rafalab.dfci.harvard.edu/dsbook-part-1/>
+[^index-2]: <http://rafalab.dfci.harvard.edu/dsbook-part-2/>
+
+
+# Disclaimers
+
+In this version of the book, all examples and datasets are adaptations of the datasets in the original book, re-themed to fit a behavioural-science context. The numerical values derive from real datasets, but their behavioural framing is fictional: **these should not be interpreted or cited as genuine behavioural data**.
+
+The English translation and adaptation were produced with the assistance of _Claude Code (Sonnet 4.6)_. The model was used for programming and language revision only; it did not generate new content or ideas.
 
 # Preface to the Original Edition {.unnumbered}
 
@@ -49,10 +62,6 @@ A free PDF of the October 24, 2019 version of the book is available from [Leanpu
 
 [^index-7]: <https://leanpub.com/datasciencebook>
 
-
-# Acknowledgments {.unnumbered}
-
-This behavioural-science adaptation, *Introduction to Behavioural Data Science*, was created by Giorgio Arcara for the *Behavioural Data Science* course (PS0000002, University of Padua).
 
 # Acknowledgments to the Original Edition {.unnumbered}
 
