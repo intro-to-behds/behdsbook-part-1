@@ -383,7 +383,7 @@ You can easily download all the code and version control logs from an existing p
 When you clone you are essentially making a complete copy of the entire directory. For example, you can download all the code used to create this book using:
 
 ```
-git clone https://github.com/rafalab/dsbook-part-1.git
+git clone https://github.com/intro-to-behds/behdsbook-part-1.git
 ```
 
 You can see a simple example with the murders directory created in the Unix chapter by cloning this repository:

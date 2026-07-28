@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.38">
+<meta name="generator" content="quarto-1.7.31">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="author" content="Rafael A. Irizarry">
-<title>15&nbsp; Extracting data from the web – Introduction to Data Science</title>
+
+<meta name="author" content="Rafael A. Irizarry (original); adapted by Giorgio Arcara for Behavioural Data Science">
+
+<title>15&nbsp; Extracting data from the web – Introduction to Behavioural Data Science</title>
 <style>
-/* Default styles provided by pandoc.
-** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
-*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -58,6 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
+
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
@@ -74,10 +75,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-2f71e96512c2b414696ba17842295890.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/bootstrap/bootstrap-314d552717907458410b1a40a915f399.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -104,11 +106,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+
+
 </head>
+
 <body class="nav-sidebar floating quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -119,13 +126,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="../">Introduction to Data Science</a> 
-        <div class="sidebar-tools-main">
-    <a href="https://github.com/rafalab/dsbook-part-1" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+      <a href="../">Introduction to Behavioural Data Science</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/intro-to-behds/behdsbook-part-1" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="../Introduction-to-Behavioural-Data-Science.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -141,7 +153,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-<li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Preface</span></a>
@@ -161,8 +173,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../R/getting-started.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting started</span></span></a>
@@ -199,7 +211,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../dataviz/intro-dataviz.html" class="sidebar-item-text sidebar-link">
@@ -208,8 +220,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../dataviz/distributions.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Visualizing data distributions</span></span></a>
@@ -234,7 +246,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../wrangling/intro-to-wrangling.html" class="sidebar-item-text sidebar-link">
@@ -243,8 +255,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../wrangling/reshaping-data.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Reshaping data</span></span></a>
@@ -287,7 +299,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../productivity/intro-productivity.html" class="sidebar-item-text sidebar-link">
@@ -296,8 +308,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../productivity/unix.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Organizing with Unix</span></span></a>
@@ -316,39 +328,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
     </ul>
-</div>
-</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li>
-<a href="#scraping-html" id="toc-scraping-html" class="nav-link active" data-scroll-target="#scraping-html"><span class="header-section-number">15.1</span> Scraping HTML</a>
+  <li><a href="#scraping-html" id="toc-scraping-html" class="nav-link active" data-scroll-target="#scraping-html"><span class="header-section-number">15.1</span> Scraping HTML</a>
   <ul class="collapse">
-<li><a href="#html" id="toc-html" class="nav-link" data-scroll-target="#html"><span class="header-section-number">15.1.1</span> HTML</a></li>
+  <li><a href="#html" id="toc-html" class="nav-link" data-scroll-target="#html"><span class="header-section-number">15.1.1</span> HTML</a></li>
   <li><a href="#the-rvest-package" id="toc-the-rvest-package" class="nav-link" data-scroll-target="#the-rvest-package"><span class="header-section-number">15.1.2</span> The rvest package</a></li>
   <li><a href="#sec-css-selectors" id="toc-sec-css-selectors" class="nav-link" data-scroll-target="#sec-css-selectors"><span class="header-section-number">15.1.3</span> CSS selectors</a></li>
-  </ul>
-</li>
+  </ul></li>
   <li><a href="#json" id="toc-json" class="nav-link" data-scroll-target="#json"><span class="header-section-number">15.2</span> JSON</a></li>
-  <li>
-<a href="#data-apis" id="toc-data-apis" class="nav-link" data-scroll-target="#data-apis"><span class="header-section-number">15.3</span> Data APIs</a>
+  <li><a href="#data-apis" id="toc-data-apis" class="nav-link" data-scroll-target="#data-apis"><span class="header-section-number">15.3</span> Data APIs</a>
   <ul class="collapse">
-<li><a href="#api-types-and-concepts" id="toc-api-types-and-concepts" class="nav-link" data-scroll-target="#api-types-and-concepts"><span class="header-section-number">15.3.1</span> API types and concepts</a></li>
+  <li><a href="#api-types-and-concepts" id="toc-api-types-and-concepts" class="nav-link" data-scroll-target="#api-types-and-concepts"><span class="header-section-number">15.3.1</span> API types and concepts</a></li>
   <li><a href="#the-httr2-package" id="toc-the-httr2-package" class="nav-link" data-scroll-target="#the-httr2-package"><span class="header-section-number">15.3.2</span> The httr2 package</a></li>
-  </ul>
-</li>
+  </ul></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">15.4</span> Exercises</a></li>
-  </ul><div class="toc-actions"><ul><li><a href="https://github.com/rafalab/dsbook-part-1/blob/main/wrangling/web-scraping.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/rafalab/dsbook-part-1/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/intro-to-behds/behdsbook-part-1/blob/main/wrangling/web-scraping.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/intro-to-behds/behdsbook-part-1/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../wrangling/intro-to-wrangling.html">Data Wrangling</a></li><li class="breadcrumb-item"><a href="../wrangling/web-scraping.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Extracting data from the web</span></a></li></ol></nav><div class="quarto-title">
-<h1 class="title">
-<span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Extracting data from the web</span>
-</h1>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../wrangling/intro-to-wrangling.html">Data Wrangling</a></li><li class="breadcrumb-item"><a href="../wrangling/web-scraping.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Extracting data from the web</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Extracting data from the web</span></h1>
 </div>
 
 
@@ -362,22 +374,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><p>In today’s digital age, the internet serves as a treasure trove of data. This chapter describes approaches for retrieving this data and preparing for data analysis. We focus on two primary methodologies: scraping html and API integration. Scraping html allows us to programmatically navigate and extract data from web pages, transforming the unstructured content of the HTML pages into structured data ready for analysis. On the other hand, APIs provide a more direct and efficient and structured access to data provided by web services. This chapter aims to introduce the basics needed to starting leveraging the web’s vast data resources.</p>
-<section id="scraping-html" class="level2" data-number="15.1"><h2 data-number="15.1" class="anchored" data-anchor-id="scraping-html">
-<span class="header-section-number">15.1</span> Scraping HTML</h2>
+</header>
+
+
+<p>In today’s digital age, the internet serves as a treasure trove of data. This chapter describes approaches for retrieving this data and preparing for data analysis. We focus on two primary methodologies: scraping html and API integration. Scraping html allows us to programmatically navigate and extract data from web pages, transforming the unstructured content of the HTML pages into structured data ready for analysis. On the other hand, APIs provide a more direct and efficient and structured access to data provided by web services. This chapter aims to introduce the basics needed to starting leveraging the web’s vast data resources.</p>
+<section id="scraping-html" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="scraping-html"><span class="header-section-number">15.1</span> Scraping HTML</h2>
 <p>The data we need to answer a question is not always in a spreadsheet ready for us to read. For example, the US murders dataset we used in the R Basics chapter originally comes from this Wikipedia page:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">url</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"https://en.wikipedia.org/w/index.php?title="</span>,</span>
-<span>              <span class="st">"Gun_violence_in_the_United_States_by_state"</span>,</span>
-<span>              <span class="st">"&amp;direction=prev&amp;oldid=810166167"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"https://en.wikipedia.org/w/index.php?title="</span>,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>              <span class="st">"Gun_violence_in_the_United_States_by_state"</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>              <span class="st">"&amp;direction=prev&amp;oldid=810166167"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You can see the data table when you visit the webpage:</p>
 <p><img src="img/murders-data-wiki-page.png" class="img-fluid"></p>
 <p>(Web page courtesy of Wikipedia<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. CC-BY-SA-3.0 license<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Screenshot of part of the page.)</p>
 <p><em>Web scraping</em>, or <em>web harvesting</em>, is the term we use to describe the process of extracting data from a website. The reason we can do this is because the information used by a browser to render webpages is received as a text file from a server. The text is code written in hyper text markup language (HTML). Every browser has a way to show the html source code for a page, each one different. On Chrome, you can use Control-U on a PC and command+alt+U on a Mac. You will see something like this:</p>
 <p><img src="img/html-code.png" class="img-fluid"></p>
-<section id="html" class="level3" data-number="15.1.1"><h3 data-number="15.1.1" class="anchored" data-anchor-id="html">
-<span class="header-section-number">15.1.1</span> HTML</h3>
+<section id="html" class="level3" data-number="15.1.1">
+<h3 data-number="15.1.1" class="anchored" data-anchor-id="html"><span class="header-section-number">15.1.1</span> HTML</h3>
 <p>Because this code is accessible, we can download the HTML file, import it into R, and then write programs to extract the information we need from the page. However, once we look at HTML code, this might seem like a daunting task. But we will show you some convenient tools to facilitate the process. To get an idea of how it works, here are a few lines of code from the Wikipedia page that provides the US murders data:</p>
 <pre><code>&lt;table class="wikitable sortable"&gt;
 &lt;tr&gt;
@@ -414,70 +429,74 @@ title="List of U.S. states and territories by population"&gt;Population&lt;/a&gt
 &lt;tr&gt;</code></pre>
 <p>You can actually see the data, except data values are surrounded by html code such as <code>&lt;td&gt;</code>. We can also see a pattern of how it is stored. If you know HTML, you can write programs that leverage knowledge of these patterns to extract what we want. We also take advantage of a language widely used to make webpages look “pretty” called Cascading Style Sheets (CSS). We say more about this in <a href="#sec-css-selectors" class="quarto-xref"><span>Section 15.1.3</span></a>.</p>
 <p>Although we provide tools that make it possible to scrape data without knowing HTML, it is useful to learn some HTML and CSS. Not only does this improve your scraping skills, but it might come in handy if you are creating a webpage to showcase your work. There are plenty of online courses and tutorials for learning these. Two examples are Codeacademy<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> and W3schools<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
-</section><section id="the-rvest-package" class="level3" data-number="15.1.2"><h3 data-number="15.1.2" class="anchored" data-anchor-id="the-rvest-package">
-<span class="header-section-number">15.1.2</span> The rvest package</h3>
+</section>
+<section id="the-rvest-package" class="level3" data-number="15.1.2">
+<h3 data-number="15.1.2" class="anchored" data-anchor-id="the-rvest-package"><span class="header-section-number">15.1.2</span> The rvest package</h3>
 <p>The <strong>tidyverse</strong> provides a web harvesting package called <strong>rvest</strong>. The first step using this package is to import the webpage into R. The package makes this quite simple:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rvest.tidyverse.org/">rvest</a></span><span class="op">)</span></span>
-<span><span class="va">h</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://xml2.r-lib.org/reference/read_xml.html">read_html</a></span><span class="op">(</span><span class="va">url</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note that the entire Murders in the US Wikipedia webpage is now contained in <code>h</code>. The class of this object is:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">h</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "xml_document" "xml_node"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(h)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "xml_document" "xml_node"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The <strong>rvest</strong> package is actually more general; it handles XML documents. XML is a general markup language (that’s what the ML stands for) that can be used to represent any kind of data. HTML is a specific type of XML specifically developed for representing webpages. Here we focus on HTML documents.</p>
 <p>Now, how do we extract the table from the object <code>h</code>? If you were to print <code>h</code>, we would see information about the object that is not very informative. We can see all the code that defines the downloaded webpage using the <code>html_text</code> function like this:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rvest.tidyverse.org/reference/html_text.html">html_text</a></span><span class="op">(</span><span class="va">h</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">html_text</span>(h)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We don’t show the output here because it includes thousands of characters. But if we look at it, we can see the data we are after are stored in an HTML table: you can see this in this line of the HTML code above <code>&lt;table class="wikitable sortable"&gt;</code>. The different parts of an HTML document, often defined with a message in between <code>&lt;</code> and <code>&gt;</code> are referred to as <em>nodes</em>. The <strong>rvest</strong> package includes functions to extract nodes of an HTML document: <code>html_nodes</code> extracts all nodes of different types and <code>html_node</code> extracts the first one. To extract the tables from the html code we use:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="va">h</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rvest.tidyverse.org/reference/rename.html">html_nodes</a></span><span class="op">(</span><span class="st">"table"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> h <span class="sc">|&gt;</span> <span class="fu">html_nodes</span>(<span class="st">"table"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now, instead of the entire webpage, we just have the html code for the tables in the page:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tab</span></span>
-<span><span class="co">#&gt; {xml_nodeset (2)}</span></span>
-<span><span class="co">#&gt; [1] &lt;table class="wikitable sortable"&gt;&lt;tbody&gt;\n&lt;tr&gt;\n&lt;th&gt;State\n&lt;/th&gt; ...</span></span>
-<span><span class="co">#&gt; [2] &lt;table class="nowraplinks hlist mw-collapsible mw-collapsed navbo ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>tab</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; {xml_nodeset (2)}</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &lt;table class="wikitable sortable" id="mwDQ"&gt;&lt;tbody id="mwDg"&gt;\n&lt;t ...</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [2] &lt;table class="nowraplinks hlist mw-collapsible mw-collapsed navbo ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The table we are interested is the first one:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tab</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt; {html_node}</span></span>
-<span><span class="co">#&gt; &lt;table class="wikitable sortable"&gt;</span></span>
-<span><span class="co">#&gt; [1] &lt;tbody&gt;\n&lt;tr&gt;\n&lt;th&gt;State\n&lt;/th&gt;\n&lt;th&gt;\n&lt;a href="/wiki/List_of_U.S ...</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>tab[[<span class="dv">1</span>]]</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; {html_node}</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;table class="wikitable sortable" id="mwDQ"&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &lt;tbody id="mwDg"&gt;\n&lt;tr id="mwDw"&gt;\n&lt;th id="mwEA"&gt;State&lt;/th&gt;\n&lt;th  ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This is clearly not a tidy dataset, not even a data frame. In the code above, you can definitely see a pattern and writing code to extract just the data is very doable. In fact, <strong>rvest</strong> includes a function just for converting HTML tables into data frames:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="va">tab</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rvest.tidyverse.org/reference/html_table.html">html_table</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">tab</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "tbl_df"     "tbl"        "data.frame"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> tab[[<span class="dv">1</span>]] <span class="sc">|&gt;</span> <span class="fu">html_table</span>()</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(tab)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "tbl_df"     "tbl"        "data.frame"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We are now much closer to having a usable data table:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="va">tab</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"state"</span>, <span class="st">"population"</span>, <span class="st">"total"</span>, <span class="st">"murder_rate"</span><span class="op">)</span><span class="op">)</span> </span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">tab</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
-<span><span class="co">#&gt;   state      population total murder_rate</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;       &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 Alabama    4,853,875  348           7.2</span></span>
-<span><span class="co">#&gt; 2 Alaska     737,709    59            8  </span></span>
-<span><span class="co">#&gt; 3 Arizona    6,817,565  309           4.5</span></span>
-<span><span class="co">#&gt; 4 Arkansas   2,977,853  181           6.1</span></span>
-<span><span class="co">#&gt; 5 California 38,993,940 1,861         4.8</span></span>
-<span><span class="co">#&gt; # ℹ 1 more row</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> tab <span class="sc">|&gt;</span> <span class="fu">setNames</span>(<span class="fu">c</span>(<span class="st">"state"</span>, <span class="st">"population"</span>, <span class="st">"total"</span>, <span class="st">"murder_rate"</span>)) </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(tab)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 x 4</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   state      population total murder_rate</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;       &lt;dbl&gt;</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 Alabama    4,853,875  348           7.2</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 Alaska     737,709    59            8  </span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 Arizona    6,817,565  309           4.5</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 Arkansas   2,977,853  181           6.1</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 California 38,993,940 1,861         4.8</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # i 1 more row</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We still have some wrangling to do. For example, we need to remove the commas and turn characters into numbers. Before continuing with this, we will learn a more general approach to extracting information from web sites.</p>
-</section><section id="sec-css-selectors" class="level3" data-number="15.1.3"><h3 data-number="15.1.3" class="anchored" data-anchor-id="sec-css-selectors">
-<span class="header-section-number">15.1.3</span> CSS selectors</h3>
+</section>
+<section id="sec-css-selectors" class="level3" data-number="15.1.3">
+<h3 data-number="15.1.3" class="anchored" data-anchor-id="sec-css-selectors"><span class="header-section-number">15.1.3</span> CSS selectors</h3>
 <p>The default look of a webpage made with the most basic HTML is quite unattractive. The aesthetically pleasing pages we see today are made using CSS to define the look and style of webpages. The fact that all pages for a company have the same style usually results from their use of the same CSS file to define the style. The general way these CSS files work is by defining how each of the elements of a webpage will look. The title, headings, itemized lists, tables, and links, for example, each receive their own style including font, color, size, and distance from the margin. CSS does this by leveraging patterns used to define these elements, referred to as <em>selectors</em>. An example of such a pattern, which we used above, is <code>table</code>, but there are many, many more.</p>
 <p>If we want to grab data from a webpage and we happen to know a selector that is unique to the part of the page containing this data, we can use the <code>html_nodes</code> function. However, knowing which selector can be quite complicated. In fact, the complexity of webpages has been increasing as they become more sophisticated. For some of the more advanced ones, it seems almost impossible to find the nodes that define a particular piece of data. However, selector gadgets actually make this possible.</p>
 <p>SelectorGadget<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> is piece of software that allows you to interactively determine what CSS selector you need to extract specific components from the webpage. If you plan on scraping data other than tables from html pages, we highly recommend you install it. A Chrome extension is available which permits you to turn on the gadget and then, as you click through the page, it highlights parts and shows you the selector you need to extract these parts. There are various demos of how to do this including <strong>rvest</strong> author Hadley Wickham’s vignette<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> and other tutorials based on the vignette<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>.</p>
-</section></section><section id="json" class="level2" data-number="15.2"><h2 data-number="15.2" class="anchored" data-anchor-id="json">
-<span class="header-section-number">15.2</span> JSON</h2>
+</section>
+</section>
+<section id="json" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="json"><span class="header-section-number">15.2</span> JSON</h2>
 <p>Sharing data on the internet has become more and more common. Unfortunately, providers use different formats, which makes it harder for data analysts to wrangle data into R. Yet there are some standards that are also becoming more common. Currently, a format that is widely being adopted is the JavaScript Object Notation or JSON. Because this format is very general, it is nothing like a spreadsheet. This JSON file looks more like the code you use to define a list. Here is an example of information stored in a JSON format:</p>
 <div class="cell" data-layout-align="center">
 <pre><code>#&gt; [
@@ -509,25 +528,26 @@ title="List of U.S. states and territories by population"&gt;Population&lt;/a&gt
 </div>
 <p>The file above actually represents a data frame. To read it, we can use the function <code>fromJSON</code> from the <strong>jsonlite</strong> package. Note that JSON files are often made available via the internet. Several organizations provide a JSON API or a web service that you can connect directly to and obtain data. Here is an example providing information Nobel prize winners:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://jeroen.r-universe.dev/jsonlite">jsonlite</a></span><span class="op">)</span></span>
-<span><span class="va">nobel</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://jeroen.r-universe.dev/jsonlite/reference/fromJSON.html">fromJSON</a></span><span class="op">(</span><span class="st">"http://api.nobelprize.org/v1/prize.json"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>nobel <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="st">"http://api.nobelprize.org/v1/prize.json"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This downloads a list. The first argument, named “prizes” is a table with information about Nobel prize winners. Each row holds corresponds to a particular year and category. The “laureates” column holds a list with a data frame for each winner with columns for id, firstname, surname, and motivation.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">nobel</span><span class="op">$</span><span class="va">prizes</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">category</span> <span class="op">==</span> <span class="st">"literature"</span> <span class="op">&amp;</span> <span class="va">year</span> <span class="op">==</span> <span class="st">"1971"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">laureates</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/nth.html">first</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">firstname</span>, <span class="va">surname</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    id firstname surname</span></span>
-<span><span class="co">#&gt; 1 645     Pablo  Neruda</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>nobel<span class="sc">$</span>prizes <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(category <span class="sc">==</span> <span class="st">"literature"</span> <span class="sc">&amp;</span> year <span class="sc">==</span> <span class="st">"1971"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(laureates) <span class="sc">|&gt;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">first</span>() <span class="sc">|&gt;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, firstname, surname)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    id firstname surname</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 645     Pablo  Neruda</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You can learn much more by examining tutorials and help files from the <strong>jsonlite</strong> package. This package is intended for relatively simple tasks such as converting data into tables. For more flexibility, we recommend the <strong>rjson</strong> package.</p>
-</section><section id="data-apis" class="level2" data-number="15.3"><h2 data-number="15.3" class="anchored" data-anchor-id="data-apis">
-<span class="header-section-number">15.3</span> Data APIs</h2>
+</section>
+<section id="data-apis" class="level2" data-number="15.3">
+<h2 data-number="15.3" class="anchored" data-anchor-id="data-apis"><span class="header-section-number">15.3</span> Data APIs</h2>
 <p>An Application Programming Interface (API) is a set of rules and protocols that allows different software entities to communicate with each other. It defines methods and data formats that software components should use when requesting and exchanging information. APIs play a crucial role in enabling the integration that make today’s software so interconnected and versatile.</p>
-<section id="api-types-and-concepts" class="level3" data-number="15.3.1"><h3 data-number="15.3.1" class="anchored" data-anchor-id="api-types-and-concepts">
-<span class="header-section-number">15.3.1</span> API types and concepts</h3>
+<section id="api-types-and-concepts" class="level3" data-number="15.3.1">
+<h3 data-number="15.3.1" class="anchored" data-anchor-id="api-types-and-concepts"><span class="header-section-number">15.3.1</span> API types and concepts</h3>
 <p>There are several types of APIs. The main ones related to retrieving data are:</p>
 <ul>
 <li><p><strong>Web Services</strong> - Often built using protocols like HTTP/HTTPS. Commonly used to enable applications to communicate with each other over the web. For instance, a weather application for a smartphone may use a web API to request weather data from a remote server.</p></li>
@@ -543,79 +563,78 @@ title="List of U.S. states and territories by population"&gt;Population&lt;/a&gt
 <li><p><strong>Data Formats</strong>: Many web APIs exchange data in a specific format, often JSON or CSV.</p></li>
 </ul>
 <p>Here now describe the <strong>httr2</strong> package that facilitates interacionts between R and HTTP web services.</p>
-</section><section id="the-httr2-package" class="level3" data-number="15.3.2"><h3 data-number="15.3.2" class="anchored" data-anchor-id="the-httr2-package">
-<span class="header-section-number">15.3.2</span> The httr2 package</h3>
+</section>
+<section id="the-httr2-package" class="level3" data-number="15.3.2">
+<h3 data-number="15.3.2" class="anchored" data-anchor-id="the-httr2-package"><span class="header-section-number">15.3.2</span> The httr2 package</h3>
 <p>HTTP is the most widely used protocol for data sharing through the internet. The <strong>httr2</strong> package provides functions to work with HTTP requests. One of the core functions in this package is <code>request</code>, which is used to form request to send to web services. The <code>req_perform</code> function sends the request.</p>
 <p>This <code>request</code> function forms an HTTP GET request to the specified URL. Typically, HTTP GET requests are used to retrieve information from a server based on the provided URL.</p>
 <p>The function returns an object of class <code>response</code>. This object contains all the details of the server’s response, including status code, headers, and content. You can then use other <strong>httr2</strong> functions to extract or interpret information from this response.</p>
 <p>Let’s say you want to retrieve COVID-19 deaths by state from the CDC. By visiting their data catalog<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> you can search for datasets and find that the data is provided through this API:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">url</span> <span class="op">&lt;-</span> <span class="st">"https://data.cdc.gov/resource/muzy-jte6.csv"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://data.cdc.gov/resource/muzy-jte6.csv"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can then make create and perform a request like this:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://httr2.r-lib.org">httr2</a></span><span class="op">)</span></span>
-<span><span class="va">response</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://httr2.r-lib.org/reference/request.html">request</a></span><span class="op">(</span><span class="va">url</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://httr2.r-lib.org/reference/req_timeout.html">req_timeout</a></span><span class="op">(</span><span class="fl">60</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://httr2.r-lib.org/reference/req_perform.html">req_perform</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(httr2)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>response <span class="ot">&lt;-</span> <span class="fu">request</span>(url) <span class="sc">|&gt;</span> <span class="fu">req_perform</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can see the results of the request by looking at the returned object.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">response</span></span>
-<span><span class="co">#&gt; &lt;httr2_response&gt;</span></span>
-<span><span class="co">#&gt; GET https://data.cdc.gov/resource/muzy-jte6.csv</span></span>
-<span><span class="co">#&gt; Status: 200 OK</span></span>
-<span><span class="co">#&gt; Content-Type: text/csv</span></span>
-<span><span class="co">#&gt; Body: In memory (210922 bytes)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>response</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;httr2_response&gt;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; GET https://data.cdc.gov/resource/muzy-jte6.csv</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Status: 200 OK</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Content-Type: text/csv</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Body: In memory (210922 bytes)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To extract the body, which is where the data are, we can use <code>resp_body_string</code> and send the result, a comma delimited string, to <code>read_csv</code></p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org">readr</a></span><span class="op">)</span></span>
-<span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="va">response</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://httr2.r-lib.org/reference/resp_body_raw.html">resp_body_string</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> response <span class="sc">|&gt;</span> <span class="fu">resp_body_string</span>() <span class="sc">|&gt;</span> <span class="fu">read_csv</span>()</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: The `file` argument of `read_csv()` should use `I()` for literal data</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; as of readr 2.2.0.</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   </span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   # Bad (for example):</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   read_csv("x,y\n1,2")</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   </span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   # Good:</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   read_csv(I("x,y\n1,2"))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We note that the returned object is only 1000 entries. API often limit how much you can download. The documentation for this API<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> explains that we can change this limit through the <code>$limit</code> parameters. We can use the <code>req_url_query</code> to add this to our request:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">response</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://httr2.r-lib.org/reference/request.html">request</a></span><span class="op">(</span><span class="va">url</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://httr2.r-lib.org/reference/req_url.html">req_url_query</a></span><span class="op">(</span>`$limit` <span class="op">=</span> <span class="fl">100000</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://httr2.r-lib.org/reference/req_timeout.html">req_timeout</a></span><span class="op">(</span><span class="fl">60</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://httr2.r-lib.org/reference/req_perform.html">req_perform</a></span><span class="op">(</span><span class="op">)</span> </span>
-<span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="va">response</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://httr2.r-lib.org/reference/resp_body_raw.html">resp_body_string</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Rows: 10476 Columns: 35</span></span>
-<span><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────</span></span>
-<span><span class="co">#&gt; Delimiter: ","</span></span>
-<span><span class="co">#&gt; chr  (14): jurisdiction_of_occurrence, flag_sept, flag_neopl, flag_d...</span></span>
-<span><span class="co">#&gt; dbl  (17): mmwryear, mmwrweek, all_cause, natural_cause, septicemia_...</span></span>
-<span><span class="co">#&gt; lgl   (2): flag_allcause, flag_natcause</span></span>
-<span><span class="co">#&gt; dttm  (1): data_as_of</span></span>
-<span><span class="co">#&gt; date  (1): week_ending_date</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.</span></span>
-<span><span class="co">#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>response <span class="ot">&lt;-</span> <span class="fu">request</span>(url) <span class="sc">|&gt;</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">req_url_query</span>(<span class="st">`</span><span class="at">$limit</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">100000</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">req_perform</span>() </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> response <span class="sc">|&gt;</span> <span class="fu">resp_body_string</span>() <span class="sc">|&gt;</span> <span class="fu">read_csv</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We now get 10476 entries.</p>
 <p>The CDC service returns data in csv format but a more common format used by web services is JSON. The CDC also provides data in json format through a the url:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">url</span> <span class="op">&lt;-</span> <span class="st">"https://data.cdc.gov/resource/muzy-jte6.json"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://data.cdc.gov/resource/muzy-jte6.json"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To extract the data table we use the <code>fromJSON</code> function from the <strong>jsonlite</strong> package.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://httr2.r-lib.org/reference/request.html">request</a></span><span class="op">(</span><span class="va">url</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>   <span class="fu"><a href="https://httr2.r-lib.org/reference/req_perform.html">req_perform</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>   <span class="fu"><a href="https://httr2.r-lib.org/reference/resp_body_raw.html">resp_body_string</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>   <span class="fu"><a href="https://jeroen.r-universe.dev/jsonlite/reference/fromJSON.html">fromJSON</a></span><span class="op">(</span>flatten <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">request</span>(url) <span class="sc">|&gt;</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">req_perform</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">resp_body_string</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>   <span class="fu">fromJSON</span>(<span class="at">flatten =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>When working with APIs, it’s essential to check the API’s documentation for rate limits, required headers, or authentication methods. The <code>httr2</code> package provides tools to handle these requirements, such as setting headers or authentication parameters.</p>
-</section></section><section id="exercises" class="level2" data-number="15.4"><h2 data-number="15.4" class="anchored" data-anchor-id="exercises">
-<span class="header-section-number">15.4</span> Exercises</h2>
+</section>
+</section>
+<section id="exercises" class="level2" data-number="15.4">
+<h2 data-number="15.4" class="anchored" data-anchor-id="exercises"><span class="header-section-number">15.4</span> Exercises</h2>
 <p>1. Visit the following web page: <a href="https://web.archive.org/web/20181024132313/http://www.stevetheump.com/Payrolls.htm">https://web.archive.org/web/20181024132313/http://www.stevetheump.com/Payrolls.htm</a></p>
 <p>Notice there are several tables. Say we are interested in comparing the payrolls of teams across the years. The next few exercises take us through the steps needed to do this.</p>
 <p>Start by applying what you learned to read in the website into an object called <code>h</code>.</p>
 <p>2. Note that, although not very useful, we can actually see the content of the page by typing:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rvest.tidyverse.org/reference/html_text.html">html_text</a></span><span class="op">(</span><span class="va">h</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">html_text</span>(h)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The next step is to extract the tables. For this, we can use the <code>html_nodes</code> function. We learned that tables in html are associated with the <code>table</code> node. Use the <code>html_nodes</code> function to extract all tables. Store it in an object <code>nodes</code>.</p>
 <p>3. The <code>html_nodes</code> function returns a list of objects of class <code>xml_node</code>. We can see the content of each one using, for example, the <code>html_text</code> function. You can see the content for an arbitrarily picked component like this:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rvest.tidyverse.org/reference/html_text.html">html_text</a></span><span class="op">(</span><span class="va">nodes</span><span class="op">[[</span><span class="fl">8</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">html_text</span>(nodes[[<span class="dv">8</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If the content of this object is an html table, we can use the <code>html_table</code> function to convert it to a data frame. Use the <code>html_table</code> function to convert the 8th entry of <code>nodes</code> into a table.</p>
 <p>4. Repeat the above for the first 4 components of <code>nodes</code>. Which of the following are payroll tables:</p>
@@ -640,14 +659,16 @@ title="List of U.S. states and territories by population"&gt;Population&lt;/a&gt
 <p>11. After joining the tables, you see several <code>NA</code>s. This is because some teams are in one table and not the other. Use the <code>anti_join</code> function to get a better idea of why this is happening.</p>
 <p>12. We see see that one of the problems is that Yankees are listed as both <em>N.Y. Yankees</em> and <em>NY Yankees</em>. In the next section, we will learn efficient approaches to fixing problems like this. Here we can do it “by hand” as follows:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tab_1</span> <span class="op">&lt;-</span> <span class="va">tab_1</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Team <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">Team</span> <span class="op">==</span> <span class="st">"N.Y. Yankees"</span>, <span class="st">"NY Yankees"</span>, <span class="va">Team</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>tab_1 <span class="ot">&lt;-</span> tab_1 <span class="sc">|&gt;</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Team =</span> <span class="fu">ifelse</span>(Team <span class="sc">==</span> <span class="st">"N.Y. Yankees"</span>, <span class="st">"NY Yankees"</span>, Team))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now join the tables and show only Oakland and the Yankees and the payroll columns.</p>
 <p>13. Advanced: extract the titles of the movies that won Best Picture from IMDB<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>.</p>
 
 
-</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
 <ol>
 <li id="fn1"><p><a href="https://en.wikipedia.org/w/index.php?title=Gun_violence_in_the_United_States_by_state&amp;direction=prev&amp;oldid=810166167" class="uri">https://en.wikipedia.org/w/index.php?title=Gun_violence_in_the_United_States_by_state&amp;direction=prev&amp;oldid=810166167</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p><a href="https://en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License" class="uri">https://en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
@@ -659,7 +680,11 @@ title="List of U.S. states and territories by population"&gt;Population&lt;/a&gt
 <li id="fn8"><p><a href="https://data.cdc.gov" class="uri">https://data.cdc.gov</a><a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn9"><p><a href="https://dev.socrata.com/docs/queries/" class="uri">https://dev.socrata.com/docs/queries/</a><a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn10"><p><a href="https://m.imdb.com/chart/bestpicture/" class="uri">https://m.imdb.com/chart/bestpicture/</a><a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -710,14 +735,13 @@ title="List of U.S. states and territories by population"&gt;Population&lt;/a&gt
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-      const outerScaffold = trigger.parentElement.cloneNode(true);
-      const codeEl = outerScaffold.querySelector('code');
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
         }
-      }
-      return codeEl.innerText;
+        return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -732,7 +756,7 @@ title="List of U.S. states and territories by population"&gt;Population&lt;/a&gt
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("http:\/\/rafalab\.dfci\.harvard\.edu\/dsbook-part-1");
+        var filterRegex = new RegExp("https:\/\/intro-to-behds\.github\.io\/behdsbook-part-1\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -1058,7 +1082,9 @@ title="List of U.S. states and territories by population"&gt;Population&lt;/a&gt
       }
     }
   });
-  </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
       <a href="../wrangling/locales.html" class="pagination-link" aria-label="Locales">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Locales</span></span>
       </a>          
@@ -1070,18 +1096,21 @@ title="List of U.S. states and territories by population"&gt;Population&lt;/a&gt
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer">
+<footer class="footer">
+  <div class="nav-footer">
     <div class="nav-footer-left">
-<p>Introduction to Data Science was written by Rafael A. Irizarry</p>
+<p>Introduction to Behavioural Data Science, adapted from Rafael A. Irizarry’s <a href="https://rafalab.dfci.harvard.edu/dsbook/">Introduction to Data Science</a></p>
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/rafalab/dsbook-part-1/blob/main/wrangling/web-scraping.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/rafalab/dsbook-part-1/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/intro-to-behds/behdsbook-part-1/blob/main/wrangling/web-scraping.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/intro-to-behds/behdsbook-part-1/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>
   </div>
 </footer>
+
+
 
 
 </body></html>

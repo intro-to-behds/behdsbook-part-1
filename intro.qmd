@@ -8,11 +8,11 @@ Throughout the book, we use motivating case studies. In each case study, we try 
 
 | Case Study                                         | Concept               |     |
 |----------------------------|----------------------|----------------------|
-| US murder rates by state                           | R Basics              |     |
-| Student heights                                    | Statistical Summaries |     |
-| Trends in world health and economics               | Data Visualization    |     |
-| The impact of vaccines on infectious disease rates | Data Visualization    |     |
-| Reported student heights                           | Data Wrangling        |     |
+| Data-breach incidents by US state                  | R Basics              |     |
+| Reaction times in an online task                   | Statistical Summaries |     |
+| Trends in global tech adoption                      | Data Visualization    |     |
+| The impact of a free feature bundle on fitness-app downloads | Data Visualization    |     |
+| Self-reported daily screen time (mixed formats)    | Data Wrangling        |     |
 
 ## Who will find this book useful? {.unnumbered}
 
@@ -27,6 +27,26 @@ The growing availability of informative datasets and software tools has led to i
 The third part uses several examples to familiarize the reader with **data wrangling**. Among the specific skills we learn are web scraping, using regular expressions, and joining and reshaping data tables. We do this using **tidyverse** tools.
 
 In the final part, we provide a brief introduction to the **productivity tools** we use on a day-to-day basis in data science projects. These are RStudio, UNIX/Linux shell, Git and GitHub, Quarto, and **knitr**.
+
+## Learning data science in the era of AI {.unnumbered}
+
+_by Giorgio Arcara_
+
+One could think: "why should I learn data science in the era of AI?" This is a perfectly sound question.
+
+Thanks to Large Language Models (LLMs, such as ChatGPT, Gemini, Claude, etc.) it is becoming increasingly simpler to code (that is, to use programming languages for any aim), and this is also true for data science.
+
+Anyone can literally upload a dataset to an LLM and ask: "please run some detailed analysis and return some plots starting from this dataset."
+
+Is learning data science becoming _obsolete_? The short answer is: _no_. I will give you some intuitions on the reasons here, but this will be covered in @sec-ai-responsible-coding.
+
+- LLMs make basic coding easier, and precisely for this reason they raise the bar for what counts as competent analysis.
+- LLMs need guidance, and need the problem/question to be framed correctly.
+- The more complex the problem, the more LLMs need guidance and risk derailing from the correct path.
+
+My position is that LLMs are invaluable resources for better coding (see also the [Better Code, Better Science](https://bettercode-book.org/) book by R. A. Poldrack), but they are not a substitute.
+
+The point is not whether or not to use LLMs for coding, and thus to do data science. The point is that someone who guides an LLM with real data science knowledge produces far more trustworthy and accurate analyses than someone who simply prompts it blindly.
 
 ## What is not covered by this book? {.unnumbered}
 

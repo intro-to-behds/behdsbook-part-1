@@ -1,32 +1,32 @@
 # Data Visualization {.unnumbered}
 
-Looking at the numbers and character strings that define a dataset is rarely useful. To convince yourself, print and stare at the US murders data table:
+Looking at the numbers and character strings that define a dataset is rarely useful. To convince yourself, print and stare at a table of reported data-breach incidents by US state:
 
 ```{r, message=FALSE, warning=FALSE}
-library(dslabs)
-head(murders)
+library(behdslabs)
+head(app_data_breaches)
 ```
 
-What do you learn from staring at this table? How quickly can you determine which states have the largest populations? Which states have the smallest? How large is a typical state? Is there a relationship between population size and total murders? How do murder rates vary across regions of the country? For most human brains, it is quite difficult to extract this information just by looking at the numbers. In contrast, the answer to all the questions above are readily available from examining this plot:
+What do you learn from staring at this table? How quickly can you determine which states have the largest populations? Which states have the smallest? How large is a typical state? Is there a relationship between population size and the number of reported breach incidents? How do breach rates vary across regions of the country? For most human brains, it is quite difficult to extract this information just by looking at the numbers. In contrast, the answer to all the questions above are readily available from examining this plot:
 
 ```{r ggplot-example-plot-0, echo=FALSE, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(ggthemes)
 library(ggrepel)
 
-r <- murders |> 
-  summarize(pop = sum(population), tot = sum(total)) |> 
+r <- app_data_breaches |>
+  summarize(pop = sum(population), tot = sum(incidents)) |>
   mutate(rate = tot/pop*10^6) |> pull(rate)
 
-murders |> ggplot(aes(x = population/10^6, y = total, label = abb)) +  
+app_data_breaches |> ggplot(aes(x = population/10^6, y = incidents, label = abb)) +
   geom_abline(intercept = log10(r), lty = 2, col = "darkgrey") +
   geom_point(aes(color = region), size = 3) +
-  geom_text_repel() + 
+  geom_text_repel() +
   scale_x_log10() +
   scale_y_log10() +
-  xlab("Populations in millions (log scale)") + 
-  ylab("Total number of murders (log scale)") +
-  ggtitle("US Gun Murders in 2010") +
+  xlab("Populations in millions (log scale)") +
+  ylab("Reported data-breach incidents (log scale)") +
+  ggtitle("Reported Data-Breach Incidents by State") +
   scale_color_discrete(name = "Region") +
   theme_economist()
 ```
@@ -35,16 +35,13 @@ We are reminded of the saying "a picture is worth a thousand words". Data visual
 
 The growing availability of informative datasets and software tools has led to increased reliance on data visualizations across many industries, academia, and government. A salient example is news organizations, which are increasingly embracing *data journalism* and including effective *infographics* as part of their reporting.
 
-A particularly effective example is a Wall Street Journal article[^intro-dataviz-1] showing data related to the impact of vaccines on battling infectious diseases. One of the graphs shows measles cases by US state through the years with a vertical line demonstrating when the vaccine was introduced.
-
-[^intro-dataviz-1]: <http://graphics.wsj.com/infectious-diseases-and-vaccines/?mc_cid=711ddeb86e>
+A particularly effective example of this kind of chart comes from app-analytics reporting: state-by-state adoption data for a mobile app category, tracked over years, with a vertical line marking a platform change that reshaped the whole market. One such chart shows Guided Meditation app downloads by US state through the years, with a vertical line marking the year phone manufacturers began bundling a free guided-meditation feature directly into their operating systems.
 
 ```{r wsj-vaccines-example, echo=FALSE, out.width="100%", fig.height=5}
-#knitr::include_graphics(file.path(img_path,"wsj-vaccines.png"))
-the_disease <- "Measles"
-dat <- us_contagious_diseases |>
-  filter(!state%in%c("Hawaii","Alaska") & disease == the_disease) |>
-  mutate(rate = count / population * 10000 * 52 / weeks_reporting) |>
+the_category <- "Guided Meditation"
+dat <- fitness_app_downloads_by_state |>
+  filter(!state%in%c("Hawaii","Alaska") & app_category == the_category) |>
+  mutate(rate = downloads / population * 10000 * 52 / weeks_tracked) |>
   mutate(state = reorder(state, rate))
 
 jet.colors <-
@@ -55,47 +52,40 @@ dat |> ggplot(aes(year, state, fill = rate)) +
   scale_x_continuous(expand = c(0,0)) +
   scale_fill_gradientn(colors = jet.colors(16), na.value = 'white') +
   geom_vline(xintercept = 1963, col = "black") +
-  theme_minimal() + 
+  theme_minimal() +
   theme(panel.grid = element_blank()) +
   coord_cartesian(clip = 'off') +
-  ggtitle(the_disease) +
+  ggtitle(the_category) +
   ylab("") +
-  xlab("") +  
-  theme(legend.position = "bottom", text = element_text(size = 8)) + 
-  annotate(geom = "text", x = 1963, y = 50.5, label = "Vaccine introduced", size = 3, hjust = 0)
+  xlab("") +
+  theme(legend.position = "bottom", text = element_text(size = 8)) +
+  annotate(geom = "text", x = 1963, y = 50.5, label = "Free OS feature bundled", size = 3, hjust = 0)
 ```
 
-<!--(Source: [Wall Street Journal](http://graphics.wsj.com/infectious-diseases-and-vaccines/))-->
-
-A New York Times chart provides a compelling example by summarizing scores from the NYC Regents Exams[^intro-dataviz-2]. According to the accompanying article[^intro-dataviz-3], these scores are collected for various purposes, one of which is to determine a student's eligibility for high school graduation. In New York City, a score of 65 is required to pass. The pattern of these test scores suggests something unusual.
-
-[^intro-dataviz-2]: <http://graphics8.nytimes.com/images/2011/02/19/nyregion/19schoolsch/19schoolsch-popup.gif>
-
-[^intro-dataviz-3]: <https://www.nytimes.com/2011/02/19/nyregion/19schools.html>
+A cognitive-battery testing service provides a compelling example by summarizing scores from its standardized test battery. A score of 65 is treated as the benchmark for "typical range" performance, used when deciding whether a follow-up assessment is warranted. The pattern of these test scores suggests something unusual.
 
 ```{r regents-exams-example, echo=FALSE, warning=FALSE, out.width="80%", fig.height=2.5}
-#knitr::include_graphics(file.path(img_path,"nythist.png"))
-nyc_regents_scores$total <- rowSums(nyc_regents_scores[,-1], na.rm = TRUE)
+cognitive_battery_scores$total <- rowSums(cognitive_battery_scores[,-1], na.rm = TRUE)
 
-nyc_regents_scores |> 
+cognitive_battery_scores |>
   filter(!is.na(score)) |>
-  ggplot(aes(score, total)) + 
+  ggplot(aes(score, total)) +
   annotate("rect", xmin = 65, xmax = 99, ymin = 0, ymax = 35000, alpha = .5) +
-  geom_bar(stat = "identity", color = "black", fill = "#C4843C") + 
-  annotate("text", x = 66, y = 28000, label = "MINIMUM\nREGENTS DIPLOMA\nSCORE IS 65", hjust = 0, size = 3) +
-  annotate("text", x = 0, y = 12000, label = "2010 Regents scores on\nthe five most common tests", hjust = 0, size = 3) +
-  scale_x_continuous(breaks = seq(5, 95, 5), limits = c(0,99)) + 
+  geom_bar(stat = "identity", color = "black", fill = "#C4843C") +
+  annotate("text", x = 66, y = 28000, label = "\"TYPICAL RANGE\"\nBENCHMARK\nSCORE IS 65", hjust = 0, size = 3) +
+  annotate("text", x = 0, y = 12000, label = "Scores on\nthe five cognitive-battery tasks", hjust = 0, size = 3) +
+  scale_x_continuous(breaks = seq(5, 95, 5), limits = c(0,99)) +
   scale_y_continuous(position = "right", labels = scales::comma) +
-  ggtitle("Scraping by") + 
-  xlab("") + ylab("Number of tests") + 
-  theme_minimal() + 
-  theme(panel.grid.major.x = element_blank(), 
+  ggtitle("Scraping by") +
+  xlab("") + ylab("Number of tests") +
+  theme_minimal() +
+  theme(panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
         axis.ticks.length = unit(-0.2, "cm"),
         plot.title = element_text(face = "bold"))
 ```
 
-The most common test score is the minimum passing grade, with very few scores just below the threshold. This unexpected result is consistent with students close to passing having their scores bumped up.
+The most common test score sits right at the benchmark, with very few scores just below it. This unexpected result is consistent with scorers nudging borderline scores up to the benchmark -- the same anchoring artifact that shows up when respondent scores cluster suspiciously at a validated-scale threshold, such as an SUS score of 68.
 
 This is an example of how data visualization can lead to discoveries which would otherwise be missed if we simply subjected the data to a battery of data analysis tools or procedures. Data visualization is the strongest tool of what we call *exploratory data analysis* (EDA). John W. Tukey[^intro-dataviz-4], considered the father of EDA, once said,
 
@@ -105,7 +95,7 @@ This is an example of how data visualization can lead to discoveries which would
 
 Many widely used data analysis tools were initiated by discoveries made via EDA. EDA is perhaps the most important part of data analysis, yet it is one that is often overlooked.
 
-Data visualization is also now pervasive in philanthropic and educational organizations. In the talks New Insights on Poverty[^intro-dataviz-5] and The Best Stats You've Ever Seen[^intro-dataviz-6], Hans Rosling forces us to notice the unexpected with a series of plots related to world health and economics. In his videos, he uses animated graphs to show us how the world is changing and how old narratives are no longer true.
+Data visualization is also now pervasive in philanthropic and educational organizations. In the talks New Insights on Poverty[^intro-dataviz-5] and The Best Stats You've Ever Seen[^intro-dataviz-6], Hans Rosling forces us to notice the unexpected with a series of plots related to world health and economics, using animated graphs to show how the world is changing and how old narratives are no longer true. We borrow the same animated-storytelling technique below, applied to a different domain: global technology adoption.
 
 [^intro-dataviz-5]: <https://www.ted.com/talks/hans_rosling_reveals_new_insights_on_poverty?language=en>
 
@@ -116,48 +106,48 @@ Data visualization is also now pervasive in philanthropic and educational organi
 west <- c("Western Europe","Northern Europe","Southern Europe",
           "Northern America","Australia and New Zealand")
 
-gapminder <- gapminder |> 
+global_tech_adoption <- global_tech_adoption |>
   mutate(group = case_when(
     region %in% west ~ "The West",
     region %in% c("Eastern Asia", "South-Eastern Asia") ~ "East Asia",
     region %in% c("Caribbean", "Central America", "South America") ~ "Latin America",
     continent == "Africa" & region != "Northern Africa" ~ "Sub-Saharan Africa",
     TRUE ~ "Others"))
-gapminder <- gapminder |> 
+global_tech_adoption <- global_tech_adoption |>
   mutate(group = factor(group, levels = rev(c("Others", "Latin America", "East Asia","Sub-Saharan Africa", "The West"))))
 
 if (knitr::is_html_output()) {
   library(gganimate)
   years <- c(1960:2016)
-  p <- filter(gapminder, year %in% years & !is.na(group) & 
-                !is.na(fertility) & !is.na(life_expectancy)) |>
-    mutate(population_in_millions = population/10^6) |>
-    ggplot(aes(fertility, y = life_expectancy, col = group, size = population_in_millions)) +
+  p <- filter(global_tech_adoption, year %in% years & !is.na(group) &
+                !is.na(avg_price_per_app_usd) & !is.na(avg_daily_screen_time_hours)) |>
+    mutate(active_users_in_millions = active_user_base/10^6) |>
+    ggplot(aes(avg_price_per_app_usd, y = avg_daily_screen_time_hours, col = group, size = active_users_in_millions)) +
     geom_point(alpha = 0.8) +
     guides(size = "none") +
-    theme(legend.title = element_blank()) + 
-    coord_cartesian(ylim = c(30, 85)) + 
-    labs(title = 'Year: {frame_time}', 
-         x = 'Fertility rate (births per woman)', y = 'Life expectancy') +
+    theme(legend.title = element_blank()) +
+    coord_cartesian(ylim = c(1, 10)) +
+    labs(title = 'Year: {frame_time}',
+         x = 'Average price per app (USD)', y = 'Average daily screen time (hours)') +
     transition_time(year) +
     ease_aes('linear')
-  
+
   animate(p, end_pause = 15)
 } else{
   years <- c(1962, 2013)
-  p <- filter(gapminder, year %in% years & !is.na(group) & 
-                !is.na(fertility) & !is.na(life_expectancy)) |>
-    mutate(population_in_millions = population/10^6) |>
-    ggplot(aes(fertility, y = life_expectancy, col = group, size = population_in_millions)) +
+  p <- filter(global_tech_adoption, year %in% years & !is.na(group) &
+                !is.na(avg_price_per_app_usd) & !is.na(avg_daily_screen_time_hours)) |>
+    mutate(active_users_in_millions = active_user_base/10^6) |>
+    ggplot(aes(avg_price_per_app_usd, y = avg_daily_screen_time_hours, col = group, size = active_users_in_millions)) +
     geom_point(alpha = 0.8) +
     guides(size = "none") +
-    theme(plot.title = element_blank(), legend.title = element_blank()) + 
-    coord_cartesian(ylim = c(30, 85)) + 
-    xlab("Fertility rate (births per woman)") +
-    ylab("Life Expectancy") + 
-    geom_text(aes(x = 7, y = 82, label = year), cex = 12, color = "grey") +
+    theme(plot.title = element_blank(), legend.title = element_blank()) +
+    coord_cartesian(ylim = c(1, 10)) +
+    xlab("Average price per app (USD)") +
+    ylab("Average daily screen time (hours)") +
+    geom_text(aes(x = 7, y = 9.5, label = year), cex = 12, color = "grey") +
     facet_grid(. ~ year)
-  
+
   p + theme(strip.background = element_blank(),
             strip.text.x = element_blank(),
             strip.text.y = element_blank(),
@@ -167,7 +157,7 @@ if (knitr::is_html_output()) {
 
 It is also important to note that mistakes, biases, systematic errors and other unexpected problems often lead to data that should be handled with care. Failure to discover these problems can give rise to flawed analyses and false discoveries. As an example, consider that measurement devices sometimes fail and that most data analysis procedures are not designed to detect these. Yet these data analysis procedures will still give you an answer. The fact that it can be difficult or impossible to notice an error just from the reported results makes data visualization particularly important.
 
-In this part of the book, we will learn the basics of data visualization and exploratory data analysis by using three motivating examples. We will use the **ggplot2** package to code. To learn the very basics, we will start with a somewhat artificial example: heights reported by students. Then we will focus on two cases studies: 1) world health and economics and 2) infectious disease trends in the United States. Note that we do not cover interactive graphics. For those interested in creating interactive plots we highly recommend learning to use the __plotly__ package or Shiny[^shiny], both build on top of R. For more advanced challenges consider learning to program in D3.js[^d3].
+In this part of the book, we will learn the basics of data visualization and exploratory data analysis by using three motivating examples. We will use the **ggplot2** package to code. To learn the very basics, we will start with a somewhat artificial example: heights reported by students. Then we will focus on two case studies: 1) world health and economics and 2) infectious disease trends in the United States. Note that we do not cover interactive graphics. For those interested in creating interactive plots we highly recommend learning to use the __plotly__ package or Shiny[^shiny], both build on top of R. For more advanced challenges consider learning to program in D3.js[^d3].
 
 [^shiny]: <https://shiny.rstudio.com/>
 [^d3]: <https://d3js.org/>

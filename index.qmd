@@ -1,10 +1,38 @@
 # Preface {.unnumbered}
 
-This is the website for the **Data Wrangling and Visualization with R** part of **Introduction to Data Science**.
+::: {.callout-note}
+## About this adaptation
+This book is an adaptation of Rafael A. Irizarry's *Introduction to Data Science* (<https://rafalab.github.io/dsbook-part-1/>), created by Giorgio Arcara for the *Behavioural Data Science* course (PS0000002, University of Padua). Substantive changes — replaced datasets and case studies, new chapters, retitling — are documented in [CHANGELOG.md](https://github.com/intro-to-behds/behdsbook-part-1/blob/main/CHANGELOG.md).
 
-The website for the **Statistics and Prediction Algorithms Through Case Studies** part is [here](http://rafalab.dfci.harvard.edu/dsbook-part-2/)[^index-1].
+This work remains licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0), consistent with the original.
+:::
 
-[^index-1]: <http://rafalab.dfci.harvard.edu/dsbook-part-2/>
+This is the website for the **Data Wrangling and Visualization with R** part of **Introduction to Behavioural Data Science**, an adaptation of **Introduction to Data Science**.
+
+This behavioural-science adaptation, *Introduction to Behavioural Data Science*, was created by Giorgio Arcara for the *Behavioural Data Science* course (PS0000002, University of Padua).
+
+The Quarto files used to generate this adaptation are available on [GitHub](https://github.com/intro-to-behds/behdsbook-part-1)[^index-8].
+
+[^index-8]: <https://github.com/intro-to-behds/behdsbook-part-1>
+
+The website for the original book are the following:
+
+- Part 1 **Data Wrangling and Visualization with R** part is [here](http://rafalab.dfci.harvard.edu/dsbook-part-1/)[^index-1].
+- Part 2 **Statistics and Prediction Algorithms Through Case Studies** part is [here](http://rafalab.dfci.harvard.edu/dsbook-part-2/)[^index-2].
+
+[^index-1]: <http://rafalab.dfci.harvard.edu/dsbook-part-1/>
+[^index-2]: <http://rafalab.dfci.harvard.edu/dsbook-part-2/>
+
+
+# Disclaimers
+
+In this version of the book, all examples and datasets are adaptations of the datasets in the original book, re-themed to fit a behavioural-science context. The numerical values derive from real datasets, but their behavioural framing is fictional: **these should not be interpreted or cited as genuine behavioural data**.
+
+The English translation and adaptation were produced with the assistance of _Claude Code (Sonnet 4.6)_. The model was used for programming and language revision only; it did not generate new content or ideas.
+
+# Preface to the Original Edition {.unnumbered}
+
+*The following is Rafael A. Irizarry's preface to the original* Introduction to Data Science*, unchanged except where noted.*
 
 We make announcements related to the book on Twitter. For updates follow [\@rafalab](https://twitter.com/rafalab)[^index-2].
 
@@ -18,7 +46,7 @@ This book started out as the class notes used in the HarvardX [Data Science Seri
 
 <!-- A free PDF of the October 24, 2019 version of the book is available from [Leanpub](https://leanpub.com/datasciencebook)^[https://leanpub.com/datasciencebook].-->
 
-The Quarto files used to generate the book is available on [GitHub](https://github.com/rafalab/dsbook-part-1)[^index-4]. Note that, the graphical theme used for plots throughout the book can be recreated using the `ds_theme_set()` function from **dslabs** package.
+The Quarto files used to generate the original book is available on [GitHub](https://github.com/rafalab/dsbook-part-1)[^index-4]. Note that, the graphical theme used for plots throughout the book can be recreated using the `ds_theme_set()` function from **dslabs** package.
 
 [^index-4]: <https://github.com/rafalab/dsbook-part-1>
 
@@ -35,7 +63,9 @@ A free PDF of the October 24, 2019 version of the book is available from [Leanpu
 [^index-7]: <https://leanpub.com/datasciencebook>
 
 
-# Acknowledgments {.unnumbered}
+# Acknowledgments to the Original Edition {.unnumbered}
+
+*The following are Rafael A. Irizarry's original acknowledgments, unchanged.*
 
 This book is dedicated to all the people involved in building and maintaining R and the R packages we use in this book. A special thanks to the developers and maintainers of base R, the tidyverse, data.table, and the caret package.
 
@@ -43,7 +73,7 @@ A special thanks to Jenna Landy for her careful editing and helpful advice on th
 
 This book was conceived during the teaching of several applied statistics courses, starting over fifteen years ago. The teaching assistants working with me throughout the years made important indirect contributions to this book. The material was further refined during a HarvardX series coordinated by Heather Sternshein and Zofia Gajdos. We thank them for their contributions. We are also grateful to all the students whose questions and comments helped us improve the book. The courses were partially funded by NIH grant R25GM114818. We are very grateful to the National Institutes of Health for its support.
 
-A special thanks goes to all those who edited the book via GitHub pull requests or made suggestions by creating an *issue* or sending an email: `nickyfoto` (Huang Qiang), `desautm` (Marc-André Désautels), `michaschwab` (Michail Schwab), `alvarolarreategui` (Alvaro Larreategui), `jakevc` (Jake VanCampen), `omerta` (Guillermo Lengemann), `espinielli` (Enrico Spinielli), `asimumba`(Aaron Simumba), `braunschweig` (Maldewar), `gwierzchowski` (Grzegorz Wierzchowski), `technocrat` (Richard Careaga), `atzakas`, `defeit` (David Emerson Feit), `shiraamitchell` (Shira Mitchell), `Nathalie-S`, `andreashandel` (Andreas Handel), `berkowitze` (Elias Berkowitz), `Dean-Webb` (Dean Webber), `mohayusuf`, `jimrothstein`, `mPloenzke` (Matthew Ploenzke), `NicholasDowand` (Nicholas Dow), `kant` (Darío Hereñú), `debbieyuster` (Debbie Yuster), `tuanchauict` (Tuan Chau), `phzeller`, `BTJ01` (BradJ), `glsnow` (Greg Snow), `mberlanda` (Mauro Berlanda), `wfan9`, `larswestvang` (Lars Westvang), `jj999` (Jan Andrejkovic), `Kriegslustig` (Luca Nils Schmid), `odahhani`, `aidanhorn` (Aidan Horn), `atraxler` (Adrienne Traxler), `alvegorova`,`wycheong` (Won Young Cheong), `med-hat` (Medhat Khalil), `kengustafson`, `Yowza63`, `ryan-heslin` (Ryan Heslin), `raffaem`, `tim8west`, `jooleer`, `pauluhn` (Paul), `tci1`, `beanb2` (Brennan Bean), `edasdemirlab` (Erdi Dasdemir), `jimnicholls` (Jim Nicholls), 
-`JimKay1941` (Jim Kay), 
+A special thanks goes to all those who edited the book via GitHub pull requests or made suggestions by creating an *issue* or sending an email: `nickyfoto` (Huang Qiang), `desautm` (Marc-André Désautels), `michaschwab` (Michail Schwab), `alvarolarreategui` (Alvaro Larreategui), `jakevc` (Jake VanCampen), `omerta` (Guillermo Lengemann), `espinielli` (Enrico Spinielli), `asimumba`(Aaron Simumba), `braunschweig` (Maldewar), `gwierzchowski` (Grzegorz Wierzchowski), `technocrat` (Richard Careaga), `atzakas`, `defeit` (David Emerson Feit), `shiraamitchell` (Shira Mitchell), `Nathalie-S`, `andreashandel` (Andreas Handel), `berkowitze` (Elias Berkowitz), `Dean-Webb` (Dean Webber), `mohayusuf`, `jimrothstein`, `mPloenzke` (Matthew Ploenzke), `NicholasDowand` (Nicholas Dow), `kant` (Darío Hereñú), `debbieyuster` (Debbie Yuster), `tuanchauict` (Tuan Chau), `phzeller`, `BTJ01` (BradJ), `glsnow` (Greg Snow), `mberlanda` (Mauro Berlanda), `wfan9`, `larswestvang` (Lars Westvang), `jj999` (Jan Andrejkovic), `Kriegslustig` (Luca Nils Schmid), `odahhani`, `aidanhorn` (Aidan Horn), `atraxler` (Adrienne Traxler), `alvegorova`,`wycheong` (Won Young Cheong), `med-hat` (Medhat Khalil), `kengustafson`, `Yowza63`, `ryan-heslin` (Ryan Heslin), `raffaem`, `tim8west`, `jooleer`, `pauluhn` (Paul), `tci1`, `beanb2` (Brennan Bean), `edasdemirlab` (Erdi Dasdemir), `jimnicholls` (Jim Nicholls),
+`JimKay1941` (Jim Kay),
 `devpowerplatform` (QuantScripter), `carvalhais` (André Carvalhais), `hbmaclean`, `GENHEN`, `whatchalookingat`, `readyready15728`,
 David D. Kane, El Mustapha El Abbassi, Vadim Zipunnikov, Anna Quaglieri, Chris Dong, Bowen Gu, Rick Schoenberg, and Robert Gentleman.

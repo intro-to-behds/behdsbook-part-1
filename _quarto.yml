@@ -4,25 +4,27 @@ project:
 
 execute:
   cache: true
+  freeze: auto
 
 book:
-  title: Introduction to Data Science
+  title: Introduction to Behavioural Data Science
   subtitle: Data Wrangling and Visualization with R
   reader-mode: true
   page-footer:
     left: |
-      Introduction to Data Science was written by Rafael A. Irizarry
+      Introduction to Behavioural Data Science, adapted from Rafael A. Irizarry's <a href="https://rafalab.dfci.harvard.edu/dsbook/">Introduction to Data Science</a>
     right: |
       This book was built with <a href=https://quarto.org/>Quarto</a>.
   cover-image: cover.png
   favicon: cover.png
-  site-url: http://rafalab.dfci.harvard.edu/dsbook-part-1
-  repo-url: https://github.com/rafalab/dsbook-part-1
+  site-url: https://intro-to-behds.github.io/behdsbook-part-1/
+  repo-url: https://github.com/intro-to-behds/behdsbook-part-1
   repo-branch: main
   repo-actions: [source, issue]
+  downloads: [pdf]
   sidebar:
     collapse-level: 1
-  
+
   chapters:
     - index.qmd
 
@@ -71,7 +73,7 @@ format:
       - cosmo
       - r4ds.scss
     code-link: true
-    author-meta: Rafael A. Irizarry
+    author-meta: "Rafael A. Irizarry (original); adapted by Giorgio Arcara for Behavioural Data Science"
     callout-appearance: simple
   pdf: 
     documentclass: krantz
