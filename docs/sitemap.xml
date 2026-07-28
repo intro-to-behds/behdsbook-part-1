@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/index.html</loc>
-    <lastmod>2026-07-27T13:48:58.920Z</lastmod>
+    <lastmod>2026-07-28T08:55:28.396Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/intro.html</loc>
@@ -38,11 +38,11 @@
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/dataviz/intro-dataviz.html</loc>
-    <lastmod>2026-07-27T18:04:02.813Z</lastmod>
+    <lastmod>2026-07-28T06:55:58.823Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/dataviz/distributions.html</loc>
-    <lastmod>2026-07-11T14:56:40.601Z</lastmod>
+    <lastmod>2026-07-28T09:02:40.990Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/dataviz/ggplot2.html</loc>
@@ -106,6 +106,6 @@
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/Introduction-to-Behavioural-Data-Science.pdf</loc>
-    <lastmod>2026-07-27T21:09:43.078Z</lastmod>
+    <lastmod>2026-07-28T07:36:07.899Z</lastmod>
   </url>
 </urlset>

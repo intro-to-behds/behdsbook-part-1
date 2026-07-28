@@ -4,47 +4,47 @@ Summarizing complex datasets is crucial in data analysis, allowing us to share i
 
 Our first data visualization building block is learning to summarize lists of numbers or categories. More often than not, the best way to share or explore these summaries is through data visualization. The most basic statistical summary of a list of objects or numbers is its distribution. Once a data has been summarized as a distribution, there are several data visualization techniques to effectively relay this information. For this reason, it is important to have a deep understand of the concept of a distribution.
 
-In this chapter, we discuss properties of a variety of distributions and how to visualize distributions using a motivating example of student heights. 
+In this chapter, we discuss properties of a variety of distributions and how to visualize distributions using a motivating example of participant reaction times.
 
 ## Variable types
 
-The two main variables types are *categorical* and *numeric*. Each can be divided into two other groups: categorical can be ordinal or not, whereas numerical variables can be discrete or continuous. When entry in a dataset represent a group rather than a number w we refer to the data as *categorical data*. Two simple examples are sex (male or female) and US regions (Northeast, South, North Central, West). Some categorical data can be ordered even if they are not numbers per se, such as spiciness (mild, medium, hot). In statistics, ordered categorical data are referred to as *ordinal* data. Examples of numerical data are population sizes, murder rates, and heights. We can further divide numerical data into continuous and discrete. Continuous variables are those that can take any value, such as heights, if measured with enough precision. For example, a pair of twins may be 68.12 and 68.11 inches, respectively. Counts, such as population sizes, are discrete because they have to be round numbers.
+The two main variables types are *categorical* and *numeric*. Each can be divided into two other groups: categorical can be ordinal or not, whereas numerical variables can be discrete or continuous. When entry in a dataset represent a group rather than a number w we refer to the data as *categorical data*. Two simple examples are sex (male or female) and US regions (Northeast, South, North Central, West). Some categorical data can be ordered even if they are not numbers per se, such as spiciness (mild, medium, hot). In statistics, ordered categorical data are referred to as *ordinal* data. Examples of numerical data are active-user counts, data-breach incident rates, and reaction times. We can further divide numerical data into continuous and discrete. Continuous variables are those that can take any value, such as reaction times, if measured with enough precision. For example, two participants completing the same trial may respond in 342.12 and 342.11 milliseconds, respectively. Counts, such as active-user counts, are discrete because they have to be round numbers.
 
 Keep in mind that discrete numeric data can be considered ordinal. Although this is technically true, we usually reserve the term ordinal data for variables belonging to a small number of different groups, with each group having many members. In contrast, when we have many groups with few cases in each group, we typically refer to them as discrete numerical variables. So, for example, the number of packs of cigarettes a person smokes a day, rounded to the closest pack, would be considered ordinal, while the actual number of cigarettes would be considered a numerical variable. But, indeed, there are examples that can be considered both numerical and ordinal when it comes to visualizing data.
 
 Here we focus on numeric variables because visualizing this data type is substantially more complex. However, we start by describing data visualization and summarization approaches for categorical data.
 
-## Case study: describing student heights
+## Case study: describing reaction times
 
 We introduce a new motivating problem. It is an artificial one, but it will help us illustrate the concepts needed to understand distributions.
 
-Pretend that we have to describe the heights of our classmates to ET, an extraterrestrial that has never seen humans. As a first step, we need to collect data. To do this, we ask students to report their heights in inches. We ask them to provide sex information because we know there are two different height distributions by sex. We collect the data and save it in the `heights` data frame:
+Pretend that we have to describe the reaction times of our study participants to ET, an extraterrestrial that has never run a psychology experiment. As a first step, we need to collect data. To do this, we ask participants to complete a simple reaction-time task and record their response time in milliseconds. We ask them to provide sex information because we know there are two different reaction-time distributions by sex. We collect the data and save it in the `reaction_times` data frame:
 
-```{r load-heights, warning=FALSE, message=FALSE, cache=FALSE}
+```{r load-reaction-times, warning=FALSE, message=FALSE, cache=FALSE}
 library(tidyverse)
-library(dslabs)
-head(heights)
+library(behdslabs)
+head(reaction_times)
 ```
 
-One way to convey the heights to ET is to simply send him this list of `r prettyNum(nrow(heights), big.mark=",")` heights. But there are much more effective ways to convey this information, and understanding the concept of a distribution will be key. To simplify the explanation, we first focus on male heights. We examine the female height data in @sec-student-height-cont.
+One way to convey the reaction times to ET is to simply send them this list of `r prettyNum(nrow(reaction_times), big.mark=",")` reaction times. But there are much more effective ways to convey this information, and understanding the concept of a distribution will be key. To simplify the explanation, we first focus on male reaction times. We examine the female reaction-time data in @sec-student-height-cont.
 
 ## Distributions
 
-The most basic statistical summary of a list of objects or numbers is its *distribution*. The simplest way to think of a distribution is as a compact description of a list with many entries. This concept should not be new for readers of this book. For example, with categorical data, the distribution simply describes the proportion of each unique category. The sex represented in the heights dataset is:
+The most basic statistical summary of a list of objects or numbers is its *distribution*. The simplest way to think of a distribution is as a compact description of a list with many entries. This concept should not be new for readers of this book. For example, with categorical data, the distribution simply describes the proportion of each unique category. The sex represented in the `reaction_times` dataset is:
 
 ```{r echo = FALSE}
-prop.table(table(heights$sex))
+prop.table(table(reaction_times$sex))
 ```
 
-This two-category *frequency table* is the simplest form of a distribution. We don't really need to visualize it since one number describes everything we need to know: `r round(mean(heights$sex=="Female")*100)`% are females and the rest are males. When there are more categories, then a simple barplot describes the distribution. Here is an example with US state regions:
+This two-category *frequency table* is the simplest form of a distribution. We don't really need to visualize it since one number describes everything we need to know: `r round(mean(reaction_times$sex=="Female")*100)`% are females and the rest are males. When there are more categories, then a simple barplot describes the distribution. Here is an example with US state regions:
 
 ```{r state-region-distribution, echo=FALSE}
-murders |> group_by(region) |>
+app_data_breaches |> group_by(region) |>
   summarize(n = n()) |>
-  mutate(Proportion = n/sum(n), 
+  mutate(Proportion = n/sum(n),
          region = reorder(region, Proportion)) |>
-  ggplot(aes(x=region, y=Proportion, fill=region)) + 
-  geom_bar(stat = "identity", show.legend = FALSE) + 
+  ggplot(aes(x=region, y=Proportion, fill=region)) +
+  geom_bar(stat = "identity", show.legend = FALSE) +
   xlab("")
 ```
 
@@ -52,57 +52,57 @@ This particular plot simply shows us four numbers, one for each category. We usu
 
 ### Histograms
 
-Numerical data that are not categorical also have distributions. However, in general, when data is not categorical, reporting the frequency of each entry, as we did for categorical data, is not an effective summary since most entries are unique. For example, in our case study, while several students reported a height of 68 inches, only one student reported a height of `68.503937007874` inches and only one student reported a height `68.8976377952756` inches. We assume that they converted from 174 and 175 centimeters, respectively.
+Numerical data that are not categorical also have distributions. However, in general, when data is not categorical, reporting the frequency of each entry, as we did for categorical data, is not an effective summary since most entries are unique. For example, in our case study, while several participants recorded a reaction time close to 374 milliseconds, only one participant recorded a reaction time of `283.1325` milliseconds and only one recorded a reaction time of `435.0265` milliseconds. This level of precision is typical of computer-timed reaction-time tasks, which log responses to a fraction of a millisecond.
 
-Statistics textbooks teach us that a more useful way to define a distribution for numeric data is to define a function that reports the proportion of the data below $a$ for all possible values of $a$. This function is called the empirical cumulative distribution function (eCDF), it can be plotted, and it provides a full description of the distribution of our data. Here is the eCDF for male student heights:
+Statistics textbooks teach us that a more useful way to define a distribution for numeric data is to define a function that reports the proportion of the data below $a$ for all possible values of $a$. This function is called the empirical cumulative distribution function (eCDF), it can be plotted, and it provides a full description of the distribution of our data. Here is the eCDF for male reaction times:
 
 ```{r ecdf, echo=FALSE}
 ds_theme_set()
-heights |> filter(sex=="Male") |> 
-  ggplot(aes(height)) + 
+reaction_times |> filter(sex=="Male") |>
+  ggplot(aes(rt_ms)) +
   stat_ecdf() +
-  ylab("Proportion of heights less than or equal to a") + 
+  ylab("Proportion of reaction times less than or equal to a") +
   xlab("a")
 ```
 
 However, summarizing data by plotting the eCDF is actually not very popular in practice. The main reason is that it does not easily convey characteristics of interest such as: at what value is the distribution centered? Is the distribution symmetric? What ranges contain 95% of the values?
 
-*Histograms* are much preferred because they greatly facilitate answering such questions. Histograms sacrifice just a bit of information to produce plots that are much easier to interpret. The simplest way to make a histogram is to divide the span of our data into non-overlapping bins of the same size. Then, for each bin, we count the number of values that fall in that interval. The histogram plots these counts as bars with the base of the bar defined by the intervals. Here is the histogram for the height data splitting the range of values into one inch intervals: $(49.5, 50.5]$, $(50.5, 51.5]$, $(51.5,52.5]$, $(52.5,53.5]$, $...$, $(82.5,83.5]$.
+*Histograms* are much preferred because they greatly facilitate answering such questions. Histograms sacrifice just a bit of information to produce plots that are much easier to interpret. The simplest way to make a histogram is to divide the span of our data into non-overlapping bins of the same size. Then, for each bin, we count the number of values that fall in that interval. The histogram plots these counts as bars with the base of the bar defined by the intervals. Here is the histogram for the reaction-time data splitting the range of values into ten-millisecond intervals: $(195, 205]$, $(205, 215]$, $(215,225]$, $(225,235]$, $...$, $(495,505]$.
 
-```{r height-histogram, echo=FALSE}
-heights |> 
-  filter(sex=="Male") |> 
-  ggplot(aes(height)) + 
-  geom_histogram(binwidth = 1, color = "black")
+```{r rt-histogram, echo=FALSE}
+reaction_times |>
+  filter(sex=="Male") |>
+  ggplot(aes(rt_ms)) +
+  geom_histogram(binwidth = 10, color = "black")
 ```
 
 As you can see in the figure above, a histogram is similar to a barplot, but it differs in that the x-axis is numerical, not categorical.
 
-If we send this plot to ET, he will immediately learn some important properties about our data. First, the range of the data is from 50 to 84 with the majority (more than 95%) between 63 and 75 inches. Second, the heights are close to symmetric around 69 inches. Also, by adding up counts, ET could obtain a very good approximation of the proportion of the data in any interval. Therefore, the histogram above is not only easy to interpret, but also provides almost all the information contained in the raw list of `r sum(heights$sex=="Male")` male heights with about 30 bins.
+If we send this plot to ET, they will immediately learn some important properties about our data. First, the range of the data is from 200 to 500 with the majority (more than 95%) between 305 and 439 milliseconds. Second, the reaction times are close to symmetric around 377 milliseconds. Also, by adding up counts, ET could obtain a very good approximation of the proportion of the data in any interval. Therefore, the histogram above is not only easy to interpret, but also provides almost all the information contained in the raw list of `r sum(reaction_times$sex=="Male")` male reaction times with about 30 bins.
 
-What information do we lose? Note that all values in each interval are treated the same when computing bin heights. So, for example, the histogram does not distinguish between 64, 64.1, and 64.2 inches. Given that these differences are almost unnoticeable to the eye, the practical implications are negligible and we were able to summarize the data to just 23 numbers.
+What information do we lose? Note that all values in each interval are treated the same when computing bin heights. So, for example, the histogram does not distinguish between 340, 340.1, and 340.2 milliseconds. Given that these differences are almost unnoticeable to the eye, the practical implications are negligible and we were able to summarize the data to just 26 numbers.
 
 We discuss how to code histograms in @sec-other-geometries.
 
 ### Smoothed density
 
-*Smooth density* plots relay the same information as a histogram but are aesthetically more appealing. Here is what a smooth density plot looks like for our male heights data:
+*Smooth density* plots relay the same information as a histogram but are aesthetically more appealing. Here is what a smooth density plot looks like for our male reaction-time data:
 
 ```{r example-of-smoothed-density, echo=FALSE}
-heights |> 
-  filter(sex=="Male") |> 
-  ggplot(aes(height)) + 
+reaction_times |>
+  filter(sex=="Male") |>
+  ggplot(aes(rt_ms)) +
   geom_density(alpha = .2, fill= "#00BFC4", color = 0)  +
   geom_line(stat='density')
 ```
 
 In this plot, we no longer have sharp edges at the interval boundaries and many of the local peaks have been removed. Also, the scale of the y-axis changed from counts to *density*. To fully understand smooth densities, we have to understand *estimates*, a topic covered in statistics our advanced data science textbooks. Here we simply describe them as making the histograms prettier by drawing a curve that goes through the top of the histogram bars and then removing the bars. The values shown y-axis are chosen so that the area under the curve adds up to 1. This implies that for any interval, the area under the curve for that interval gives us an approximation of how what proportion of the data is in the interval.
 
-An advantage of smooth densities over histograms for visualization purposes is that densities make it easier to compare two distributions. This is in large part because the jagged edges of the histogram add clutter. Here is an example comparing male and female heights:
+An advantage of smooth densities over histograms for visualization purposes is that densities make it easier to compare two distributions. This is in large part because the jagged edges of the histogram add clutter. Here is an example comparing male and female reaction times:
 
 ```{r two-densities-one-plot, echo=FALSE}
-heights |> 
-  ggplot(aes(height, fill=sex)) + 
+reaction_times |>
+  ggplot(aes(rt_ms, fill=sex)) +
   geom_density(alpha = 0.2, color = 0) +
   geom_line(stat='density')
 ```
@@ -121,13 +121,13 @@ norm_dist <- data.frame(x=seq(-4,4,len=50)*s + m) |> mutate(density=dnorm(x, m, 
 norm_dist |> ggplot(aes(x,density)) + geom_line()
 ```
 
-The normal distribution is one of the most famous mathematical concepts in history. A reason for this is that the distribution of many datasets can be approximated with normal distributions. These include gambling winnings, heights, weights, blood pressure, standardized test scores, and experimental measurement errors. Statistical textbooks offer explanations for why this is the case. But how can the same distribution approximate datasets with completely different ranges for values, for example heights and weights? A second important characteristic of the normal distribution is that it can be adapted to different datasets by just adjusting two numbers, referred to as the *average* or *mean* and the *standard deviation* (SD). The normal distribution is symmetric, centered at what we refer to as the average, and most values (about 95%) are within 2 SDs from the average. The plot above shows a normal distribution with average 0 and SD 1, often referred to as a *standard normal*. Note that the fact that only two numbers are needed to adapt the normal distribution to a dataset implies that if our data distribution is approximated by a normal distribution, all the information needed to describe the distribution can be encoded by just two numbers. We now define these values for an arbitrary list of numbers.
+The normal distribution is one of the most famous mathematical concepts in history. A reason for this is that the distribution of many datasets can be approximated with normal distributions. These include gambling winnings, reaction times, weights, blood pressure, standardized test scores, and experimental measurement errors. Statistical textbooks offer explanations for why this is the case. But how can the same distribution approximate datasets with completely different ranges for values, for example reaction times and weights? A second important characteristic of the normal distribution is that it can be adapted to different datasets by just adjusting two numbers, referred to as the *average* or *mean* and the *standard deviation* (SD). The normal distribution is symmetric, centered at what we refer to as the average, and most values (about 95%) are within 2 SDs from the average. The plot above shows a normal distribution with average 0 and SD 1, often referred to as a *standard normal*. Note that the fact that only two numbers are needed to adapt the normal distribution to a dataset implies that if our data distribution is approximated by a normal distribution, all the information needed to describe the distribution can be encoded by just two numbers. We now define these values for an arbitrary list of numbers.
 
 Once we are convinced that our data, say it is stored in the vector `x`, has a distribution that is *approximately normal*, we can find the specific one that matches our data by matching the average and SD of the data to the average and SD of the normal distribution, respectively. For a list of numbers contained in a vector `x`:
 
 ```{r}
-index <- heights$sex == "Male"
-x <- heights$height[index]
+index <- reaction_times$sex == "Male"
+x <- reaction_times$rt_ms[index]
 ```
 
 the average is defined as
@@ -152,15 +152,15 @@ s <- sd(x)
 c(average = m, sd = s)
 ```
 
-Here is a plot of our student height smooth density in blue and the normal distribution with mean = `r round(m,1)` and SD = `r round(s,1)` plotted as a black line:
+Here is a plot of our reaction-time smooth density in blue and the normal distribution with mean = `r round(m,1)` and SD = `r round(s,1)` plotted as a black line:
 
 ```{r data-and-normal-densities, echo=FALSE}
-norm_dist <- data.frame(x = seq(-4, 4, len = 50)*s + m) |> 
+norm_dist <- data.frame(x = seq(-4, 4, len = 50)*s + m) |>
   mutate(density = dnorm(x, m, s))
 
-heights |> filter(sex == "Male") |> ggplot(aes(height)) +
+reaction_times |> filter(sex == "Male") |> ggplot(aes(rt_ms)) +
   geom_density(fill = "#0099FF") +
-  geom_line(aes(x, density),  data = norm_dist, lwd = 1.5) 
+  geom_line(aes(x, density),  data = norm_dist, lwd = 1.5)
 ```
 
 ## Boxplots {#sec-boxplots}
@@ -169,11 +169,11 @@ To understand boxplots we need to define some terms that are commonly used in ex
 
 The *percentiles* are the values for which $p = 0.01, 0.02, ..., 0.99$ of the data are less then or equal to that value, respectively. We call, for example, the case of $p=0.10$ the 10th percentile, which gives us a number for which 10% of the data is below. The most famous percentile is the 50th, also known as the *median*. Another special case that receives a name are the *quartiles*, which are obtained when setting $p=0.25,0.50$, and $0.75$, which are used by the boxplot.
 
-To motivate boxplots we will go back to the US murder data. Suppose we want to summarize the murder rate distribution. Using the data visualization technique we have learned, we can quickly see that the normal approximation does not apply here:
+To motivate boxplots we will go back to the data-breach incident data. Suppose we want to summarize the breach-rate distribution. Using the data visualization technique we have learned, we can quickly see that the normal approximation does not apply here:
 
 ```{r hist-non-normal-data, echo=FALSE}
-murders <- murders |> mutate(rate = total/population*100000)
-murders |> ggplot(aes(x = rate)) + geom_histogram(binwidth = 0.5, color = "black") + ggtitle("Histogram")
+app_data_breaches <- app_data_breaches |> mutate(rate = incidents/population*100000)
+app_data_breaches |> ggplot(aes(x = rate)) + geom_histogram(binwidth = 0.5, color = "black") + ggtitle("Histogram")
 ```
 
 In this case, the histogram above or a smooth density plot would serve as a relatively succinct summary.
@@ -183,63 +183,63 @@ Now suppose those used to receiving just two numbers as summaries ask us for a m
 The *boxplot* provides a five-number summary composed of the range (the minimum and maximum) along with the *quartiles* (the 25th, 50th, and 75th percentiles). The R implementation of boxplots ignore *outliers* when computing the range and instead plot these as independent points. The help file provides a specific definition of outliers. The boxplot shows these numbers as a "box" with "whiskers"
 
 ```{r first-boxplot, echo=FALSE}
-murders |> ggplot(aes("", rate)) + geom_boxplot() +
+app_data_breaches |> ggplot(aes("", rate)) + geom_boxplot() +
   coord_cartesian(xlim = c(0, 2)) + xlab("")
 ```
 
 with the box defined by the 25% and 75% percentile and the whiskers showing the range. The distance between the 25% and 75% percentile is called the *interquartile* range. The two points are outliers according to the R implementation. The median is shown with a horizontal line.
 
-From just this simple plot, we know that the median is about 2.5, that the distribution is not symmetric, and that the range is 0 to 5 for the great majority of states with two exceptions.
+From just this simple plot, we know that the median is about 2.7, that the distribution is not symmetric, and that the range is 0 to 5 for the great majority of states with two exceptions.
 
 We discuss how to make boxplots in @sec-other-geometries.
 
 ## Stratification {#sec-dataviz-stratification}
 
-In data analysis we often divide observations into groups based on the values of one or more variables associated with those observations. For example in the next section we divide the height values into groups based on a sex variable: females and males. We call this procedure *stratification* and refer to the resulting groups as *strata*.
+In data analysis we often divide observations into groups based on the values of one or more variables associated with those observations. For example in the next section we divide the reaction-time values into groups based on a sex variable: females and males. We call this procedure *stratification* and refer to the resulting groups as *strata*.
 
 Stratification is common in data visualization because we are often interested in how the distributions of variables differ across different subgroups. We will see several examples throughout this part of the book, starting with the next section.
 
 ## Case study continued {#sec-student-height-cont}
 
-If we are convinced that the male height data is well approximated with a normal distribution we can report back to ET a very succinct summary: male heights follow a normal distribution with an average of `r round(m, 1)` inches and a SD of `r round(s,1)` inches. With this information, ET will have a good idea of what to expect when he meets our male students. However, to provide a complete picture we need to also provide a summary of the female heights.
+If we are convinced that the male reaction-time data is well approximated with a normal distribution we can report back to ET a very succinct summary: male reaction times follow a normal distribution with an average of `r round(m, 1)` milliseconds and a SD of `r round(s,1)` milliseconds. With this information, ET will have a good idea of what to expect when they test our male participants. However, to provide a complete picture we need to also provide a summary of the female reaction times.
 
-Boxplots are useful when we want to quickly compare two or more distributions. Here are the heights for men and women:
+Boxplots are useful when we want to quickly compare two or more distributions. Here are the reaction times for men and women:
 
 ```{r female-male-boxplots, echo=FALSE}
-heights |> ggplot(aes(x = sex, y = height, fill = sex)) +
+reaction_times |> ggplot(aes(x = sex, y = rt_ms, fill = sex)) +
   geom_boxplot()
 ```
 
-The plot immediately reveals that males are, on average, taller than females. The  interquartile ranges appear to be similar. But does the normal approximation also work for the female height data collected by the survey? We expect that they will follow a normal distribution, just like males. However, exploratory plots reveal that the approximation is not as useful:
+The plot immediately reveals that males are, on average, slower to respond than females. The interquartile ranges appear to be similar. But does the normal approximation also work for the female reaction-time data collected by the study? We expect that they will follow a normal distribution, just like males. However, exploratory plots reveal that the approximation is not as useful:
 
-```{r histogram-qqplot-female-heights, echo=FALSE}
-heights |> filter(sex == "Female") |>
-  ggplot(aes(height)) +
-  geom_density(fill = "#F8766D") 
+```{r histogram-qqplot-female-reaction-times, echo=FALSE}
+reaction_times |> filter(sex == "Female") |>
+  ggplot(aes(rt_ms)) +
+  geom_density(fill = "#F8766D")
 ```
 
-We see something we did not see for the males: the density plot has a second "bump". Also, the highest points tend to be taller than expected by the normal than expected heights for a normal distribution. When reporting back to ET, we might need to provide a histogram rather than just the average and standard deviation for the female heights.
+We see something we did not see for the males: the density plot has a second "bump". When reporting back to ET, we might need to provide a histogram rather than just the average and standard deviation for the female reaction times.
 
-However, go back and read Tukey's quote. We have noticed what we didn't expect to see. If we look at other female height distributions, we do find that they are well approximated with a normal distribution. So why are our female students different? Is our class a requirement for the female basketball team? Are small proportions of females claiming to be taller than they are? Another, perhaps more likely, explanation is that in the form students used to enter their heights, `FEMALE` was the default sex and some males entered their heights, but forgot to change the sex variable. In any case, data visualization has helped discover a potential flaw in our data.
+However, go back and read Tukey's quote. We have noticed what we didn't expect to see. If we look at other female reaction-time distributions, we do find that they are well approximated with a normal distribution. So why are our female participants different? Is our sample partly drawn from a group of competitive gamers with unusually fast reflexes? Are a small proportion of female participants actually male participants who were assigned the wrong sex label? Another, perhaps more likely, explanation is that in the data-entry form participants used, `FEMALE` was the default sex and some male participants completed the task but forgot to change the sex field. In any case, data visualization has helped discover a potential flaw in our data.
 
 Regarding the five smallest values, note that these values are:
 
 ```{r}
-heights |> filter(sex == "Female") |> 
-  slice_min(height, n = 5) |>
-  pull(height)
+reaction_times |> filter(sex == "Female") |>
+  slice_min(rt_ms, n = 5) |>
+  pull(rt_ms)
 ```
 
-Because these are reported heights, a possibility is that the student meant to enter `5'1"`, `5'2"`, `5'3"` or `5'5"`.
+Because genuine visual reaction time rarely drops below about 200 milliseconds, a possibility is that these were anticipatory presses: participants responding before the stimulus appeared, rather than truly reacting to it.
 
 ## Exercises
 
-1\. Define variables containing the heights of males and females like this:
+1\. Define variables containing the reaction times of males and females like this:
 
 ```{r, eval=FALSE}
-library(dslabs)
-male <- heights$height[heights$sex == "Male"]
-female <- heights$height[heights$sex == "Female"]
+library(behdslabs)
+male <- reaction_times$rt_ms[reaction_times$sex == "Male"]
+female <- reaction_times$rt_ms[reaction_times$sex == "Female"]
 ```
 
 How many measurements do we have for each?
@@ -252,25 +252,25 @@ quantile(male, c(0.10, 0.30, 0.50, 0.70, 0.90))
 
 Use this to create a five-element vector `female_percentiles` and a five-element vector `male_percentiles` containing the 10th, 30th, 50th, 70th, and 90th percentiles for each sex. Then create a data frame with these two vectors as columns.
 
-3\. Study the following boxplots showing population sizes by country:
+3\. Study the following boxplots showing active-user-base sizes by country:
 
 ```{r boxplot-exercise, echo=FALSE, message=FALSE}
 library(tidyverse)
-library(dslabs)
+library(behdslabs)
 ds_theme_set()
-tab <- gapminder |> filter(year == 2010) |> group_by(continent) |> select(continent, population)  
-tab |> ggplot(aes(x = continent, y = population/10^6)) + 
-  geom_boxplot() + 
-  scale_y_continuous(trans = "log10", breaks = c(1,10,100,1000)) + ylab("Population in millions")
+tab <- global_tech_adoption |> filter(year == 2010) |> group_by(continent) |> select(continent, active_user_base)
+tab |> ggplot(aes(x = continent, y = active_user_base/10^6)) +
+  geom_boxplot() +
+  scale_y_continuous(trans = "log10", breaks = c(1,10,100,1000)) + ylab("Active user base in millions")
 ```
 
-Which continent has the country with the biggest population size?
+Which continent has the country with the biggest active-user base?
 
-4\. What continent has the largest median population size?
+4\. What continent has the largest median active-user base?
 
-5\. What is median population size for Africa to the nearest million?
+5\. What is the median active-user base for Africa, to the nearest million?
 
-6\. What proportion of countries in Europe have populations below 14 million?
+6\. What proportion of countries in Europe have an active-user base below 14 million?
 
 a.  0.99
 b.  0.75
@@ -279,12 +279,11 @@ d.  0.25
 
 7\. If we use a log transformation, which continent shown above has the largest interquartile range?
 
-8\. Load the height data set and create a vector `x` with just the male heights:
+8\. Load the reaction-time data set and create a vector `x` with just the male reaction times:
 
 ```{r, eval=FALSE}
-library(dslabs)
-x <- heights$height[heights$sex=="Male"]
+library(behdslabs)
+x <- reaction_times$rt_ms[reaction_times$sex=="Male"]
 ```
 
-What proportion of the data is between 69 and 72 inches (taller than 69, but shorter or equal to 72)? Hint: use a logical operator and `mean`.
-
+What proportion of the data is between 375 and 400 milliseconds (more than 375, but no more than 400 milliseconds)? Hint: use a logical operator and `mean`.
