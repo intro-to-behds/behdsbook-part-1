@@ -8,11 +8,11 @@ Throughout the book, we use motivating case studies. In each case study, we try 
 
 | Case Study                                         | Concept               |     |
 |----------------------------|----------------------|----------------------|
-| US murder rates by state                           | R Basics              |     |
-| Student heights                                    | Statistical Summaries |     |
-| Trends in world health and economics               | Data Visualization    |     |
-| The impact of vaccines on infectious disease rates | Data Visualization    |     |
-| Reported student heights                           | Data Wrangling        |     |
+| Data-breach incidents by US state                  | R Basics              |     |
+| Reaction times in an online task                   | Statistical Summaries |     |
+| Trends in global tech adoption                      | Data Visualization    |     |
+| The impact of a free feature bundle on fitness-app downloads | Data Visualization    |     |
+| Self-reported daily screen time (mixed formats)    | Data Wrangling        |     |
 
 ## Who will find this book useful? {.unnumbered}
 
