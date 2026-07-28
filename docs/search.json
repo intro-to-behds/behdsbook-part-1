@@ -34,7 +34,7 @@
     "href": "intro.html#case-studies",
     "title": "Introduction",
     "section": "",
-    "text": "Case Study\nConcept\n\n\n\n\n\nUS murder rates by state\nR Basics\n\n\n\nStudent heights\nStatistical Summaries\n\n\n\nTrends in world health and economics\nData Visualization\n\n\n\nThe impact of vaccines on infectious disease rates\nData Visualization\n\n\n\nReported student heights\nData Wrangling",
+    "text": "Case Study\nConcept\n\n\n\n\n\nData-breach incidents by US state\nR Basics\n\n\n\nReaction times in an online task\nStatistical Summaries\n\n\n\nTrends in global tech adoption\nData Visualization\n\n\n\nThe impact of a free feature bundle on fitness-app downloads\nData Visualization\n\n\n\nSelf-reported daily screen time (mixed formats)\nData Wrangling",
     "crumbs": [
       "Introduction"
     ]
@@ -55,6 +55,16 @@
     "title": "Introduction",
     "section": "What does this book cover?",
     "text": "What does this book cover?\nWe start by going over the basics of R, the tidyverse, and the data.table package. You learn R throughout the book, but in the first part we go over the building blocks needed to keep learning.\nThe growing availability of informative datasets and software tools has led to increased reliance on data visualizations in many fields. In the second part we demonstrate how to use ggplot2 to generate graphs and describe important data visualization principles.\nThe third part uses several examples to familiarize the reader with data wrangling. Among the specific skills we learn are web scraping, using regular expressions, and joining and reshaping data tables. We do this using tidyverse tools.\nIn the final part, we provide a brief introduction to the productivity tools we use on a day-to-day basis in data science projects. These are RStudio, UNIX/Linux shell, Git and GitHub, Quarto, and knitr.",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "intro.html#learning-data-science-in-the-era-of-ai",
+    "href": "intro.html#learning-data-science-in-the-era-of-ai",
+    "title": "Introduction",
+    "section": "Learning data science in the era of AI",
+    "text": "Learning data science in the era of AI\nby Giorgio Arcara\nOne could think: “why should I learn data science in the era of AI?” This is a perfectly sound question.\nThanks to Large Language Models (LLMs, such as ChatGPT, Gemini, Claude, etc.) it is becoming increasingly simpler to code (that is, to use programming languages for any aim), and this is also true for data science.\nAnyone can literally upload a dataset to an LLM and ask: “please run some detailed analysis and return some plots starting from this dataset.”\nIs learning data science becoming obsolete? The short answer is: no. I will give you some intuitions on the reasons here, but this will be covered in ?sec-ai-responsible-coding.\n\nLLMs make basic coding easier, and precisely for this reason they raise the bar for what counts as competent analysis.\nLLMs need guidance, and need the problem/question to be framed correctly.\nThe more complex the problem, the more LLMs need guidance and risk derailing from the correct path.\n\nMy position is that LLMs are invaluable resources for better coding (see also the Better Code, Better Science book by R. A. Poldrack), but they are not a substitute.\nThe point is not whether or not to use LLMs for coding, and thus to do data science. The point is that someone who guides an LLM with real data science knowledge produces far more trustworthy and accurate analyses than someone who simply prompts it blindly.",
     "crumbs": [
       "Introduction"
     ]
@@ -704,11 +714,11 @@
     ]
   },
   {
-    "objectID": "dataviz/distributions.html#case-study-describing-student-heights",
-    "href": "dataviz/distributions.html#case-study-describing-student-heights",
+    "objectID": "dataviz/distributions.html#case-study-describing-reaction-times",
+    "href": "dataviz/distributions.html#case-study-describing-reaction-times",
     "title": "7  Visualizing data distributions",
-    "section": "7.2 Case study: describing student heights",
-    "text": "7.2 Case study: describing student heights\nWe introduce a new motivating problem. It is an artificial one, but it will help us illustrate the concepts needed to understand distributions.\nPretend that we have to describe the heights of our classmates to ET, an extraterrestrial that has never seen humans. As a first step, we need to collect data. To do this, we ask students to report their heights in inches. We ask them to provide sex information because we know there are two different height distributions by sex. We collect the data and save it in the heights data frame:\n\nlibrary(tidyverse)\nlibrary(dslabs)\nhead(heights)\n#&gt;      sex height\n#&gt; 1   Male     75\n#&gt; 2   Male     70\n#&gt; 3   Male     68\n#&gt; 4   Male     74\n#&gt; 5   Male     61\n#&gt; 6 Female     65\n\nOne way to convey the heights to ET is to simply send him this list of 1,050 heights. But there are much more effective ways to convey this information, and understanding the concept of a distribution will be key. To simplify the explanation, we first focus on male heights. We examine the female height data in Section 7.6.",
+    "section": "7.2 Case study: describing reaction times",
+    "text": "7.2 Case study: describing reaction times\nWe introduce a new motivating problem. It is an artificial one, but it will help us illustrate the concepts needed to understand distributions.\nPretend that we have to describe the reaction times of our study participants to ET, an extraterrestrial that has never run a psychology experiment. As a first step, we need to collect data. To do this, we ask participants to complete a simple reaction-time task and record their response time in milliseconds. We ask them to provide sex information because we know there are two different reaction-time distributions by sex. We collect the data and save it in the reaction_times data frame:\n\nlibrary(tidyverse)\nlibrary(behdslabs)\nhead(reaction_times)\n#&gt;      sex rt_ms\n#&gt; 1   Male   430\n#&gt; 2   Male   384\n#&gt; 3   Male   365\n#&gt; 4   Male   420\n#&gt; 5   Male   301\n#&gt; 6 Female   338\n\nOne way to convey the reaction times to ET is to simply send them this list of 1,050 reaction times. But there are much more effective ways to convey this information, and understanding the concept of a distribution will be key. To simplify the explanation, we first focus on male reaction times. We examine the female reaction-time data in Section 7.6.",
     "crumbs": [
       "Data Visualization",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>Visualizing data distributions</span>"
@@ -2073,17 +2083,6 @@
     "crumbs": [
       "Productivity Tools",
       "<span class='chapter-number'>20</span>  <span class='chapter-title'>Reproducible projects</span>"
-    ]
-  },
-  {
-    "objectID": "dataviz/distributions.html#case-study-describing-reaction-times",
-    "href": "dataviz/distributions.html#case-study-describing-reaction-times",
-    "title": "7  Visualizing data distributions",
-    "section": "7.2 Case study: describing reaction times",
-    "text": "7.2 Case study: describing reaction times\nWe introduce a new motivating problem. It is an artificial one, but it will help us illustrate the concepts needed to understand distributions.\nPretend that we have to describe the reaction times of our study participants to ET, an extraterrestrial that has never run a psychology experiment. As a first step, we need to collect data. To do this, we ask participants to complete a simple reaction-time task and record their response time in milliseconds. We ask them to provide sex information because we know there are two different reaction-time distributions by sex. We collect the data and save it in the reaction_times data frame:\n\nlibrary(tidyverse)\nlibrary(behdslabs)\nhead(reaction_times)\n#&gt;      sex rt_ms\n#&gt; 1   Male   430\n#&gt; 2   Male   384\n#&gt; 3   Male   365\n#&gt; 4   Male   420\n#&gt; 5   Male   301\n#&gt; 6 Female   338\n\nOne way to convey the reaction times to ET is to simply send them this list of 1,050 reaction times. But there are much more effective ways to convey this information, and understanding the concept of a distribution will be key. To simplify the explanation, we first focus on male reaction times. We examine the female reaction-time data in Section 7.6.",
-    "crumbs": [
-      "Data Visualization",
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Visualizing data distributions</span>"
     ]
   }
 ]
