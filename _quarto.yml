@@ -61,6 +61,7 @@ book:
         - productivity/unix.qmd
         - productivity/git.qmd
         - productivity/reproducible-projects.qmd
+        - productivity/ai-assisted-coding.qmd
 
     # - part: productivity/installations.qmd
     #   chapters:
