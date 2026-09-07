@@ -141,7 +141,7 @@ AI-assisted coding changes this picture. Implementation is now easy — things t
 #| echo: false
 #| fig-cap: "Coding for an analysis has three steps, running from the start to the end of a project. Before LLMs, implementation absorbed most of the time; with AI assistance it is quick, which frees time for planning and for revising and checking."
 #| fig-width: 7
-#| fig-height: 2.8
+#| fig-height: 3.2
 
 library(ggplot2)
 
@@ -163,19 +163,19 @@ ggplot(d, aes(effort, scenario, fill = step)) +
   geom_col(width = 0.6, colour = "white",
            position = position_stack(reverse = TRUE)) +
   geom_text(data = subset(d, effort >= 0.19), aes(x = xpos, label = step),
-            colour = "white", fontface = "bold", size = 2.6) +
+            colour = "white", fontface = "bold", size = 3.6) +
   annotate("text", x = 0, y = 0.35, label = "project start",
-           hjust = 0, vjust = 1, size = 3, colour = "grey30") +
+           hjust = 0, vjust = 1, size = 4, colour = "grey30") +
   annotate("text", x = 1, y = 0.35, label = "project end",
-           hjust = 1, vjust = 1, size = 3, colour = "grey30") +
+           hjust = 1, vjust = 1, size = 4, colour = "grey30") +
   scale_fill_manual(values = pal, name = NULL) +
   scale_x_continuous(breaks = NULL, expand = expansion(mult = c(0.02, 0.02))) +
   scale_y_discrete(expand = expansion(add = c(0.9, 0.6))) +
   coord_cartesian(clip = "off") +
   labs(x = NULL, y = NULL) +
-  theme_minimal(base_size = 10) +
+  theme_minimal(base_size = 13) +
   theme(legend.position = "bottom",
-        legend.text = element_text(size = 8),
+        legend.text = element_text(size = 12),
         panel.grid = element_blank(),
         axis.ticks = element_blank(),
         plot.margin = margin(5, 12, 5, 5))
