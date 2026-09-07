@@ -6,7 +6,7 @@ _by Giorgio Arcara_
 
 Since late 2022, when ChatGPT was first released to the public, the task of programming (or _coding_, as it is often called) has changed dramatically.
 
-Until a few years ago, writing code for the kind of analyses covered in this book required a broad set of skills: the basics of a programming language, the rationale behind each analysis, which arguments to set and why, how to structure the code, and — above all — how to cope when things did not work. A large share of a programmer's time went into fighting _bugs_ (code that does not behave as intended) and searching the web for solutions. People routinely pasted their error messages into Google and followed the results to sites such as [Stack Overflow](https://stackoverflow.com) (for programming) or [Cross Validated](https://stats.stackexchange.com) (for statistical questions), hoping to find an answer or a hint. These forums were an invaluable resource, kept alive by experienced programmers and data analysts who spent their own time, for free, answering questions and posting solutions.
+Until a few years ago, writing code for the kind of analyses covered in this book required knowing a whole series of things: the basics of a programming language, the rationale behind each analysis, which arguments to set and why, how to structure the code, and — above all — how to cope when things did not work. A large share of a programmer's time went into fighting _bugs_ (code that does not behave as intended) and searching the web for solutions. People routinely pasted their error messages into Google and followed the results to sites such as [Stack Overflow](https://stackoverflow.com) (for programming) or [Cross Validated](https://stats.stackexchange.com) (for statistical questions), hoping to find an answer or a hint. These forums were an invaluable resource, kept alive by experienced programmers and data analysts who spent their own time, for free, answering questions and posting solutions.
 
 Things are now completely different because of the introduction of large language models (LLMs). LLMs are machine-learning models trained on very large amounts of text to predict the next chunk of text (a _token_) in a sequence; through this training they acquire a broad ability to generate and transform language, including computer code.[^ai-llm-def] At the time of writing, the models most used for coding are [ChatGPT](https://chat.openai.com) (OpenAI), [Claude](https://claude.ai) (Anthropic), and [Gemini](https://gemini.google.com) (Google).
 
@@ -40,7 +40,7 @@ Coding used to be genuinely frustrating at times. Imagine you simply need to loa
 
 ### LLMs can make any step transparent
 
-You can ask an LLM to explain any step you are performing and to clarify why the code is written the way it is. In the past, coding often meant copy-pasting working code without really understanding how it worked. This is, in fact, what normally happens whenever you call a function from a package: you trust that someone else wrote and tested it correctly. With an LLM you can decompose unfamiliar code, rewrite it into a form that is clearer to you, or ask for a step-by-step explanation of someone else's code. One caveat: an explanation is only useful if you can still check it. If you cannot judge whether the answer is correct, you have shifted the trust problem, not removed it.
+You can ask an LLM to explain any step you are performing and to clarify why the code is written the way it is. In the past, coding sometimes meant copy-pasting working code without really understanding how it worked. This is, in fact, what normally happens whenever you call a function from a package: you trust that someone else wrote and tested it correctly. With an LLM you can decompose unfamiliar code, rewrite it into a form that is clearer to you, or ask for a step-by-step explanation of someone else's code. One caveat: an explanation is only useful if you can still check it. If you cannot judge whether the answer is correct, you have shifted the trust problem, not removed it.
 
 ### LLMs can help you code _better_, not just code
 
@@ -76,7 +76,7 @@ Of course, there are also disadvantages.
 
 ### The dark side of LLMs: you may be tempted to delegate everything
 
-This is the central danger; the others are really facets of it. You never actually learn how to build an analysis — you only learn to recognise code that looks plausible. This is especially harmful for beginners, who do not build the underlying skill in the first place.
+This is the central danger; the others are really facets of it. You never actually learn how to build an analysis; you only learn to recognise code that looks plausible. This is especially harmful for beginners, who do not build the underlying skill in the first place.
 
 ![Image generated with GPT Astra on 07/09/2026.](img/others/darkside.png){width="60%" fig-align="center"}
 
@@ -86,7 +86,7 @@ This is dangerous for several reasons. If you cannot follow your own analysis, y
 
 ### You may never actually learn to code or to analyse data
 
-The more you delegate, the less you learn. Making mistakes and working through them is part of how knowledge becomes solid. The struggle is, sometimes, the point.
+The more you delegate, the less you learn. Making mistakes and working through them is part of how knowledge becomes solid. The struggle is, sometimes, the point: it is what makes the knowledge stick.
 
 ## How to integrate AI-assisted coding into your learning (and practice)
 
@@ -104,13 +104,21 @@ AI-assisted coding can make you a better coder. If you are using this book to pr
 
 In the following lines I sketch some good habits for using AI in data science. For simplicity I distinguish two settings: AI-assisted coding for _learning_ data science, and AI-assisted coding for _doing_ data science — for example, in a research project or on the job.
 
-One general suggestion applies to both. Whenever you ask an LLM something that is not self-verifying — for example, which analyses could be run on a dataset — always **ask for references**, and check them. You should never take an LLM's answer on trust.
+Two general suggestions apply to both settings.
+
+First, whenever you ask an LLM something that is not self-verifying — for example, which analyses could be run on a dataset — always **ask for references**, and check them. You should never take an LLM's answer on trust.
+
+Second, and just as important:
+
+::: {.callout-warning}
+**Always check the code an LLM writes for you.** If you do not understand it, break it down and work through it line by line. It is entirely possible that the code does not do exactly what you intended, and you are the one responsible for the analysis — not the model.
+:::
 
 ### AI-assisted coding for learning data science
 
 Here are a few suggestions on how to use AI-assisted coding to learn data science, and in particular to follow this course.
 
-1. _Use AI as an assistant or a teacher, not as a substitute._ Learning means acquiring a new ability. Prompting a model and copy-pasting its answer is not learning. Try to work from scratch and write your own code. At first it will be slow and frustrating — that is part of the process. Push yourself to do the exercises and to rely on AI as little as possible. But do not refuse to use it when you are completely stuck.
+1. _Use AI as an assistant or a teacher, not as a substitute._ Learning means acquiring a new ability. Prompting a model and copy-pasting its answer is not learning. Try to work from scratch and write your own code. At first it will be slow and frustrating, but that is part of the process. Push yourself to do the exercises and to rely on AI as little as possible. But do not refuse to use it when you are completely stuck.
 
 2. _Use AI to explain code._ AI is an excellent tool for explaining code. If some code in the book leaves you wondering why it is written in a particular way, ask for a clarification.
 
@@ -156,23 +164,26 @@ ggplot(d, aes(effort, scenario, fill = step)) +
            position = position_stack(reverse = TRUE)) +
   geom_text(data = subset(d, effort >= 0.19), aes(x = xpos, label = step),
             colour = "white", fontface = "bold", size = 2.6) +
+  annotate("text", x = 0, y = 0.35, label = "project start",
+           hjust = 0, vjust = 1, size = 3, colour = "grey30") +
+  annotate("text", x = 1, y = 0.35, label = "project end",
+           hjust = 1, vjust = 1, size = 3, colour = "grey30") +
   scale_fill_manual(values = pal, name = NULL) +
-  scale_x_continuous(breaks = c(0, 1),
-                     labels = c("project start", "project end"),
-                     expand = expansion(mult = c(0.02, 0.1))) +
+  scale_x_continuous(breaks = NULL, expand = expansion(mult = c(0.02, 0.02))) +
+  scale_y_discrete(expand = expansion(add = c(0.9, 0.6))) +
+  coord_cartesian(clip = "off") +
   labs(x = NULL, y = NULL) +
   theme_minimal(base_size = 10) +
   theme(legend.position = "bottom",
         legend.text = element_text(size = 8),
-        axis.text.x = element_text(hjust = c(0, 1)),
         panel.grid = element_blank(),
         axis.ticks = element_blank(),
         plot.margin = margin(5, 12, 5, 5))
 ```
 
-1. _Plan the code first, then use LLMs to help implement it._ Once you know enough about how to write code for a given analysis, you can speed up implementation by asking an LLM to draft the code for an analysis you have planned in detail. You spend more time planning and thinking, and less time implementing.
+1. _Plan the code first, then use LLMs to help implement it._ Once you know enough about how to write code for a given analysis, you can speed up implementation by asking an LLM to draft the code for an analysis you have planned in detail. You can plan before even opening your computer — often it is better done on paper. You spend more time planning and thinking, and less time implementing. This normally leads to clearer ideas and better code.
 
-2. _Use LLMs to improve your code._ As noted among the advantages above, you can keep refining your code and spotting bugs by asking an LLM for tests. Testing was rarely done in traditional analysis workflows; now it is easy to build into almost any task.
+2. _Use LLMs to improve your code._ As noted among the advantages above, you can keep refining your code and spotting bugs by asking an LLM for tests. Testing was rarely done in traditional analysis workflows; now it is easy to build into almost any task. Remember to check the code after it is implemented.
 
 3. _Use LLMs to broaden your knowledge._ A few well-chosen questions can challenge your habits and make you a better coder and analyst: _"Can you suggest alternative approaches to analyse these data with this aim, with references?"_ or _"What are the weak points of my analytical approach?"_
 
