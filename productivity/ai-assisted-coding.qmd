@@ -1,0 +1,121 @@
+# AI and responsbile coding {#sec-ai-responsible-coding}
+
+_by Giorgio Arcara_
+
+## The current situation
+
+Since 2023 and the launch of the first realease of ChatGPT, the task of programming (or _coding_, as it is usually named) is dramatically changed. 
+
+Till few years ago coding some analyses (as the ones explained in these books) implied knowing many things: the basics of a programming language, the rationale of analyses, and the correct arguments to set, how to draft the code, and in particular how to struggle when things did not work and look relentlessly on the web for solution to _bugs_ (i.e., code not working), or issues. Each programmer spent a great deal of their time copy-pasting the errors on Google and looking for answers, possibly landing in sites like _stackoverflow_ (for programming) or _cross-validated_ (for statistical questions), looking for solutions or hints. These forums were an unvaluable resource and were alive thanks to the contribution of experienced programmers or data analysts that spent their time (for free), answering to questions or providing solutions. 
+
+Now things are completely changed, since the introduction of LLM. LLM are <INSERT DEFINITION HERE>. The most popular for coding are, at the time of writing of this book are ChatGPT, Claude, and Gemini <INSERTI MORE DETAILED CITATIONS HERE>.
+Importantly LLMs work also standing on the shoulder of the giants (i.e., the abovementioned sites), as they literally learned what is correct also from there. <PLEASE FIND A CITATION FOR THIS>
+
+LLM are particularly good at coding and you can literaly treat them as teaching assistants or (even more), as substitute. As already pointed in the introduction, one can literally upload a dataset to an LLM and ask: 
+
+_"please run some detailed analysis and return some plots starting from this file"._
+
+The almost trivial issues and fights agains bugs that dominated the late of programmers till few time ago, are really a far memory. Now LLM are excellent in assisting and even developing detailed analysis from scratch. But here there is a slippery slope: one can easily delegate any step to LLM that are much faster (and apparently also much better) in doing what you are trying to learn in this course. Why should you spent so much time (hours) on a thing that any LLM can solve in seconds?
+
+Some terms have even been introduced to describe how coding is now changed, as _Vibe-Coding_ or _AI-assisted coding_, with both indicating a new way of coding, based with continuous interactions with an LLM. In the rest of the book (and the second part too), I will use the term AI-assisted coding, preferred due to the transparency of the meaning.
+
+I want also to disclaim immediately that my position is that the effect of LLMs on coding is overall positive: they are just raising the bar on what is a good code, a good analysis, and above all, a good analyst.
+
+In the next paragraphs I will discuss some pros and cons of AI-assisted coding.
+
+## Advantages of AI-assisted coding
+
+Advantages of coding with LLMs are many. Here a list of some.
+
+### With LLM, you can avoid losing time for trivial aspects that may make you waste lot of time
+Coding in the past was sometimes really frustrating. Imaging for example you need just to load on your favourite programming language a file (e.g. the data from an experiment on usabiliy of a smartwatch). Imaging that for some reason importing the data do not work. This could be (especially at the beginning) a seemingly infinite task. Now with AI everytime there is a problem you can ask for hints and possibly find many path to solve the issues.
+
+### LLMs can make any step transparent
+You can ask LLMs any step you are performing and ask clarification. In the past, coding was also copy-pasting existing working code, sometimes without really knowing how the code was working. Note that is what normally happens whenever you use a function in a package. You trust that someone else tested effectively the function and its correctness. Now thanks to LLMs you can esaily decompose the code, transform into something that is clearer for you or ask step by step an explanation of someone else code.
+
+### LLMs can help you code _better_ not just code.
+There are different ways to code. You can code better, using better practices, finding less redundant way, etc. Following best practices of coding is easier using LLM. You can for example ask: _is there a way to make this code more efficient?_, _according to best practices in coding, who could I solve this problem?_, etc.
+< TO BE EXPANDED>
+
+### LLMs can check your code and help check for errors
+If you develop code, there is always a high risk of errors. There are many errors and classification (both in coding and in general). Here I want to focus on the more dangerous coding errors. That when the code does not do what is aim to do, but it runs without problems, but it does not do what it is really meant to do.
+For example suppose that you want to exclude all participants whose proportion of errors exceed `0.2` and write the following code.
+
+```{r}
+dat <- dat |> filter(ACC>0.2)
+```
+
+The code is working. So far, so good. But I introduced, a slight and vicious error: the variable was not originally codified as codified as _proportion_ (from 0 to 1), but as _percentage_ (from 0 to 100).
+So the code, is not doing what it was meant to.
+
+LLMs can be particularly useful in this kind of _debugging_ (finding mistake in the code), and you can dedicate lots of time, in perfectioning ways to test your working code.
+
+<CHANGE THE EXAMPLE ABOVE WITH AN EXAMPLE FROM THE BEHDS PACKAGE>s
+
+## Disadvantages of AI-assisted coding
+Of course there are advantages 
+
+### The dark side of LLMs: you may tempted to delegate everything.
+This is the main risk, and the other are facets.
+You don't really learn how to create, but you recognize some code that "make" sense. 
+A risk especially for the beginners that do not actually learn.
+
+### You  may not know what it is happening with your code
+This is dangerous for many reasons: you cannot be able to understand, and as you are responsbile for what you are coding, you are in the quintessence of cheating. This is already bad for an exam, but even worse if this is part of your job.
+
+### You may actually not learn to code and learn data analysis
+The more you delegate to code, the less you are learning. Sometimes making mistakes and strugglind help you fortify the knowledge. The struggle is sometimes important also for lrearning.
+
+
+## How to integrate AI-assisted coding to your learning (and practice)
+
+AI-assisted coding can lead to be a better coder. If you are using this book for an exam or for learning, it can also gives you opportunity to boost. The issue is: you need to use it to support your learning, not _in place_ of you learning.
+
+### Bad consequence of delegating all coding to AI
+
+- _The more the code or an analysis plan is longer, the more it may diverge on your original plans_
+Creating code for a simple analysis is very easy for an LLM. But the more they are complicated, they more LLM can do something that slightly diverge from your plan. This is not inherently a problem of LLMs, it is more a problem _in your original plan_ . A good programmer is more like an architect, that has clear in mind what is planning to do and why, with full control on any part of the plan.
+
+- _Without knowing what you are doing you may miss important details_
+Given any data science problem, there are literally infinite way to tackle it. Any directions, have implications, slight nuances, pros and cons, and it is basically impossible to explore all potential areas (there is even one area in the statistical/methodological literature that investigate this possibilities, called _multiverse_).
+
+
+
+< INSERT HERE A FIGURE LATEX BASED OF THE THREE STEPS>
+
+
+## How to responsibly integrate AI in doing data science
+
+In the following line I will sketch potential good habits on the integration of AI in data science. For sake of simplicity I will distinguish two phases, AI-assisted coding for learning, and AI-assisted coding for _doing_ data science, for example for a research project or as activity of a job.
+
+As a general comment/suggestion. Whenever you are discussing with an LLMs for something that is not verifiable by itself (e.g. you are asking what kind of analysis can be done), always **ask for references**. You should not blindly trust LLMs responses, and also double checking 
+
+### AI-assisted coding for learning data science
+Here I will indicate a few hints on how to use AI-assited coding for learning data science and in particular for this course.
+
+1. _Use AI as assistant or as teacher not as substitute_. Learning something means achieving some new ability. Give a prompt and copy-paste it is not actually learning. Try to work from scratch and write your own code. At the beginning it will be very lengthy and frustrating, but this is part of the process. Force yourself to do exercises and to rely as less as possible on the AI. But don't refrain to use it whenever you feel completely stuck.
+
+2. _Use AI to explain the code_. AI is wonderful as tool to explain the code. Imagine there is some code in the book and you really don't get why the code is written in a specific way: you can ask for clarificaiton
+
+3. _Use AI to test yourself_. AI can be also used to create tests. This can be done from scratch or after a question like the ones can arise in point 2. You can ask to build exercises or step-by-step paths to learn how to use something.
+
+
+### AI-assisted for doing data science  
+Doing data science is maybe something you will do in the future. And also in that case LLMs can be useful. Before doing that I wanto to introduce some considerations on coding.
+
+#### Coding for some data science (in essence)
+
+Coding for analyses in essence can be thought as requiring three main steps: PLAN, IMPLEMENT, REVISE AND CHECK.
+
+Typically the implementation part was one of the most lengthy, and where everyone dedicated most of the time. Managing to write the code to run some innovative or cutting-edge analysis, and getting some fancy plots, was a task that only few people were able to fulfill. Now this achievable by anyone after few well written prompts.
+The two first phases I'm sketching were somehow confused when for example detours should be taken if some code did not work or some solutions were not found in reasonable time.
+
+LLMs assisted coding is changing a lot the perspective. Implementing is now very easy, thing that required weeks are solved in seconds. This gives room to be better analyst by dedicating more time to the other sections: Planning and Revising and Checking the code and results.
+
+1. _Start planning the code and then use LLMs to help implementing_:when you will have enough knowledge on how to write some code for some analysis, youn can speed up the implementation part, by asking LLMs to draft some analysis code you planned in details. You dedicate more time on planning and thinking and less in implementing.
+
+2. _Use LLMs to improve your code_. as in one of the advantages before, you can keep improving your code or spotting bugs asking LLMs for test. Testing was rarely done in the past in traditional analysis, but now is easily embeddable on any task.
+
+3. _Use LLMs to boost your knowledge_, some simple questions on LLMs can challegenge your habits and make you a better coder or analysts. _Can you suggest alternative approaches to analyze these data with this aim (and providing references?_. _What are the weak points of my analytical approach?_
+
+
