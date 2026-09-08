@@ -1,93 +1,34 @@
 # R basics {#sec-r-basics}
 
-## Motivating example: US Gun Murders
+## Motivating example: US data breaches
 
-Imagine you live in Europe and are offered a job in a US company with many locations across all states. It is a great job, but news with headlines such as **US Gun Homicide Rate Higher Than Other Developed Countries**[^r-basics-1] have you worried. Charts like this may concern you even more:
+Imagine you live in Europe and are offered a job at a US company with locations across all states. It is a great job, but part of it involves handling sensitive customer data, and news with headlines such as **US Reports Far More Data Breaches Than Other Developed Countries**[^r-basics-1] have you worried about how exposed you would be. A chart showing reported breach-notification counts climbing year after year would concern you even more.
 
-[^r-basics-1]: <http://abcnews.go.com/blogs/headlines/2012/12/us-gun-ownership-homicide-rate-higher-than-other-developed-countries/>
+[^r-basics-1]: Reported-breach counts depend heavily on each country's notification laws, so cross-country comparisons are difficult to interpret.
 
-```{r murder-rate-example-1, echo=FALSE, warning=FALSE, message=FALSE, out.width="70%", cache=FALSE}
-## img_path <- "img"
-##from http://abcnews.go.com/images/International/homocides_g8_countries_640x360_wmain.jpg
-##knitr::include_graphics(file.path(img_path,"homocides_g8_countries_640x360_wmain.jpg"))
+But then you remember that the US is a large and diverse country with 50 very different states as well as the District of Columbia (DC), whose data-protection practices, breach-notification laws, and concentrations of data-heavy industry vary enormously. Once we adjust the reported incident counts for population, some states report many times the rate of others:
+
+```{r us-data-breaches-by-state-map, message=FALSE, echo=FALSE}
 library(tidyverse)
-library(ggplot2)
-library(ggflags) # from GitHub repo jimjam-slam/ggflags
-library(countrycode)
-library(dslabs)
-
-dat <- tibble(country = toupper(c("US", "Italy", "Canada", "UK", "Japan", "Germany", "France", "Russia")),
-              count = c(3.2, 0.71, 0.5, 0.1, 0, 0.2, 0.1, 0),
-              label = c(as.character(c(3.2, 0.71, 0.5, 0.1, 0, 0.2, 0.1)), "No Data"),
-             code = c("us", "it", "ca", "gb", "jp", "de", "fr", "ru"))
-
-
-dat |> 
-  mutate(country = reorder(country, -count)) |>
-  ggplot(aes(country, count, label = label)) +
-  geom_bar(stat = "identity", fill = "darkred") +
-  geom_text(nudge_y = 0.2, color = "darkred", size = 5) +
-  geom_flag(y = -.5, aes(country = code), size = 12) +
-  scale_y_continuous(breaks = c(0, 1, 2, 3, 4), limits = c(0,4)) +
-  geom_text(aes(6.25, 3.8, label = "Source UNODC Homicide Statistics")) + 
-  ggtitle(toupper("Homicide Per 100,000 in G-8 Countries")) + 
-  xlab("") + 
-  ylab("# of gun-related homicides\nper 100,000 people") +
-  ggthemes::theme_economist() +
-  theme(axis.text.x = element_text(size = 8, vjust = -12),
-        axis.ticks.x = element_blank(),
-        axis.line.x = element_blank(),
-        plot.margin = unit(c(1,1,1,1), "cm")) 
-```
-
-Or even worse, this version from [everytown.org](https://everytownresearch.org)[^r-basics-2]:
-
-[^r-basics-2]: <https://everytownresearch.org>
-
-```{r murder-rate-example-2, echo=FALSE, out.width="70%"}
-# from https://everytownresearch.org/wp-content/uploads/2016/07/GunTrends_murders_per_1000.png
-# knitr::include_graphics(file.path(img_path,"GunTrends_murders_per_1000.png"))
-
-dat <- tibble(country = toupper(c("United States", "Canada", "Portugal", "Ireland", "Italy", "Belgium", "Finland", "France", "Netherlands", "Denmark", "Sweden", "Slovakia", "Austria", "New Zealand", "Australia", "Spain", "Czech Republic", "Hungary", "Germany", "United Kingdom", "Norway", "Japan", "Republic of Korea")),
-              count = c(3.61, 0.5, 0.48, 0.35, 0.35, 0.33, 0.26, 0.20, 0.20, 0.20, 0.19, 0.19, 0.18, 0.16, 0.16, 0.15, 0.12, 0.10, 0.06, 0.04, 0.04, 0.01, 0.01))
-
-dat |> 
-  mutate(country = reorder(country, count)) |>
-  ggplot(aes(country, count, label = count)) +   
-  geom_bar(stat = "identity", fill = "darkred", width = 0.5) +
-  geom_text(nudge_y = 0.2,  size = 3) +
-  xlab("") + ylab("") + 
-  ggtitle(toupper("Gun Homicides per 100,000 residents")) + 
-  theme_minimal() +
-  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
-        axis.text.x = element_blank(),
-        axis.ticks.length = unit(-0.4, "cm")) + 
-  coord_flip() 
-rm(dat)
-```
-
-
-But then you remember that the US is a large and diverse country with 50 very different states as well as the District of Columbia (DC).
-
-```{r us-murders-by-state-map, message=FALSE, echo=FALSE}
+library(behdslabs)
 fifty_states <- map_data("state")
-murders |> mutate(murder_rate = total/population*10^5,
-                  state = tolower(state), 
-                  colors = factor(ceiling(pmin(murder_rate, 9)))) |>
-  ggplot(aes(map_id = state)) + 
-  geom_map(aes(fill = colors), color = "black", map = fifty_states) + 
+app_data_breaches |> mutate(incident_rate = incidents/population*10^5,
+                  state = tolower(state),
+                  colors = factor(ceiling(pmin(incident_rate, 9)))) |>
+  ggplot(aes(map_id = state)) +
+  geom_map(aes(fill = colors), color = "black", map = fifty_states) +
   expand_limits(x = fifty_states$long, y = fifty_states$lat) +
   coord_map() +
-  scale_x_continuous(breaks = NULL) + 
+  scale_x_continuous(breaks = NULL) +
   scale_y_continuous(breaks = NULL) +
   labs(x = "", y = "") +
-  theme(panel.background = element_blank()) + 
+  theme(panel.background = element_blank()) +
   scale_fill_brewer(guide = "none") +
   theme_minimal()
 rm(fifty_states)
 ```
 
-California, for example, has a larger population than Canada, and 20 US states have populations larger than that of Norway. In some respects, the variability across states in the US is akin to the variability across countries in Europe. Furthermore, although not included in the charts above, the murder rates in Lithuania, Ukraine, and Russia are higher than 4 per 100,000. So perhaps the news reports that worried you are too superficial. You have options of where to live and want to determine the safety of each particular state. We will gain some insights by examining data related to gun homicides in the US during 2010 using R.
+California, for example, has a larger population than Canada, and 20 US states have populations larger than that of Norway. In some respects, the variability across states in the US is akin to the variability across countries in Europe. So perhaps the news reports that worried you are too superficial. You have options of where to work and want to understand the reported data-breach exposure of each particular state. We will gain some insights by examining reported data-breach incidents across the US using R.
 
 Before we get started with our example, we need to cover logistics as well as some of the very basic building blocks that are required to gain more advanced R skills. Be aware that the usefulness of some of these building blocks may not be immediately obvious, but later in the book you will appreciate having mastered these skills.
 
@@ -338,18 +279,18 @@ To work efficiently in R, it is important to learn the different types of variab
 
 Up to now, the variables we have defined are just one number. This is not very useful for storing data. The most common way of storing a dataset in R is in a *data frame*. Conceptually, we can think of a data frame as a table with rows representing observations and the different variables reported for each observation defining the columns. Data frames are particularly useful for datasets because we can combine different data types into one object.
 
-A large proportion of data analysis challenges start with data stored in a data frame. For example, we stored the data for our motivating example in a data frame. You can access this dataset by loading the **dslabs** library which provides the `murders` dataset:
+A large proportion of data analysis challenges start with data stored in a data frame. For example, we stored the data for our motivating example in a data frame. You can access this dataset by loading the **behdslabs** library which provides the `app_data_breaches` dataset:
 
 ```{r}
 #| cache: false
 
-library(dslabs)
+library(behdslabs)
 ```
 
 To see that this is in fact a data frame, we type:
 
 ```{r}
-class(murders)
+class(app_data_breaches)
 ```
 
 ### Examining objects
@@ -362,7 +303,7 @@ str <- function(x) utils::str(x, strict.width = 'wrap')
 ```
 
 ```{r}
-str(murders)
+str(app_data_breaches)
 ```
 
 ```{r, echo=FALSE}
@@ -373,7 +314,7 @@ rm(str)
 This tells us much more about the object. We see that the table has 51 rows (50 states plus DC) and five variables. We can show the first six lines using the function `head`:
 
 ```{r}
-head(murders)
+head(app_data_breaches)
 ```
 
 In this dataset, each state is considered an observation and five variables are reported for each state.
@@ -385,27 +326,27 @@ Before we go any further in answering our original question about different stat
 For our analysis, we will need to access the different variables represented by columns included in this data frame. To do this, we use the accessor operator `$` in the following way:
 
 ```{r}
-murders$population
+app_data_breaches$population
 ```
 
-But how did we know to use `population`? Previously, by applying the function `str` to the object `murders`, we revealed the names for each of the five variables stored in this table. We can quickly access the variable names using:
+But how did we know to use `population`? Previously, by applying the function `str` to the object `app_data_breaches`, we revealed the names for each of the five variables stored in this table. We can quickly access the variable names using:
 
 ```{r}
-names(murders)
+names(app_data_breaches)
 ```
 
-It is important to know that the order of the entries in `murders$population` preserves the order of the rows in our data table. This will later permit us to manipulate one variable based on the results of another. For example, we will be able to order the state names by the number of murders.
+It is important to know that the order of the entries in `app_data_breaches$population` preserves the order of the rows in our data table. This will later permit us to manipulate one variable based on the results of another. For example, we will be able to order the state names by the number of incidents.
 
 ::: callout-tip
-R comes with a very nice auto-complete functionality that saves us the trouble of typing out all the names. Try typing `murders$p` then hitting the *tab* key on your keyboard. This functionality and many other useful auto-complete features are available when working in RStudio.
+R comes with a very nice auto-complete functionality that saves us the trouble of typing out all the names. Try typing `app_data_breaches$p` then hitting the *tab* key on your keyboard. This functionality and many other useful auto-complete features are available when working in RStudio.
 :::
 
 ### Vectors
 
-The object `murders$population` is not one number but several. We call these types of objects *vectors*. A single number is technically a vector of length 1, but in general we use the term vectors to refer to objects with several entries. The function `length` tells you how many entries are in the vector:
+The object `app_data_breaches$population` is not one number but several. We call these types of objects *vectors*. A single number is technically a vector of length 1, but in general we use the term vectors to refer to objects with several entries. The function `length` tells you how many entries are in the vector:
 
 ```{r}
-pop <- murders$population
+pop <- app_data_breaches$population
 length(pop)
 ```
 
@@ -420,7 +361,7 @@ In a numeric vector, every entry must be a number.
 To store character strings, vectors can also be of class *character*. For example, the state names are characters:
 
 ```{r}
-class(murders$state)
+class(app_data_breaches$state)
 ```
 
 As with numeric vectors, all entries in a character vector need to be a character.
@@ -451,32 +392,32 @@ Mathematically, the values in `pop` are integers and there is an integer class i
 
 ### Factors {#sec-factors}
 
-In the `murders` dataset, we might expect the region to also be a character vector. However, it is not:
+In the `app_data_breaches` dataset, we might expect the region to also be a character vector. However, it is not:
 
 ```{r}
-class(murders$region)
+class(app_data_breaches$region)
 ```
 
 It is a *factor*. Factors are useful for storing categorical data. We can see that there are only 4 regions by using the `levels` function:
 
 ```{r}
-levels(murders$region)
+levels(app_data_breaches$region)
 ```
 
 In the background, R stores these *levels* as integers and keeps a map to keep track of the labels. This is more memory efficient than storing all the characters.
 
-Note that the levels have an order that is different from the order of appearance in the factor object. The default in R is for the levels to follow alphabetical order. However, often we want the levels to follow a different order. You can specify an order through the `levels` argument when creating the factor with the `factor` function. For example, in the murders dataset regions are ordered from east to west. The function `reorder` lets us change the order of the levels of a factor variable based on a summary computed on a numeric vector. We will demonstrate this with a simple example, and will see more advanced ones in the Data Visualization part of the book.
+Note that the levels have an order that is different from the order of appearance in the factor object. The default in R is for the levels to follow alphabetical order. However, often we want the levels to follow a different order. You can specify an order through the `levels` argument when creating the factor with the `factor` function. For example, in the app_data_breaches dataset regions are ordered from east to west. The function `reorder` lets us change the order of the levels of a factor variable based on a summary computed on a numeric vector. We will demonstrate this with a simple example, and will see more advanced ones in the Data Visualization part of the book.
 
-Suppose we want the levels of region ordered by the total number of murders rather than alphabetically If there are values associated with each level, we can use the `reorder` function and specify a data summary to determine the order. The following code takes the sum of the total murders in each region, and reorders the factor following these sums.
+Suppose we want the levels of region ordered by the total number of incidents rather than alphabetically If there are values associated with each level, we can use the `reorder` function and specify a data summary to determine the order. The following code takes the sum of the incidents in each region, and reorders the factor following these sums.
 
 ```{r}
-region <- murders$region
-value <- murders$total
+region <- app_data_breaches$region
+value <- app_data_breaches$incidents
 region <- reorder(region, value, FUN = sum)
 levels(region)
 ```
 
-The new order is in agreement with the fact that the Northeast has the least murders and the South has the most.
+The new order is in agreement with the fact that the Northeast has the fewest incidents and the South has the most.
 
 ::: callout-warning
 Factors can be a source of confusion since sometimes they behave like characters and sometimes they do not. As a result, confusing factors and characters are a common source of bugs.
@@ -591,8 +532,8 @@ as.data.frame(mat)
 You can also use single square brackets (`[`) to access rows and columns of a data frame:
 
 ```{r}
-murders[25, 1]
-murders[2:3, ]
+app_data_breaches[25, 1]
+app_data_breaches[2:3, ]
 ```
 
 ::: callout-note
@@ -786,18 +727,18 @@ You are ready to do exercises 12-23.
 
 ## Sorting
 
-Now that we have mastered some basic R knowledge, let's try to gain some insights into the safety of different states in the context of gun murders.
+Now that we have mastered some basic R knowledge, let's try to gain some insights into the reported data-breach exposure of different states.
 
 ### `sort`
 
-Say we want to rank the states from least to most gun murders. The function `sort` sorts a vector in increasing order. We can therefore see the largest number of gun murders by typing:
+Say we want to rank the states from fewest to most reported incidents. The function `sort` sorts a vector in increasing order. We can therefore see the largest number of reported incidents by typing:
 
 ```{r}
-library(dslabs)
-sort(murders$total)
+library(behdslabs)
+sort(app_data_breaches$incidents)
 ```
 
-However, this does not give us information about which states have which murder totals. For example, we don't know which state had `r max(murders$total)`.
+However, this does not give us information about which states have which incident totals. For example, we don't know which state had `r max(app_data_breaches$incidents)`.
 
 ### `order`
 
@@ -824,40 +765,40 @@ order(x)
 
 The second entry of `x` is the smallest, so `order(x)` starts with `2`. The next smallest is the third entry, so the second entry is `3` and so on.
 
-How does this help us order the states by murders? First, remember that the entries of vectors you access with `$` follow the same order as the rows in the table. For example, these two vectors containing state names and abbreviations, respectively, are matched by their order:
+How does this help us order the states by incidents? First, remember that the entries of vectors you access with `$` follow the same order as the rows in the table. For example, these two vectors containing state names and abbreviations, respectively, are matched by their order:
 
 ```{r}
-murders$state[1:6]
-murders$abb[1:6]
+app_data_breaches$state[1:6]
+app_data_breaches$abb[1:6]
 ```
 
-This means we can order the state names by their total murders. We first obtain the index that orders the vectors according to murder totals and then index the state names vector:
+This means we can order the state names by their incident totals. We first obtain the index that orders the vectors according to incident totals and then index the state names vector:
 
 ```{r}
-ind <- order(murders$total) 
-murders$abb[ind] 
+ind <- order(app_data_breaches$incidents) 
+app_data_breaches$abb[ind] 
 ```
 
-According to the above, California had the most murders.
+According to the above, California had the most incidents.
 
 ### `max` and `which.max`
 
 If we are only interested in the entry with the largest value, we can use `max` for the value:
 
 ```{r}
-max(murders$total)
+max(app_data_breaches$incidents)
 ```
 
 and `which.max` for the index of the largest value:
 
 ```{r}
-i_max <- which.max(murders$total)
-murders$state[i_max]
+i_max <- which.max(app_data_breaches$incidents)
+app_data_breaches$state[i_max]
 ```
 
 For the minimum, we can use `min` and `which.min` in the same way.
 
-Does this mean California is the most dangerous state? In an upcoming section, we argue that we should be considering rates instead of totals. Before doing that, we introduce one last order-related function: `rank`.
+Does this mean California has the worst data-breach record? In an upcoming section, we argue that we should be considering rates instead of totals. Before doing that, we introduce one last order-related function: `rank`.
 
 ### `rank`
 
@@ -887,14 +828,14 @@ You are ready to do exercises 24-31
 
 ## Vector arithmetics
 
-California had the most murders, but does this mean it is the most dangerous state? What if it just has many more people than any other state? We can quickly confirm that California indeed has the largest population:
+California had the most incidents, but does this mean it has the worst data-breach exposure? What if it just has many more people than any other state? We can quickly confirm that California indeed has the largest population:
 
 ```{r}
-library(dslabs)
-murders$state[which.max(murders$population)]
+library(behdslabs)
+app_data_breaches$state[which.max(app_data_breaches$population)]
 ```
 
-with over `r floor(max(murders$population)/10^6)` million inhabitants. It is therefore unfair to compare the totals if we are interested in learning how safe the state is. What we really should be computing is the murders per capita. The reports we describe in the motivating section used murders per 100,000 as the unit. To compute this quantity, the powerful vector arithmetic capabilities of R come in handy.
+with over `r floor(max(app_data_breaches$population)/10^6)` million inhabitants. It is therefore unfair to compare the totals if we are interested in learning how exposed the state is. What we really should be computing is the incidents per capita. The reports we describe in the motivating section used incidents per 100,000 as the unit. To compute this quantity, the powerful vector arithmetic capabilities of R come in handy.
 
 ### Rescaling a vector
 
@@ -945,16 +886,16 @@ $$
 
 The same holds for other mathematical operations, such as `-`, `*` and `/`.
 
-This implies that to compute the murder rates we can simply type:
+This implies that to compute the incident rates we can simply type:
 
 ```{r}
-murder_rate <- murders$total / murders$population * 100000
+incident_rate <- app_data_breaches$incidents / app_data_breaches$population * 100000
 ```
 
-Once we do this, we notice that California is no longer near the top of the list. In fact, we can use what we have learned to order the states by murder rate:
+Once we do this, we notice that California is no longer near the top of the list. In fact, we can use what we have learned to order the states by incident rate:
 
 ```{r}
-murders$abb[order(murder_rate)]
+app_data_breaches$abb[order(incident_rate)]
 ```
 
 ### Beware of recycling
@@ -975,36 +916,36 @@ You are now ready to do exercises 32-34.
 
 ## Indexing
 
-R provides a powerful and convenient way of indexing vectors. We can, for example, subset a vector based on properties of another vector. In this section, we continue working with our US murders example, which we can load like this:
+R provides a powerful and convenient way of indexing vectors. We can, for example, subset a vector based on properties of another vector. In this section, we continue working with our US data-breach example, which we can load like this:
 
 ```{r}
-library(dslabs)
+library(behdslabs)
 ```
 
 ### Subsetting with logicals
 
-We have now calculated the murder rate using:
+We have now calculated the incident rate using:
 
 ```{r}
-murder_rate <- murders$total / murders$population * 100000 
+incident_rate <- app_data_breaches$incidents / app_data_breaches$population * 100000 
 ```
 
-Imagine you are moving from Italy where, according to an ABC news report, the murder rate is only 0.71 per 100,000. You would prefer to move to a state with a similar murder rate. Another powerful feature of R is that we can use logicals to index vectors. If we compare a vector to a single number, it actually performs the test for each entry. The following is an example related to the question above:
+Imagine your current location has a low reported breach rate, around 0.71 per 100,000. You would prefer to move to a state with a similarly low rate. Another powerful feature of R is that we can use logicals to index vectors. If we compare a vector to a single number, it actually performs the test for each entry. The following is an example related to the question above:
 
 ```{r}
-ind <- murder_rate < 0.71
+ind <- incident_rate < 0.71
 ```
 
 If we instead want to know if a value is less or equal, we can use:
 
 ```{r}
-ind <- murder_rate <= 0.71
+ind <- incident_rate <= 0.71
 ```
 
 Note that we get back a logical vector with `TRUE` for each entry smaller than or equal to 0.71. To see which states these are, we can leverage the fact that vectors can be indexed with logicals.
 
 ```{r}
-murders$state[ind]
+app_data_breaches$state[ind]
 ```
 
 In order to count how many are TRUE, the function `sum` returns the sum of the entries of a vector and logical vectors get *coerced* to numeric with `TRUE` coded as 1 and `FALSE` as 0. Thus we can count the states using:
@@ -1015,7 +956,7 @@ sum(ind)
 
 ### Logical operators
 
-Suppose we like the mountains and we want to move to a safe state in the western region of the country. We want the murder rate to be at most 1. In this case, we want two different things to be true. Here we can use the logical operator *and*, which in R is represented with `&`. This operation results in `TRUE` only when both logicals are `TRUE`. To see this, consider this example:
+Suppose we like the mountains and we want to move to a state with a low incident rate in the western region of the country. We want the incident rate to be at most 1. In this case, we want two different things to be true. Here we can use the logical operator *and*, which in R is represented with `&`. This operation results in `TRUE` only when both logicals are `TRUE`. To see this, consider this example:
 
 ```{r}
 TRUE & TRUE
@@ -1026,39 +967,39 @@ FALSE & FALSE
 For our example, we can form two logicals:
 
 ```{r}
-west <- murders$region == "West"
-safe <- murder_rate <= 1
+west <- app_data_breaches$region == "West"
+safe <- incident_rate <= 1
 ```
 
 and we can use the `&` to get a vector of logicals that tells us which states satisfy both conditions:
 
 ```{r}
 ind <- safe & west
-murders$state[ind]
+app_data_breaches$state[ind]
 ```
 
 ### `which`
 
-Suppose we want to look up California's murder rate. For this type of operation, it is convenient to convert vectors of logicals into indexes instead of keeping long vectors of logicals. The function `which` tells us which entries of a logical vector are TRUE. So we can type:
+Suppose we want to look up California's incident rate. For this type of operation, it is convenient to convert vectors of logicals into indexes instead of keeping long vectors of logicals. The function `which` tells us which entries of a logical vector are TRUE. So we can type:
 
 ```{r}
-ind <- which(murders$state == "California")
-murder_rate[ind]
+ind <- which(app_data_breaches$state == "California")
+incident_rate[ind]
 ```
 
 ### `match`
 
-If instead of just one state we want to find out the murder rates for several states, say New York, Florida, and Texas, we can use the function `match`. This function tells us which indexes of a second vector match each of the entries of a first vector:
+If instead of just one state we want to find out the incident rates for several states, say New York, Florida, and Texas, we can use the function `match`. This function tells us which indexes of a second vector match each of the entries of a first vector:
 
 ```{r}
-ind <- match(c("New York", "Florida", "Texas"), murders$state)
+ind <- match(c("New York", "Florida", "Texas"), app_data_breaches$state)
 ind
 ```
 
-Now we can look at the murder rates:
+Now we can look at the incident rates:
 
 ```{r}
-murder_rate[ind]
+incident_rate[ind]
 ```
 
 ### `%in%`
@@ -1066,7 +1007,7 @@ murder_rate[ind]
 If rather than an index we want a logical that tells us whether or not each element of a first vector is in a second, we can use the function `%in%`. Let's imagine you are not sure if Boston, Dakota, and Washington are states. You can find out like this:
 
 ```{r}
-c("Boston", "Dakota", "Washington") %in% murders$state
+c("Boston", "Dakota", "Washington") %in% app_data_breaches$state
 ```
 
 Note that we will be using `%in%` often throughout the book.
@@ -1074,8 +1015,8 @@ Note that we will be using `%in%` often throughout the book.
 There is a connection between `match` and `%in%` through `which`. To see this, notice that the following two lines produce the same index (although in different order):
 
 ```{r}
-match(c("New York", "Florida", "Texas"), murders$state)
-which(murders$state %in% c("New York", "Florida", "Texas"))
+match(c("New York", "Florida", "Texas"), app_data_breaches$state)
+which(app_data_breaches$state %in% c("New York", "Florida", "Texas"))
 ```
 
 ::: callout-note
@@ -1088,48 +1029,48 @@ In @sec-ggplot2 we describe an add-on package that provides a powerful approach 
 
 ### `plot`
 
-The `plot` function can be used to make scatterplots. Here is a plot of total murders versus population.
+The `plot` function can be used to make scatterplots. Here is a plot of total incidents versus population.
 
 ```{r eval=FALSE}
-x <- murders$population / 10^6
-y <- murders$total
+x <- app_data_breaches$population / 10^6
+y <- app_data_breaches$incidents
 plot(x, y)
 ```
 
 ```{r first-plot, out.width="60%", echo=FALSE}
 rafalib::mypar()
-x <- murders$population / 10^6
-y <- murders$total
+x <- app_data_breaches$population / 10^6
+y <- app_data_breaches$incidents
 plot(x, y)
 ```
 
 For a quick plot that avoids accessing variables twice, we can use the `with` function:
 
 ```{r, eval=FALSE}
-with(murders, plot(population, total))
+with(app_data_breaches, plot(population, incidents))
 ```
 
-The function `with` lets us use the `murders` column names in the `plot` function. It also works with any data frames and any function.
+The function `with` lets us use the `app_data_breaches` column names in the `plot` function. It also works with any data frames and any function.
 
 ### `hist`
 
-We will describe histograms as they relate to distributions in the Data Visualization part of the book. Here we will simply note that histograms are a powerful graphical summary of a list of numbers that gives you a general overview of the types of values you have. We can make a histogram of our murder rates by simply typing:
+We will describe histograms as they relate to distributions in the Data Visualization part of the book. Here we will simply note that histograms are a powerful graphical summary of a list of numbers that gives you a general overview of the types of values you have. We can make a histogram of our incident rates by simply typing:
 
 ```{r eval=FALSE}
-x <- with(murders, total / population * 100000)
+x <- with(app_data_breaches, incidents / population * 100000)
 hist(x)
 ```
 
 ```{r r-base-hist, out.width="60%",echo=FALSE}
 rafalib::mypar()
-x <- with(murders, total / population * 100000)
+x <- with(app_data_breaches, incidents / population * 100000)
 hist(x)
 ```
 
-We can see that there is a wide range of values with most of them between 2 and 3 and one very extreme case with a murder rate of more than 15:
+We can see that there is a wide range of values with most of them between 2 and 3 and one very extreme case with an incident rate of more than 15:
 
 ```{r}
-murders$state[which.max(x)]
+app_data_breaches$state[which.max(x)]
 ```
 
 ### `boxplot`
@@ -1137,17 +1078,17 @@ murders$state[which.max(x)]
 Boxplots will also be described in the Data Visualization part of the book. They provide a more terse summary than histograms, but they are easier to stack with other boxplots. For example, here we can use them to compare the different regions:
 
 ```{r eval=FALSE}
-murders$rate <- with(murders, total / population * 100000)
-boxplot(rate~region, data = murders)
+app_data_breaches$rate <- with(app_data_breaches, incidents / population * 100000)
+boxplot(rate~region, data = app_data_breaches)
 ```
 
 ```{r r-base-boxplot, out.width="60%", echo=FALSE}
 rafalib::mypar()
-murders$rate <- with(murders, total / population * 100000)
-boxplot(rate~region, data = murders)
+app_data_breaches$rate <- with(app_data_breaches, incidents / population * 100000)
+boxplot(rate~region, data = app_data_breaches)
 ```
 
-We can see that the South has higher murder rates than the other three regions.
+We can see that the South has higher incident rates than the other three regions.
 
 ### `image`
 
@@ -1198,11 +1139,11 @@ b.  `log10(x^10)`
 c.  `log(exp(x))`
 d.  `exp(log(x, base = 2))`
 
-6\. Make sure the US murders dataset is loaded. Use the function `str` to examine the structure of the `murders` object. Which of the following best describes the variables represented in this data frame?
+6\. Make sure the US data-breach dataset is loaded. Use the function `str` to examine the structure of the `app_data_breaches` object. Which of the following best describes the variables represented in this data frame?
 
 a.  The 51 states.
-b.  The murder rates for all 50 states and DC.
-c.  The state name, the abbreviation of the state name, the state's region, and the state's population and total number of murders for 2010.
+b.  The incident rates for all 50 states and DC.
+c.  The state name, the abbreviation of the state name, the state's region, and the state's population and number of reported data-breach incidents.
 d.  `str` shows no relevant information.
 
 7\. What are the column names used by the data frame for these five variables?
@@ -1214,7 +1155,7 @@ d.  `str` shows no relevant information.
 10\. We saw that the `region` column stores a factor. You can corroborate this by typing:
 
 ```{r, eval=FALSE}
-class(murders$region)
+class(app_data_breaches$region)
 ```
 
 With one line of code, use the functions `levels` and `length` to determine the number of regions defined by this dataset.
@@ -1251,13 +1192,13 @@ x <- c("1", "3", "5")
 
 and coerce it to get integers.
 
-24\. For exercises 24-31 we will use the US murders dataset. Make sure you load it prior to starting. Use the `$` operator to access the population size data and store it as the object `pop`. Then use the `sort` function to redefine `pop` so that it is sorted. Finally, use the `[` operator to report the smallest population size.
+24\. For exercises 24-31 we will use the US data-breach dataset. Make sure you load it prior to starting. Use the `$` operator to access the population size data and store it as the object `pop`. Then use the `sort` function to redefine `pop` so that it is sorted. Finally, use the `[` operator to report the smallest population size.
 
 25\. Now instead of the smallest population size, find the index of the entry with the smallest population size. Hint: use `order` instead of `sort`.
 
 26\. We can actually perform the same operation as in the previous exercise using the function `which.min`. Write one line of code that does this.
 
-27\. Now we know how small the smallest state is and we know which row represents it. Which state is it? Define a variable `states` to be the state names from the `murders` data frame. Report the name of the state with the smallest population.
+27\. Now we know how small the smallest state is and we know which row represents it. Which state is it? Define a variable `states` to be the state names from the `app_data_breaches` data frame. Report the name of the state with the smallest population.
 
 28\. You can create a data frame using the `data.frame` function. Here is a quick example:
 
@@ -1272,19 +1213,19 @@ Use the `rank` function to determine the population rank of each state from smal
 
 29\. Repeat the previous exercise, but this time order `my_df` so that the states are ordered from least populous to most populous. Hint: create an object `ind` that stores the indexes needed to order the population values. Then use the bracket operator `[` to re-order each column in the data frame.
 
-30\. The `na_example` vector represents a series of counts. You can quickly examine the object using:
+30\. The `daily_mood_ratings` vector represents a series of daily mood ratings on a 1--7 scale. You can quickly examine the object using:
 
 ```{r}
-str(na_example)
+str(daily_mood_ratings)
 ```
 
 However, when we compute the average with the function `mean`, we obtain an `NA`:
 
 ```{r}
-mean(na_example)
+mean(daily_mood_ratings)
 ```
 
-The `is.na` function returns a logical vector that tells us which entries are `NA`. Assign this logical vector to an object called `ind` and determine how many `NA`s does `na_example` have.
+The `is.na` function returns a logical vector that tells us which entries are `NA`. Assign this logical vector to an object called `ind` and determine how many `NA`s does `daily_mood_ratings` have.
 
 31\. Now compute the average again, but only for the entries that are not `NA`. Hint: remember the `!` operator, which turns `FALSE` into `TRUE` and vice versa.
 
@@ -1301,36 +1242,36 @@ Remake the data frame using the code above, but add a line that converts the tem
 
 33\. What is the following sum $1+1/2^2 + 1/3^2 + \dots 1/100^2$? Hint: thanks to Euler, we know it should be close to $\pi^2/6$.
 
-34\. Compute the per 100,000 murder rate for each state and store it in the object `murder_rate`. Then compute the average murder rate for the US using the function `mean`. What is the average?
+34\. Compute the per 100,000 incident rate for each state and store it in the object `incident_rate`. Then compute the average incident rate for the US using the function `mean`. What is the average?
 
 35. For remaining exercises 35-42, start by loading the library and data.
 
 ```{r}
-library(dslabs)
+library(behdslabs)
 ```
 
-Compute the per 100,000 murder rate for each state and store it in an object called `murder_rate`. Then use logical operators to create a logical vector named `low` that tells us which entries of `murder_rate` are lower than 1.
+Compute the per 100,000 incident rate for each state and store it in an object called `incident_rate`. Then use logical operators to create a logical vector named `low` that tells us which entries of `incident_rate` are lower than 1.
 
-36\. Now use the results from the previous exercise and the function `which` to determine the indices of `murder_rate` associated with values lower than 1.
+36\. Now use the results from the previous exercise and the function `which` to determine the indices of `incident_rate` associated with values lower than 1.
 
-37\. Use the results from the previous exercise to report the names of the states with murder rates lower than 1.
+37\. Use the results from the previous exercise to report the names of the states with incident rates lower than 1.
 
-38\. Now extend the code from the exercise to report the states in the Northeast with murder rates lower than 1. Hint: use the previously defined logical vector `low` and the logical operator `&`.
+38\. Now extend the code from the exercise to report the states in the Northeast with incident rates lower than 1. Hint: use the previously defined logical vector `low` and the logical operator `&`.
 
-39\. In a previous exercise we computed the murder rate for each state and the average of these numbers. How many states are below the average?
+39\. In a previous exercise we computed the incident rate for each state and the average of these numbers. How many states are below the average?
 
-40\. Use the match function to identify the states with abbreviations AK, MI, and IA. Hint: start by defining an index of the entries of `murders$abb` that match the three abbreviations, then use the `[` operator to extract the states.
+40\. Use the match function to identify the states with abbreviations AK, MI, and IA. Hint: start by defining an index of the entries of `app_data_breaches$abb` that match the three abbreviations, then use the `[` operator to extract the states.
 
 41\. Use the `%in%` operator to create a logical vector that answers the question: which of the following are actual abbreviations: MA, ME, MI, MO, MU?
 
 42\. Extend the code you used in exercise 41 to report the one entry that is **not** an actual abbreviation. Hint: use the `!` operator, which turns `FALSE` into `TRUE` and vice versa, then `which` to obtain an index.
 
-43\. We made a plot of total murders versus population and noted a strong relationship. Not surprisingly, states with larger populations had more murders.
+43\. We made a plot of total incidents versus population and noted a strong relationship. Not surprisingly, states with larger populations had more incidents.
 
 ```{r, eval = FALSE}
-population_in_millions <- murders$population/10^6
-total_gun_murders <- murders$total
-plot(population_in_millions, total_gun_murders)
+population_in_millions <- app_data_breaches$population/10^6
+total_incidents <- app_data_breaches$incidents
+plot(population_in_millions, total_incidents)
 ```
 
 Keep in mind that many states have populations below 5 million and are bunched up. We may gain further insights from making this plot in the log scale. Transform the variables using the `log10` transformation and then plot them.
