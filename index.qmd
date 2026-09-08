@@ -46,7 +46,7 @@ This book started out as the class notes used in the HarvardX [Data Science Seri
 
 <!-- A free PDF of the October 24, 2019 version of the book is available from [Leanpub](https://leanpub.com/datasciencebook)^[https://leanpub.com/datasciencebook].-->
 
-The Quarto files used to generate the original book is available on [GitHub](https://github.com/rafalab/dsbook-part-1)[^index-4]. Note that, the graphical theme used for plots throughout the book can be recreated using the `ds_theme_set()` function from **dslabs** package.
+The Quarto files used to generate the original book is available on [GitHub](https://github.com/rafalab/dsbook-part-1)[^index-4]. Note that, the graphical theme used for plots throughout the book can be recreated using the `ds_theme_set()` function from the **behdslabs** package.
 
 [^index-4]: <https://github.com/rafalab/dsbook-part-1>
 
