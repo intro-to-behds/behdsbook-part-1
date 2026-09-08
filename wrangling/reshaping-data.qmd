@@ -2,13 +2,13 @@
 
 As we have seen through the book, having data in *tidy* format is what makes the tidyverse flow. After the first step in the data analysis process, importing data, a common next step is to reshape the data into a form that facilitates the rest of the analysis. The **tidyr** package, part of **tidyverse**, includes several functions that are useful for tidying data.
 
-We will use the fertility wide format dataset described in @sec-tidy-data as an example in this section.
+We will use the app-price wide format dataset described in @sec-tidy-data as an example in this section.
 
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse) 
-library(dslabs)
-path <- system.file("extdata", package = "dslabs")
-filename <- file.path(path, "fertility-two-countries-example.csv")
+library(behdslabs)
+path <- system.file("extdata", package = "behdslabs")
+filename <- file.path(path, "app-price-two-countries-example.csv")
 wide_data <- read_csv(filename)
 ```
 
@@ -16,16 +16,16 @@ wide_data <- read_csv(filename)
 
 One of the most used functions in the **tidyr** package is `pivot_longer`, which is useful for converting wide data into tidy data.
 
-As with most tidyverse functions, the `pivot_longer` function's first argument is the data frame that will be converted. Here we want to reshape the `wide_data` dataset so that each row represents a fertility observation, which implies we need three columns to store the year, country, and the observed value. In its current form, data from different years are in different columns with the year values stored in the column names. Through the `names_to` and `values_to` argument we will tell `pivot_longer` the column names we want to assign to the columns containing the current column names and observations, respectively. The default names are `name` and `value`, which are often usable choices. In this case a better choice for these two arguments would be `year` and `fertility`. Note that nowhere in the data file does it tell us this is fertility data. Instead, we deciphered this from the file name. Through `cols`, the second argument, we specify the columns containing observed values; these are the columns that will be *pivoted*. The default is to pivot all columns so, in most cases, we have to specify the columns. In our example we want columns `1960`, `1961` up to `2015`.
+As with most tidyverse functions, the `pivot_longer` function's first argument is the data frame that will be converted. Here we want to reshape the `wide_data` dataset so that each row represents an app-price observation, which implies we need three columns to store the year, country, and the observed value. In its current form, data from different years are in different columns with the year values stored in the column names. Through the `names_to` and `values_to` argument we will tell `pivot_longer` the column names we want to assign to the columns containing the current column names and observations, respectively. The default names are `name` and `value`, which are often usable choices. In this case a better choice for these two arguments would be `year` and `app_price`. Note that nowhere in the data file does it tell us this is app-price data. Instead, we deciphered this from the file name. Through `cols`, the second argument, we specify the columns containing observed values; these are the columns that will be *pivoted*. The default is to pivot all columns so, in most cases, we have to specify the columns. In our example we want columns `1960`, `1961` up to `2015`.
 
-The code to pivot the fertility data therefore looks like this:
+The code to pivot the app-price data therefore looks like this:
 
 ```{r}
 new_tidy_data <- wide_data |>
-  pivot_longer(`1960`:`2015`, names_to = "year", values_to = "fertility")
+  pivot_longer(`1960`:`2015`, names_to = "year", values_to = "app_price")
 ```
 
-We can see that the data have been converted to tidy format with columns `year` and `fertility`
+We can see that the data have been converted to tidy format with columns `year` and `app_price`
 
 ```{r}
 head(new_tidy_data)
@@ -35,30 +35,30 @@ and that each year resulted in two rows since we have two countries and this col
 
 ```{r}
 new_tidy_data <- wide_data |>
-  pivot_longer(-country, names_to = "year", values_to = "fertility")
+  pivot_longer(-country, names_to = "year", values_to = "app_price")
 ```
 
 The `new_tidy_data` object looks like the original `tidy_data` we defined this way
 
 ```{r}
-tidy_data <- gapminder |> 
-  filter(country %in% c("South Korea", "Germany") & !is.na(fertility)) |>
-  select(country, year, fertility)
+tidy_data <- global_tech_adoption |>
+  filter(country %in% c("South Korea", "Germany") & !is.na(avg_price_per_app_usd)) |>
+  select(country, year, app_price = avg_price_per_app_usd)
 ```
 
 with just one minor difference. Can you spot it? Look at the data type of the year column. The `pivot_longer` function assumes that column names are characters. So we need a bit more wrangling before we are ready to make a plot. We need to convert the year column to be numbers:
 
 ```{r}
 new_tidy_data <- wide_data |>
-  pivot_longer(-country, names_to = "year", values_to = "fertility") |>
+  pivot_longer(-country, names_to = "year", values_to = "app_price") |>
   mutate(year = as.integer(year))
 ```
 
 Now that the data is tidy, we can use this relatively simple ggplot code:
 
-```{r fertility-year-check, eval=FALSE}
+```{r app-price-year-check, eval=FALSE}
 new_tidy_data |> 
-  ggplot(aes(year, fertility, color = country)) + 
+  ggplot(aes(year, app_price, color = country)) + 
   geom_point()
 ```
 
@@ -68,7 +68,7 @@ As we will see in later examples, it is sometimes useful for data wrangling purp
 
 ```{r}
 new_wide_data <- new_tidy_data |> 
-  pivot_wider(names_from = year, values_from = fertility)
+  pivot_wider(names_from = year, values_from = app_price)
 select(new_wide_data, country, `1960`:`1967`)
 ```
 
@@ -76,19 +76,19 @@ Similar to `pivot_wider`, `names_from` and `values_from` default to `name` and `
 
 ## Separating variables {#sec-separate}
 
-The data wrangling shown above was simple compared to what is usually required. In our example spreadsheet files, we include an illustration that is slightly more complicated. It contains two variables: life expectancy and fertility. However, the way it is stored is not tidy and, as we will explain, not optimal.
+The data wrangling shown above was simple compared to what is usually required. In our example spreadsheet files, we include an illustration that is slightly more complicated. It contains two variables: screen time and app price. However, the way it is stored is not tidy and, as we will explain, not optimal.
 
 ```{r, message=FALSE}
-path <- system.file("extdata", package = "dslabs")
+path <- system.file("extdata", package = "behdslabs")
 
-filename <- "life-expectancy-and-fertility-two-countries-example.csv"
+filename <- "screentime-and-app-price-two-countries-example.csv"
 filename <-  file.path(path, filename)
 
 raw_dat <- read_csv(filename)
 select(raw_dat, 1:5)
 ```
 
-First, note that the data is in wide format. Second, notice that this table includes values for two variables, fertility and life expectancy, with the column name encoding which column represents which variable. Encoding information in the column names is not recommended but, unfortunately, it is quite common. We will put our wrangling skills to work to extract this information and store it in a tidy fashion.
+First, note that the data is in wide format. Second, notice that this table includes values for two variables, app price and screen time, with the column name encoding which column represents which variable. Encoding information in the column names is not recommended but, unfortunately, it is quite common. We will put our wrangling skills to work to extract this information and store it in a tidy fashion.
 
 We can start the data wrangling with the `pivot_longer` function, but we should no longer use the column name `year` for the new column since it also contains the variable type. We will call it `name`, the default, for now:
 
@@ -97,7 +97,7 @@ dat <- raw_dat |> pivot_longer(-country)
 head(dat)
 ```
 
-The result is not exactly what we refer to as tidy since each observation is associated with two, not one, rows. We want to have the values from the two variables, fertility and life expectancy, in two separate columns. The first challenge to achieve this is to separate the `name` column into the year and the variable type. Notice that the entries in this column separate the year from the variable name with an underscore:
+The result is not exactly what we refer to as tidy since each observation is associated with two, not one, rows. We want to have the values from the two variables, app price and screen time, in two separate columns. The first challenge to achieve this is to separate the `name` column into the year and the variable type. Notice that the entries in this column separate the year from the variable name with an underscore:
 
 ```{r}
 dat$name[1:5]
@@ -110,7 +110,7 @@ dat |> separate_wider_delim(name, delim = "_",
                             names = c("year", "name"))
 ```
 
-However, this line of code will give an error. This is because the life expectancy names have three strings separated by `_` and the fertility names have two. This is a common problem so the `separate_wider_delim` function has arguments `too_few` and `too_many` to handle these situations. We see in the help file that the option `too_many = merge` _will merge together any additional pieces_. The following line does what we want:
+However, this line of code will give an error. This is because the screen time names (`screen_time`) have three strings separated by `_` and the app price names (`price`) have two. This is a common problem so the `separate_wider_delim` function has arguments `too_few` and `too_many` to handle these situations. We see in the help file that the option `too_many = merge` _will merge together any additional pieces_. The following line does what we want:
 
 
 
@@ -133,7 +133,7 @@ dat <- dat |>
 dat
 ```
 
-The data is now in tidy format with one row for each observation with three variables: year, fertility, and life expectancy.
+The data is now in tidy format with one row for each observation with three variables: year, app price, and screen time.
 
 Three related function are `separate_wider_position`, `separate_wider_regex`, and `unite`. `separate_wider_position` takes a width instead of delimiter. `separate_wider_regex`, described in @sec-separate_regex, provides much more control over how we separate and what we keep. The `unite` function can be thought of as the inverse of the `separate` function: it combines two columns into one. 
 
@@ -143,8 +143,8 @@ In general, everything you can do with **tidyverse** can be done with **data.tab
 We will illustrate with the previously used this example:
 
 ```{r, message=FALSE, warning=FALSE}
-path <- system.file("extdata", package = "dslabs")
-filename <- file.path(path, "fertility-two-countries-example.csv")
+path <- system.file("extdata", package = "behdslabs")
+filename <- file.path(path, "app-price-two-countries-example.csv")
 ```
 
 ### `pivot_longer` is `melt`
@@ -154,7 +154,7 @@ If in **tidyverse** we  write
 ```{r, message=FALSE}
 wide_data <- read_csv(filename)
 new_tidy_data <- wide_data |>
-  pivot_longer(-1, names_to = "year", values_to = "fertility")
+  pivot_longer(-1, names_to = "year", values_to = "app_price")
 ```
 
 in **data.table** we use the `melt` function.
@@ -167,7 +167,7 @@ dt_wide_data <- fread(filename)
 dt_new_tidy_data  <- melt(dt_wide_data, 
                       measure.vars = 2:ncol(dt_wide_data), 
                       variable.name = "year", 
-                      value.name = "fertility")
+                      value.name = "app_price")
 ```
 
 
@@ -177,22 +177,22 @@ If in **tidyverse** we  write
 
 ```{r}
 new_wide_data <- new_tidy_data |> 
-  pivot_wider(names_from = year, values_from = fertility)
+  pivot_wider(names_from = year, values_from = app_price)
 ```
 
 in **data.table** we use the `dcast` function.
 
 ```{r}
 dt_new_wide_data <- dcast(dt_new_tidy_data, formula = ... ~ year,
-                          value.var = "fertility")
+                          value.var = "app_price")
 ```
 
 ### Separating variables
 
 We now illustrate with this previously used example:
 ```{r, message=FALSE}
-path <- system.file("extdata", package = "dslabs")
-filename <- "life-expectancy-and-fertility-two-countries-example.csv"
+path <- system.file("extdata", package = "behdslabs")
+filename <- "screentime-and-app-price-two-countries-example.csv"
 filename <-  file.path(path, filename)
 ```
 
@@ -230,7 +230,7 @@ Spreadsheets often use names that are not compatible with programming. The most 
 
 ```{r message = FALSE}
 library(janitor)
-names(dat) <- c("Country", "Year", "Fertility",  "Life Expectancy")
+names(dat) <- c("Country", "Year", "App Price",  "Screen Time")
 clean_names(dat) |> names()
 ```
 
@@ -291,21 +291,20 @@ b.  CO2 measures are higher in the summer and the yearly average increased from 
 c.  CO2 measures appear constant and random variability explains the differences.
 d.  CO2 measures do not have a seasonal trend.
 
-4\. Now load the `admissions` data set, which contains admission information for men and women across six majors and keep only the admitted percentage column:
+4\. Now load the `app_task_completion` data set, which contains task-completion information for the mobile and desktop versions of an app across six tasks, and keep only the completion-rate column:
 
 ```{r, eval=FALSE}
-load(admissions)
-dat <- admissions |> select(-applicants)
+dat <- app_task_completion |> select(-n_attempts)
 ```
 
-If we think of an observation as a major, and that each observation has two variables (men admitted percentage and women admitted percentage) then this is not tidy. Use the `pivot_wider` function to wrangle into tidy shape: one row for each major.
+If we think of an observation as a task, and that each observation has two variables (mobile completion rate and desktop completion rate) then this is not tidy. Use the `pivot_wider` function to wrangle into tidy shape: one row for each task.
 
-5\. Now we will try a more advanced wrangling challenge. We want to wrangle the admissions data so that for each major we have 4 observations: `admitted_men`, `admitted_women`, `applicants_men` and `applicants_women`. The *trick* we perform here is actually quite common: first use `pivot_longer` to generate an intermediate data frame and then `pivot_wider` to obtain the tidy data we want. We will go step by step in this and the next two exercises.
+5\. Now we will try a more advanced wrangling challenge. We want to wrangle the task-completion data so that for each task we have 4 observations: `completion_rate_mobile`, `completion_rate_desktop`, `n_attempts_mobile` and `n_attempts_desktop`. The *trick* we perform here is actually quite common: first use `pivot_longer` to generate an intermediate data frame and then `pivot_wider` to obtain the tidy data we want. We will go step by step in this and the next two exercises.
 
-Use the `pivot_longer` function to create a `tmp` data frame with a column containing the type of observation: `admitted` or `applicants`. Call the new columns `name` and `value`.
+Use the `pivot_longer` function to create a `tmp` data frame with a column containing the type of observation: `completion_rate` or `n_attempts`. Call the new columns `name` and `value`.
 
-6\. Now you have an object `tmp` with columns `major`, `gender`, `name` and `value`. Note that if you combine the `name` and `gender`, we get the column names we want: `admitted_men`, `admitted_women`, `applicants_men` and `applicants_women`. Use the function `unite` to create a new column called `column_name`.
+6\. Now you have an object `tmp` with columns `task`, `device`, `name` and `value`. Note that if you combine the `name` and `device`, we get the column names we want: `completion_rate_mobile`, `completion_rate_desktop`, `n_attempts_mobile` and `n_attempts_desktop`. Use the function `unite` to create a new column called `column_name`.
 
-7\. Now use the `pivot_wider` function to generate the tidy data with four variables for each major.
+7\. Now use the `pivot_wider` function to generate the tidy data with four variables for each task.
 
-8\. Now use the pipe to write a line of code that turns `admissions` to the table produced in the previous exercise.
+8\. Now use the pipe to write a line of code that turns `app_task_completion` to the table produced in the previous exercise.

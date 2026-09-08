@@ -35,7 +35,7 @@ This tidy dataset provides average app prices for two countries across the years
 
 ```{r, echo=FALSE, message=FALSE}
 path <- system.file("extdata", package = "behdslabs")
-filename <- file.path(path, "fertility-two-countries-example.csv")
+filename <- file.path(path, "app-price-two-countries-example.csv")
 wide_data <- read_csv(filename)
 select(wide_data, country, `1960`:`1962`) |> as.data.frame()
 ```
