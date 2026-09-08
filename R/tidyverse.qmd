@@ -12,29 +12,29 @@ We will learn how to implement the tidyverse approach throughout the book, but b
 
 ## Tidy data {#sec-tidy-data}
 
-We say that a data table is in  _tidy_ format if each row represents one observation and columns represent the different variables available for each of these observations. The `murders` dataset is an example of a tidy data frame.
+We say that a data table is in  _tidy_ format if each row represents one observation and columns represent the different variables available for each of these observations. The `app_data_breaches` dataset is an example of a tidy data frame.
 
 ```{r, echo=FALSE, cache=FALSE}
-library(dslabs)
-head(murders)
+library(behdslabs)
+head(app_data_breaches)
 ```
 
-Each row represent a state with each of the five columns providing a different variable related to these states: name, abbreviation, region, population, and total murders.
+Each row represent a state with each of the five columns providing a different variable related to these states: name, abbreviation, region, population, and number of reported incidents.
 
 To see how the same information can be provided in different formats, consider the following example:
 
 ```{r, echo=FALSE}
-tidy_data <- gapminder |> 
-  filter(country %in% c("South Korea", "Germany") & !is.na(fertility)) |>
-  select(country, year, fertility)
+tidy_data <- global_tech_adoption |> 
+  filter(country %in% c("South Korea", "Germany") & !is.na(avg_price_per_app_usd)) |>
+  select(country, year, avg_price_per_app_usd)
 head(tidy_data, 6)
 ```
 
-This tidy dataset provides fertility rates for two countries across the years. This is a tidy dataset because each row represents one observation with the three variables being country, year, and fertility rate. However, this dataset originally came in another format and was reshaped for the __dslabs__ package. Originally, the data was in the following format:
+This tidy dataset provides average app prices for two countries across the years. This is a tidy dataset because each row represents one observation with the three variables being country, year, and average app price. However, this dataset originally came in another format and was reshaped for the __behdslabs__ package. Originally, the data was in the following format:
 
 
 ```{r, echo=FALSE, message=FALSE}
-path <- system.file("extdata", package = "dslabs")
+path <- system.file("extdata", package = "behdslabs")
 filename <- file.path(path, "fertility-two-countries-example.csv")
 wide_data <- read_csv(filename)
 select(wide_data, country, `1960`:`1962`) |> as.data.frame()
@@ -55,29 +55,29 @@ The __dplyr__ package from the __tidyverse__ introduces functions that perform s
 
 ### Adding columns 
 
-We want all the necessary information for our analysis to be included in the data frame. The first task is to add the murder rates to our murders data frame.  The function `mutate`  takes the data frame as a first argument and the name and values of the variable as a second argument using the convention `name = values`. So, to add murder rates, we use:
+We want all the necessary information for our analysis to be included in the data frame. The first task is to add the incident rates to our data-breach data frame.  The function `mutate`  takes the data frame as a first argument and the name and values of the variable as a second argument using the convention `name = values`. So, to add incident rates, we use:
  
 ```{r, message=FALSE}
-murders <- mutate(murders, rate = total/population*100000)
+app_data_breaches <- mutate(app_data_breaches, rate = incidents/population*100000)
 ```
 
-Notice that here we used `total` and `population` inside the function, which are objects that are **not** defined in our workspace. But why don't we get an error?
+Notice that here we used `incidents` and `population` inside the function, which are objects that are **not** defined in our workspace. But why don't we get an error?
 
-This is one of __dplyr__'s main features. Functions in this package, such as `mutate`, know to look for variables in the data frame provided in the first argument. In the call to mutate above, `total` will have the values in `murders$total`. This approach makes the code much more readable. 
+This is one of __dplyr__'s main features. Functions in this package, such as `mutate`, know to look for variables in the data frame provided in the first argument. In the call to mutate above, `incidents` will have the values in `app_data_breaches$incidents`. This approach makes the code much more readable. 
 
 We can see that the new column is added:
 
 ```{r}
-head(murders)
+head(app_data_breaches)
 ```
 
 
 ### Row-wise subsetting
 
-Now suppose that we want to filter the data frame to only show the entries for which the murder rate is lower than 0.71. To do this we use the `filter` function, which takes the data frame as the first argument and then a conditional statement as the second. Like `mutate`, we can use the unquoted variable names from `murders` inside the function and it will know we mean the columns and not objects in the workspace.
+Now suppose that we want to filter the data frame to only show the entries for which the incident rate is lower than 0.71. To do this we use the `filter` function, which takes the data frame as the first argument and then a conditional statement as the second. Like `mutate`, we can use the unquoted variable names from `app_data_breaches` inside the function and it will know we mean the columns and not objects in the workspace.
 
 ```{r}
-filter(murders, rate <= 0.71)
+filter(app_data_breaches, rate <= 0.71)
 ```
 
 
@@ -86,23 +86,23 @@ filter(murders, rate <= 0.71)
 Although our data frame only has six columns, some data frames include hundreds. If we want to view just a few, we can use the __dplyr__ `select` function. In the code below we select three columns, assign this to a new object and then filter the new object: 
 
 ```{r}
-new_dataframe <- select(murders, state, region, rate)
+new_dataframe <- select(app_data_breaches, state, region, rate)
 filter(new_dataframe, rate <= 0.71)
 ```
 
-In the call to `select`, the first argument `murders` is an object, but `state`, `region`, and `rate` are variable names. 
+In the call to `select`, the first argument `app_data_breaches` is an object, but `state`, `region`, and `rate` are variable names. 
 
 **dplyr** offers a series of helper functions to select columns based on their content. For example, the following code uses the function `where` to keep only the numeric columns:
 
 ```{r}
-new_dataframe <- select(murders, where(is.numeric))
+new_dataframe <- select(app_data_breaches, where(is.numeric))
 names(new_dataframe)
 ```
 
 The helper functions  `starts_with`, `ends_with`, `contains`, `matches`, and `num_range` can be used to select columns based on their names. Here is an example showing all the rows that start with `r`:
 
 ```{r}
-new_dataframe <- select(murders, starts_with("r"))
+new_dataframe <- select(app_data_breaches, starts_with("r"))
 names(new_dataframe)
 ```
 
@@ -115,28 +115,28 @@ The function `mutate` can also be used to transform variables. For example, the 
 
 ```{r}
 #| eval: false
-mutate(murders, population = log10(population))
+mutate(app_data_breaches, population = log10(population))
 ```
 
-Often, we need to apply the same transformation to several variables. The function `across` facilitates the operation. For example if want to log transform both population and total murders we can use:
+Often, we need to apply the same transformation to several variables. The function `across` facilitates the operation. For example if want to log transform both population and incident counts we can use:
 
 ```{r}
 #| eval: false
-mutate(murders, across(c(population, total), log10))
+mutate(app_data_breaches, across(c(population, incidents), log10))
 ```
 
 The helper functions come in handy when using across. An example is if we want to apply the same transformation to all numeric variables:
 
 ```{r}
 #| eval: false
-mutate(murders, across(where(is.numeric), log10))
+mutate(app_data_breaches, across(where(is.numeric), log10))
 ```
 
 or all character variables:
 
 ```{r}
 #| eval: false
-mutate(murders, across(where(is.character), tolower))
+mutate(app_data_breaches, across(where(is.character), tolower))
 ```
 
 
@@ -149,7 +149,7 @@ You are ready to do exercises 5-11.
 
 In R we can perform a series of operations, for example `select` and then `filter`, by sending the results of one function to another using what is called the _pipe operator_: `%>%`. Since R version 4.1.0, you can also use `|>`. Some details are included below. 
 
-We wrote code in @sec-tidyverse-col-subset to show three variables (state, region, rate) for states that have murder rates below 0.71. To do this, we defined the intermediate object `new_dataframe`. In __dplyr__ we can write code that looks more like a description of what we want to do without intermediate objects: 
+We wrote code in @sec-tidyverse-col-subset to show three variables (state, region, rate) for states that have incident rates below 0.71. To do this, we defined the intermediate object `new_dataframe`. In __dplyr__ we can write code that looks more like a description of what we want to do without intermediate objects: 
 
 $$ \mbox{original data }
 \rightarrow \mbox{ select }
@@ -159,7 +159,7 @@ $$ \mbox{original data }
 For such an operation, we can use the pipe `|>`. The code looks like this:
 
 ```{r}
-murders |> select(state, region, rate) |> filter(rate <= 0.71)
+app_data_breaches |> select(state, region, rate) |> filter(rate <= 0.71)
 ```
 
 This line of code is equivalent to the two lines in @sec-tidyverse-col-subset What is going on here? 
@@ -185,9 +185,9 @@ Remember that the pipe sends values to the first argument, so we can define othe
 Therefore, when using the pipe with data frames and __dplyr__, we no longer need to specify the required first argument since the __dplyr__ functions we have described all take the data as the first argument. In the code we wrote:
 
 ```{r, eval=FALSE}
-murders |> select(state, region, rate) |> filter(rate <= 0.71)
+app_data_breaches |> select(state, region, rate) |> filter(rate <= 0.71)
 ```
-`murders` is the first argument of the `select` function, and the new data frame (formerly `new_dataframe`) is the first argument of the `filter` function.
+`app_data_breaches` is the first argument of the `select` function, and the new data frame (formerly `new_dataframe`) is the first argument of the `filter` function.
 
 Note that the pipe works well with functions where the first argument is the input data. Functions in __tidyverse__ packages like __dplyr__ have this format and can be used easily with the pipe.
 
@@ -202,23 +202,23 @@ library(tidyverse)
 
 ### The `summarize` function {#sec-summarize}
 
-The `summarize` function in __dplyr__ provides a way to compute summary statistics with intuitive and readable code. We start with a simple example based on heights. The `heights` dataset includes heights and sex reported by students in an in-class survey. 
+The `summarize` function in __dplyr__ provides a way to compute summary statistics with intuitive and readable code. We start with a simple example based on reaction times. The `reaction_times` dataset includes reaction times (in milliseconds) and sex recorded in a simple response task. 
 
 ```{r}
 library(dplyr)
-library(dslabs)
+library(behdslabs)
 ```
 
 The following code computes the average and standard deviation for females:
 
 ```{r}
-s <- heights |> 
+s <- reaction_times |> 
   filter(sex == "Female") |>
-  summarize(average = mean(height), standard_deviation = sd(height))
+  summarize(average = mean(rt_ms), standard_deviation = sd(rt_ms))
 s
 ```
 
-This takes our original data frame as input, filters it to keep only females, and then produces a new summarized table with just the average and the standard deviation of heights. We get to choose the names of the columns of the resulting table. For example, above we decided to use `average` and `standard_deviation`, but we could have used other names just the same.
+This takes our original data frame as input, filters it to keep only females, and then produces a new summarized table with just the average and the standard deviation of reaction times. We get to choose the names of the columns of the resulting table. For example, above we decided to use `average` and `standard_deviation`, but we could have used other names just the same.
 
 Because the resulting table stored in `s` is a data frame, we can access the components with the accessor `$`:
 
@@ -227,27 +227,27 @@ s$average
 s$standard_deviation
 ```
 
-As with most other __dplyr__ functions, `summarize` is aware of the variable names and we can use them directly. So when inside the call to the `summarize` function we write `mean(height)`, the function is accessing the column with the name "height" and then computing the average of the resulting numeric vector. We can compute any other summary that operates on vectors and returns a single value. 
+As with most other __dplyr__ functions, `summarize` is aware of the variable names and we can use them directly. So when inside the call to the `summarize` function we write `mean(rt_ms)`, the function is accessing the column with the name "rt_ms" and then computing the average of the resulting numeric vector. We can compute any other summary that operates on vectors and returns a single value. 
 
-For another example of how we can use the `summarize` function, let's compute the average murder rate for the United States. Remember our data table includes total murders and population size for each state and we have already used __dplyr__ to add a murder rate column:
+For another example of how we can use the `summarize` function, let's compute the average incident rate for the United States. Remember our data table includes reported incidents and population size for each state and we have already used __dplyr__ to add a incident rate column:
 
 ```{r}
-murders <- murders |> mutate(rate = total/population*100000)
+app_data_breaches <- app_data_breaches |> mutate(rate = incidents/population*100000)
 ```
 
-Remember that the US murder rate is **not** the average of the state murder rates:
+Remember that the US incident rate is **not** the average of the state incident rates:
 
 ```{r}
-murders |>
+app_data_breaches |>
   summarize(rate = mean(rate))
 ```
 
-This is because in the computation above, the small states are given the same weight as the large ones. The US murder rate is the total number of murders in the US divided by the total US population. So the correct computation is:
+This is because in the computation above, the small states are given the same weight as the large ones. The US incident rate is the total number of incidents in the US divided by the total US population. So the correct computation is:
 
 ```{r}
-us_murder_rate <- murders |>
-  summarize(rate = sum(total)/sum(population)*100000)
-us_murder_rate
+us_incident_rate <- app_data_breaches |>
+  summarize(rate = sum(incidents)/sum(population)*100000)
+us_incident_rate
 ```
 
 This computation counts larger states proportionally to their size which results in a larger value.
@@ -255,16 +255,16 @@ This computation counts larger states proportionally to their size which results
 
 ### Multiple summaries
 
-Suppose we want three summaries from the same variable such as the median, minimum, and maximum heights. We can use `summarize` like this:
+Suppose we want three summaries from the same variable such as the median, minimum, and maximum reaction times. We can use `summarize` like this:
  
 ```{r}
-heights |> summarize(median = median(height), min = min(height), max = max(height))
+reaction_times |> summarize(median = median(rt_ms), min = min(rt_ms), max = max(rt_ms))
 ```
 
 But we can obtain these three values with just one line using the `quantile` function. For any value `p` between 0 and 1, `quantile(x, p)` returns the value for which proportion `p` of the data in `x` are at or below. Since the minimum is the value below which 0% of the data falls, the median the value below which 50% falls, and the maximum the value below which 100% falls, we can obtain all three with `quantile(x, c(0.5, 0, 1))`. However, to leverage this functionality, we can't use `summarize` because it expects one value per row. Instead we have to use the `reframe` function:
 
 ```{r}
-heights |> reframe(quantiles = quantile(height, c(0.5, 0, 1)))
+reaction_times |> reframe(quantiles = quantile(rt_ms, c(0.5, 0, 1)))
 ```
 
 If we want a column per summary, as the `summarize` call above,
@@ -280,44 +280,44 @@ median_min_max <- function(x){
 Then we can call `summarize` as above:
 
 ```{r}
-heights |> summarize(median_min_max(height))
+reaction_times |> summarize(median_min_max(rt_ms))
 ```
 
 ### Group then summarize with `group_by` {#sec-group-by}
 
-A common operation in data exploration is to first split data into groups and then compute summaries for each group. For example, we may want to compute the average and standard deviation for men's and women's heights separately. The `group_by` function helps us do this. 
+A common operation in data exploration is to first split data into groups and then compute summaries for each group. For example, we may want to compute the average and standard deviation for men's and women's reaction times separately. The `group_by` function helps us do this. 
 
 If we type this:
 
 ```{r}
-heights |> group_by(sex)
+reaction_times |> group_by(sex)
 ```
 
-The result does not look very different from `heights`, except we see `Groups: sex [2]` when we print the object. Although not immediately obvious from its appearance, this is now a special data frame called a _grouped data frame_, and __dplyr__ functions, in particular `summarize`, will behave differently when acting on this object. Conceptually, you can think of this table as many tables, with the same columns but not necessarily the same number of rows, stacked together in one object. When we summarize the data after grouping, this is what happens:
+The result does not look very different from `reaction_times`, except we see `Groups: sex [2]` when we print the object. Although not immediately obvious from its appearance, this is now a special data frame called a _grouped data frame_, and __dplyr__ functions, in particular `summarize`, will behave differently when acting on this object. Conceptually, you can think of this table as many tables, with the same columns but not necessarily the same number of rows, stacked together in one object. When we summarize the data after grouping, this is what happens:
 
 ```{r}
-heights |> 
+reaction_times |> 
   group_by(sex) |>
-  summarize(average = mean(height), standard_deviation = sd(height))
+  summarize(average = mean(rt_ms), standard_deviation = sd(rt_ms))
 ```
 
 The `summarize` function applies the summarization to each group separately.
 
-For another example, let's compute the median, minimum, and maximum murder rate in the four regions of the country using the `median_min_max` defined above:
+For another example, let's compute the median, minimum, and maximum incident rate in the four regions of the country using the `median_min_max` defined above:
 
 
 ```{r}
-murders |> 
+app_data_breaches |> 
   group_by(region) |>
   summarize(median_min_max(rate))
 ```
 
 ### Extracting variables with `pull`
 
-The `us_murder_rate` object defined in @sec-summarize represents just one number. Yet we are storing it in a data frame:
+The `us_incident_rate` object defined in @sec-summarize represents just one number. Yet we are storing it in a data frame:
 
 ```{r}
-class(us_murder_rate)
+class(us_incident_rate)
 ```
 
 since, as most __dplyr__ functions, `summarize` always returns a data frame.
@@ -325,17 +325,17 @@ since, as most __dplyr__ functions, `summarize` always returns a data frame.
 This might be problematic if we want to use this result with functions that require a numeric value. Here we show a useful trick for accessing values stored in data when using pipes: when a data object is piped that object and its columns can be accessed using the `pull` function. To get a number from the original data table with one additional line of code we can type:
 
 ```{r}
-us_murder_rate <- murders |> 
-  summarize(rate = sum(total)/sum(population)*100000) |>
+us_incident_rate <- app_data_breaches |> 
+  summarize(rate = sum(incidents)/sum(population)*100000) |>
   pull(rate)
 
-us_murder_rate
+us_incident_rate
 ```
 
 which is now a numeric:
 
 ```{r}
-class(us_murder_rate)
+class(us_incident_rate)
 ```
 
 ## Sorting
@@ -343,23 +343,23 @@ class(us_murder_rate)
 When examining a dataset, it is often convenient to sort the data frame by the different columns. We know about the `order` and `sort` function, but for ordering entire data frames, the __dplyr__ function `arrange` is useful. For example, here we order the states by population size:
 
 ```{r}
-murders |> arrange(population) |> head()
+app_data_breaches |> arrange(population) |> head()
 ```
 
-With `arrange` we get to decide which column to sort by. To see the states sorted by murder rates, for example, we would use `arrange(rate)` instead.
+With `arrange` we get to decide which column to sort by. To see the states sorted by incident rates, for example, we would use `arrange(rate)` instead.
 
-Note that the default behavior is to order in ascending order. In __dplyr__, the function `desc` transforms a vector so that it is in descending order. To sort the data frame by murder rates in descending order, we can type:
+Note that the default behavior is to order in ascending order. In __dplyr__, the function `desc` transforms a vector so that it is in descending order. To sort the data frame by incident rates in descending order, we can type:
 
 ```{r, eval=FALSE}
-murders |> arrange(desc(rate)) 
+app_data_breaches |> arrange(desc(rate)) 
 ```
 
 ### Nested sorting 
 
-If we are ordering by a column with ties, we can use a second column to break the tie. Similarly, a third column can be used to break ties between first and second and so on. Here we order by `region`, then within region we order by murder rate:
+If we are ordering by a column with ties, we can use a second column to break the tie. Similarly, a third column can be used to break ties between first and second and so on. Here we order by `region`, then within region we order by incident rate:
 
 ```{r}
-murders |> 
+app_data_breaches |> 
   arrange(region, rate) |> 
   head()
 ```
@@ -367,10 +367,10 @@ murders |>
 
 ### The top $n$ 
 
-In the code above, we have used the function `head` to avoid having the page fill up with the entire dataset. For instance, using `arrange(desc(rate))` followed by `head` would show the 6 states with the largest murder rates, in order. Instead, to view a specific number of observations with the highest murder rates, we can use the `slice_max` function. This function takes a data frame as it's first argument, the number of rows to show in the second, and the variable to filter by in the third. Here is an example of how to see the top 5 rows:
+In the code above, we have used the function `head` to avoid having the page fill up with the entire dataset. For instance, using `arrange(desc(rate))` followed by `head` would show the 6 states with the largest incident rates, in order. Instead, to view a specific number of observations with the highest incident rates, we can use the `slice_max` function. This function takes a data frame as it's first argument, the number of rows to show in the second, and the variable to filter by in the third. Here is an example of how to see the top 5 rows:
 
 ```{r}
-murders |> slice_max(rate, n = 5)
+app_data_breaches |> slice_max(rate, n = 5)
 ```
 
 The function `slice_min` does the same, but for the smallest values.
@@ -382,16 +382,16 @@ You are ready to do exercises 12-19.
 
 ## Tibbles
 
-To work with the tidyverse, data must be stored in data frames. We introduced the data frame in @sec-data-frames and have been using the `murders` data frame throughout the book. In @sec-group-by we introduced the `group_by` function, which permits stratifying data before computing summary statistics. But where is the group information stored in the data frame? 
+To work with the tidyverse, data must be stored in data frames. We introduced the data frame in @sec-data-frames and have been using the `app_data_breaches` data frame throughout the book. In @sec-group-by we introduced the `group_by` function, which permits stratifying data before computing summary statistics. But where is the group information stored in the data frame? 
 
 ```{r}
-murders |> group_by(region)
+app_data_breaches |> group_by(region)
 ```
 
 Notice that there are no columns with this information. But, if you look closely at the output above, you see the line `A tibble` followed by dimensions. We can learn the class of the returned object using:
 
 ```{r}
-murders |> group_by(region) |> class()
+app_data_breaches |> group_by(region) |> class()
 ```
 
 The `tbl`, pronounced "tibble", is a special kind of data frame. The functions `group_by` and `summarize` always return this type of data frame. The `group_by` function returns a special kind of `tbl`, the `grouped_df`. We will say more about these later. For consistency, the __dplyr__ manipulation verbs (`select`, `filter`, `mutate`, and `arrange`) preserve the class of the input: if they receive a regular data frame they return a regular data frame, while if they receive a tibble they return a tibble. But tibbles are the preferred format in the tidyverse and as a result tidyverse functions that produce a data frame from scratch return a tibble. For example, in @sec-importing-data we will see that tidyverse functions used to import data create tibbles.
@@ -404,19 +404,19 @@ Tibbles are very similar to data frames. In fact, you can think of them as a mod
 
 **\(1\) Tibbles display better** 
 
-The print method for tibbles is more readable than that of a data frame. To see this, compare the outputs of typing `murders` and the output of murders if we convert it to a tibble. We can do this using `as_tibble(murders)`. If using RStudio, output for a tibble adjusts to your window size. To see this, change the width of your R console and notice how more/less columns are shown.
+The print method for tibbles is more readable than that of a data frame. To see this, compare the outputs of typing `app_data_breaches` and the output of `app_data_breaches` if we convert it to a tibble. We can do this using `as_tibble(app_data_breaches)`. If using RStudio, output for a tibble adjusts to your window size. To see this, change the width of your R console and notice how more/less columns are shown.
 
 
 If you subset the columns of a data frame, you may get back an object that is not a data frame, such as a vector or scalar. For example:
 
 ```{r}
-class(murders[,4])
+class(app_data_breaches[,4])
 ```
 
 is not a data frame. With tibbles this does not happen:
 
 ```{r}
-class(as_tibble(murders)[,4])
+class(as_tibble(app_data_breaches)[,4])
 ```
 
 This is useful in the tidyverse since functions require data frames as input. 
@@ -424,19 +424,19 @@ This is useful in the tidyverse since functions require data frames as input.
 With tibbles, if you want to access the vector that defines a column, and not get back a data frame, you need to use the accessor `$`:
 
 ```{r}
-class(as_tibble(murders)$population)
+class(as_tibble(app_data_breaches)$population)
 ```
 
 A related feature is that tibbles will give you a warning if you try to access a column that does not exist. If we accidentally write `Population` instead of `population` this:
 
 ```{r}
-murders$Population
+app_data_breaches$Population
 ```
 
 returns a `NULL` with no warning, which can make it harder to debug. In contrast, if we try this with a tibble we get an informative warning:
 
 ```{r}
-as_tibble(murders)$Population
+as_tibble(app_data_breaches)$Population
 ```
 
 
@@ -556,17 +556,17 @@ case_when(x < 0 ~ "Negative",
           TRUE  ~ "Zero")
 ```
 
-A common use for this function is to define categorical variables based on existing variables. For example, suppose we want to compare the murder rates in four groups of states: _New England_, _West Coast_, _South_,  and _other_. For each state, we need to ask if it is in New England, if it is not we ask if it is in the West Coast, if not we ask if it is in the South, and if not we assign _other_. Here is how we use `case_when` to do this:
+A common use for this function is to define categorical variables based on existing variables. For example, suppose we want to compare the incident rates in four groups of states: _New England_, _West Coast_, _South_,  and _other_. For each state, we need to ask if it is in New England, if it is not we ask if it is in the West Coast, if not we ask if it is in the South, and if not we assign _other_. Here is how we use `case_when` to do this:
 
 ```{r}
-murders |> 
+app_data_breaches |> 
   mutate(group = case_when(
     abb %in% c("ME", "NH", "VT", "MA", "RI", "CT") ~ "New England",
     abb %in% c("WA", "OR", "CA") ~ "West Coast",
     region == "South" ~ "South",
     TRUE ~ "Other")) |>
   group_by(group) |>
-  summarize(rate = sum(total)/sum(population)*10^5) 
+  summarize(rate = sum(incidents)/sum(population)*10^5) 
 ```
 
 ### `between`
@@ -622,52 +622,52 @@ d. `Formaldehyde`
 e. `Orange`
 f. `UCBAdmissions`
 
-5\. Load the __dplyr__ package and the murders dataset.
+5\. Load the __dplyr__ package and the data-breach dataset.
 
 ```{r, eval=FALSE}
 library(dplyr)
-library(dslabs)
+library(behdslabs)
 ```
 
 You can add columns using the __dplyr__ function `mutate`. This function is aware of the column names and inside the function you can call them unquoted:
 
 
 ```{r, eval=FALSE}
-murders <- mutate(murders, population_in_millions = population/10^6)
+app_data_breaches <- mutate(app_data_breaches, population_in_millions = population/10^6)
 ```
 
-We can write `population` rather than `murders$population`. The function `mutate` knows we are grabbing columns from `murders`.
+We can write `population` rather than `app_data_breaches$population`. The function `mutate` knows we are grabbing columns from `app_data_breaches`.
 
-Use the function `mutate` to add a murders column named `rate` with the per 100,000 murder rate as in the example code above. Make sure you redefine `murders` as done in the example code above (`murders <- [your code]`) so we can keep using this variable.
+Use the function `mutate` to add a column named `rate` with the per 100,000 incident rate as in the example code above. Make sure you redefine `app_data_breaches` as done in the example code above (`app_data_breaches <- [your code]`) so we can keep using this variable.
 
-6\. If `rank(x)` gives you the ranks of `x` from lowest to highest, `rank(-x)` gives you the ranks from highest to lowest. Use the function `mutate` to add a column `rank` containing the rank of murder rate from highest to lowest. Make sure you redefine `murders` so we can keep using this variable.
+6\. If `rank(x)` gives you the ranks of `x` from lowest to highest, `rank(-x)` gives you the ranks from highest to lowest. Use the function `mutate` to add a column `rank` containing the rank of incident rate from highest to lowest. Make sure you redefine `app_data_breaches` so we can keep using this variable.
 
 
 
 7\. With __dplyr__, we can use `select` to show only certain columns. For example, with this code we would only show the states and population sizes:
 
 ```{r, eval=FALSE}
-select(murders, state, population)
+select(app_data_breaches, state, population)
 ```
 
-Use `select` to show the state names and abbreviations in `murders`. Do not redefine `murders`, just show the results.
+Use `select` to show the state names and abbreviations in `app_data_breaches`. Do not redefine `app_data_breaches`, just show the results.
 
 
 8\. The __dplyr__ function `filter` is used to choose specific rows of the data frame to keep. Unlike `select` which is for columns, `filter` is for rows. For example, you can show just the New York row like this:
 
 ```{r, eval=FALSE}
-filter(murders, state == "New York")
+filter(app_data_breaches, state == "New York")
 ```
 
 You can use other logical vectors to filter rows.
 
-Use `filter` to show the top 5 states with the highest murder rates. From here on, do not change the murders dataset, just show the result. Remember that you can filter based on the `rank` column.
+Use `filter` to show the top 5 states with the highest incident rates. From here on, do not change the data-breach dataset, just show the result. Remember that you can filter based on the `rank` column.
 
  
 9\. We can remove rows using the `!=` operator. For example, to remove Florida, we would do this:
 
 ```{r, eval=FALSE}
-no_florida <- filter(murders, state != "Florida")
+no_florida <- filter(app_data_breaches, state != "Florida")
 ```
 
 Create a new data frame called `no_south` that removes states from the South region. How many states are in this category? You can use the function `nrow` for this.
@@ -676,31 +676,31 @@ Create a new data frame called `no_south` that removes states from the South reg
 10\. We can also use `%in%` to filter with __dplyr__. You can therefore see the data from New York and Texas like this:
 
 ```{r, eval=FALSE}
-filter(murders, state %in% c("New York", "Texas"))
+filter(app_data_breaches, state %in% c("New York", "Texas"))
 ```
 
-Create a new data frame called `murders_nw` with only the states from the Northeast and the West.  How many states are in this category? 
+Create a new data frame called `breaches_nw` with only the states from the Northeast and the West.  How many states are in this category? 
 
 
-11\. Suppose you want to live in the Northeast or West **and** want the murder rate to be less than 1. We want to see the data for the states satisfying these options. Note that you can use logical operators like `&` with `filter`. Here is an example in which we filter to keep only small states in the Northeast region.
+11\. Suppose you want to live in the Northeast or West **and** want the incident rate to be less than 1. We want to see the data for the states satisfying these options. Note that you can use logical operators like `&` with `filter`. Here is an example in which we filter to keep only small states in the Northeast region.
 
 ```{r, eval=FALSE}
-filter(murders, population < 5000000 & region == "Northeast")
+filter(app_data_breaches, population < 5000000 & region == "Northeast")
 ```
 
-Make sure `murders` has been defined with `rate` and `rank` and still has all states. Create a table called `my_states` that contains rows for states satisfying both the conditions: it is in the Northeast or West and the murder rate is less than 1.  Use `select` to show only the state name, the rate, and the rank.
+Make sure `app_data_breaches` has been defined with `rate` and `rank` and still has all states. Create a table called `my_states` that contains rows for states satisfying both the conditions: it is in the Northeast or West and the incident rate is less than 1.  Use `select` to show only the state name, the rate, and the rank.
 
 
-12\. The pipe `|>` can be used to perform operations sequentially without having to define intermediate objects. Start by redefining `murders` to include rate and rank.
+12\. The pipe `|>` can be used to perform operations sequentially without having to define intermediate objects. Start by redefining `app_data_breaches` to include rate and rank.
 
 ```{r, eval=FALSE}
-murders <- mutate(murders, rate =  total/population*100000, 
+app_data_breaches <- mutate(app_data_breaches, rate =  incidents/population*100000, 
                   rank = rank(-rate))
 ```
 
 In the solution to the previous exercise, we did the following:
 ```{r, eval=FALSE}
-my_states <- filter(murders, region %in% c("Northeast", "West") & 
+my_states <- filter(app_data_breaches, region %in% c("Northeast", "West") & 
                       rate < 1)
 
 select(my_states, state, rate, rank)
@@ -709,7 +709,7 @@ select(my_states, state, rate, rank)
 The pipe `|>` permits us to perform both operations sequentially without having to define an intermediate variable `my_states`. We therefore could have mutated and selected in the same line like this:
 
 ```{r, eval=FALSE}
-mutate(murders, rate =  total/population*100000, 
+mutate(app_data_breaches, rate =  incidents/population*100000, 
        rank = rank(-rate)) |>
   select(state, rate, rank)
 ```
@@ -720,7 +720,7 @@ Repeat the previous exercise, but now instead of creating a new object, show the
 
     
 ```{r, eval=FALSE}
-my_states <- murders |>
+my_states <- app_data_breaches |>
   mutate SOMETHING |> 
   filter SOMETHING |> 
   select SOMETHING
@@ -736,16 +736,16 @@ library(NHANES)
 The __NHANES__ data has many missing values. The `mean` and `sd` functions in R will return `NA` if any of the entries of the input vector is an `NA`. Here is an example:
 
 ```{r}
-library(dslabs)
-mean(na_example)
-sd(na_example)
+library(behdslabs)
+mean(daily_mood_ratings)
+sd(daily_mood_ratings)
 ```
 
 To ignore the `NA`s we can use the `na.rm` argument:
 
 ```{r}
-mean(na_example, na.rm = TRUE)
-sd(na_example, na.rm = TRUE)
+mean(daily_mood_ratings, na.rm = TRUE)
+sd(daily_mood_ratings, na.rm = TRUE)
 ```
 
 Let's now explore the NHANES data.
@@ -769,23 +769,23 @@ Hint: Use `filter` and `summarize` and use the `na.rm = TRUE` argument when comp
 18\. For males between the ages of 40-49, compare systolic blood pressure across race as reported in the `Race1` variable. Order the resulting table from lowest to highest average systolic blood pressure.
 
 
-19\. Load the `murders` dataset. Which of the following is true?
+19\. Load the `app_data_breaches` dataset. Which of the following is true?
 
-a. `murders` is in tidy format and is stored in a tibble.
-b. `murders` is in tidy format and is stored in a data frame.
-c. `murders` is not in tidy format and is stored in a tibble.
-d. `murders` is not in tidy format and is stored in a data frame.
+a. `app_data_breaches` is in tidy format and is stored in a tibble.
+b. `app_data_breaches` is in tidy format and is stored in a data frame.
+c. `app_data_breaches` is not in tidy format and is stored in a tibble.
+d. `app_data_breaches` is not in tidy format and is stored in a data frame.
     
-20\. Use `as_tibble` to convert the `murders` data table into a tibble and save it in an object called `murders_tibble`.
+20\. Use `as_tibble` to convert the `app_data_breaches` data table into a tibble and save it in an object called `breaches_tibble`.
     
-21\. Use the `group_by` function to convert `murders` into a tibble that is grouped by region.
+21\. Use the `group_by` function to convert `app_data_breaches` into a tibble that is grouped by region.
 
 22\. Write tidyverse code that is equivalent to this code:
     
 ```{r, eval=FALSE}
-exp(mean(log(murders$population)))
+exp(mean(log(app_data_breaches$population)))
 ```
 
-Write it using the pipe so that each function is called without arguments. Use `pull` to access the population variable. Hint: The code should start with `murders |>`.
+Write it using the pipe so that each function is called without arguments. Use `pull` to access the population variable. Hint: The code should start with `app_data_breaches |>`.
     
 23\. Use the `map_df` to create a data frame with three columns named `n`, `s_n`, and `s_n_2`. The first column should contain the numbers 1 through 100. The second and third columns should each contain the sum of 1 through $n$ with $n$ the row number.  
