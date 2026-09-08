@@ -20,33 +20,33 @@ if (a != 0) {
 ```
 
 
-Let's look at one more example using the US murders data frame:
+Let's look at one more example using the US data-breach data frame:
 
 ```{r}
-library(dslabs)
-murder_rate <- murders$total / murders$population*100000
+library(behdslabs)
+incident_rate <- app_data_breaches$incidents / app_data_breaches$population*100000
 ```
 
 
-Here is a very simple example that tells us the state with the lowest murder rate if it is lower than 0.5 per 100,000. The if-else statement protects us from the case in which no state satisfies the condition.
+Here is a very simple example that tells us the state with the lowest data-breach incident rate if it is lower than 0.5 per 100,000. The if-else statement protects us from the case in which no state satisfies the condition.
 
 ```{r}
-ind <- which.min(murder_rate)
+ind <- which.min(incident_rate)
 
-if (murder_rate[ind] < 0.5) {
-  print(murders$state[ind]) 
+if (incident_rate[ind] < 0.5) {
+  print(app_data_breaches$state[ind])
 } else{
-  print("No state has murder rate that low")
+  print("No state has an incident rate that low")
 }
 ```
 
 If we try it again with a rate of 0.25, we get a different answer:
 
 ```{r}
-if (murder_rate[ind] < 0.25) {
-  print(murders$state[ind]) 
+if (incident_rate[ind] < 0.25) {
+  print(app_data_breaches$state[ind])
 } else{
-  print("No state has a murder rate that low.")
+  print("No state has an incident rate that low.")
 }
 ```
 
@@ -80,7 +80,7 @@ if(knitr::is_html_output()){
 Here is an example of how this function can be readily used to replace all the missing values in a vector with zeros:
 
 ```{r}
-no_nas <- ifelse(is.na(na_example), 0, na_example) 
+no_nas <- ifelse(is.na(daily_mood_ratings), 0, daily_mood_ratings)
 sum(is.na(no_nas))
 ```
 
