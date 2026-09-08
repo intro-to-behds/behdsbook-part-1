@@ -82,7 +82,7 @@ locale(date_names = "es")
 In @sec-reader, we noted that reading the file:
 
 ```{r}
-fn <- file.path(system.file("extdata", package = "dslabs"), "calificaciones.csv")
+fn <- file.path(system.file("extdata", package = "behdslabs"), "calificaciones.csv")
 ```
 
 had a encoding different than UTF-8, the default. We used `guess_encoding` to determine the correct one:
