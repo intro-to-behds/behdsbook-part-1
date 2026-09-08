@@ -10,17 +10,17 @@ In this book, we use tidyverse packages, primarily because they offer readabilit
 
 ```{r, message=FALSE, warning=FALSE, cache=FALSE}
 library(dplyr)
-library(dslabs)
+library(behdslabs)
 library(data.table)
 ```
 
-We will provide example code showing the **data.table** approaches to **dplyr**'s `mutate`, `filter`, `select`, `group_by`, and `summarize` shown in @sec-tidyverse. As in that chapter, we will use the `murders` dataset:
+We will provide example code showing the **data.table** approaches to **dplyr**'s `mutate`, `filter`, `select`, `group_by`, and `summarize` shown in @sec-tidyverse. As in that chapter, we will use the `app_data_breaches` dataset:
 
 
 The first step when using **data.table** is to convert the data frame into a `data.table` object using the `as.data.table` function:
 
 ```{r}
-murders_dt <- as.data.table(murders)
+breaches_dt <- as.data.table(app_data_breaches)
 ```
 
 Without this initial step, most of the approaches shown below will not work.
@@ -30,21 +30,21 @@ Without this initial step, most of the approaches shown below will not work.
 Selecting with **data.table** is done in a similar way to subsetting matrices. While with **dplyr** we write
 
 ```{r, eval=FALSE}
-select(murders, state, region)
+select(app_data_breaches, state, region)
 ```
 
 in **data.table** we use 
 
 ```{r}
 #| eval: false
-murders_dt[, c("state", "region")] 
+breaches_dt[, c("state", "region")] 
 ```
 
 We can also use the `.()` **data.table** notation to alert R that variables inside the parenthesis are column names, not objects in the R environment. So the above can also be written like this:
 
 ```{r}
 #| eval: false
-murders_dt[, .(state, region)] 
+breaches_dt[, .(state, region)] 
 ```
 
 ### Adding or transforming variables
@@ -52,21 +52,21 @@ murders_dt[, .(state, region)]
 We learned to use the **dplyr** `mutate` function with this example:
 
 ```{r, eval=FALSE}
-murders <- mutate(murders, rate = total / population * 100000)
+app_data_breaches <- mutate(app_data_breaches, rate = incidents / population * 100000)
 ```
 
 **data.table** uses an approach that avoids a new assignment (update by reference). This can help with large datasets that take up most of your computer's memory. The **data.table** `:=` function permits us to do this:
 
 ```{r, message=FALSE}
-murders_dt[, rate := total / population * 100000]
+breaches_dt[, rate := incidents / population * 100000]
 ```
 
-This adds a new column, `rate`, to the table. Notice that, as in **dplyr**, we used `total` and `population` without quotes.
+This adds a new column, `rate`, to the table. Notice that, as in **dplyr**, we used `incidents` and `population` without quotes.
 
 To define new multiple columns, we can use the `:=` function with multiple arguments:
 
 ```{r, message=FALSE}
-murders_dt[, ":="(rate = total / population * 100000, rank = rank(population))]
+breaches_dt[, ":="(rate = incidents / population * 100000, rank = rank(population))]
 ```
 
 ### Reference versus copy
@@ -128,26 +128,26 @@ y
 With **dplyr**, we filtered like this:
 
 ```{r, eval=FALSE}
-filter(murders, rate <= 0.7)
+filter(app_data_breaches, rate <= 0.7)
 ```
 
 With **data.table**, we again use an approach similar to subsetting matrices, except like **dplyr**, **data.table** knows that `rate` refers to a column name and not an object in the R environment:
 
 ```{r}
 #| eval: false
-murders_dt[rate <= 0.7]
+breaches_dt[rate <= 0.7]
 ```
 
 Notice that we can combine the filter and select into one succinct command. Here are the state names and rates for those with rates below 0.7.
 
 ```{r}
-murders_dt[rate <= 0.7, .(state, rate)]
+breaches_dt[rate <= 0.7, .(state, rate)]
 ```
 
 which is more compact than the **dplyr** approach:
 
 ```{r, eval=FALSE}
-murders |> filter(rate <= 0.7) |> select(state, rate)
+app_data_breaches |> filter(rate <= 0.7) |> select(state, rate)
 ```
 
 :::{.callout-note}
@@ -156,36 +156,36 @@ You are ready to do exercises 1-7.
 
 ## Summarizing data
 
-As an example, we will use the `heights` dataset:
+As an example, we will use the `reaction_times` dataset:
 
 ```{r}
-heights_dt <- as.data.table(heights)
+rt_dt <- as.data.table(reaction_times)
 ```
 
 In **data.table**, we can call functions inside `.()` and they will be applied to columns So the equivalent of:
 
 ```{r}
-s <- heights |> summarize(avg = mean(height), sd = sd(height))
+s <- reaction_times |> summarize(avg = mean(rt_ms), sd = sd(rt_ms))
 ```
 
 in **dplyr** is the following in **data.table**:
 
 ```{r}
-s <- heights_dt[, .(avg = mean(height), sd = sd(height))]
+s <- rt_dt[, .(avg = mean(rt_ms), sd = sd(rt_ms))]
 ```
 
 Note that this permits a compact way of subsetting and then summarizing. Instead of:
 
 ```{r, eval=FALSE}
-s <- heights |> 
+s <- reaction_times |>
   filter(sex == "Female") |>
-  summarize(avg = mean(height), sd = sd(height))
+  summarize(avg = mean(rt_ms), sd = sd(rt_ms))
 ```
 
 we can write:
 
 ```{r}
-s <- heights_dt[sex == "Female", .(avg = mean(height), sd = sd(height))]
+s <- rt_dt[sex == "Female", .(avg = mean(rt_ms), sd = sd(rt_ms))]
 ```
 
 ### Multiple summaries
@@ -204,7 +204,7 @@ In __data.table__ we place a function call within `.()` to obtain the three numb
 
 ```{r}
 #| eval: false
-heights_dt[, .(median_min_max(height))]
+rt_dt[, .(median_min_max(rt_ms))]
 ```
 
 ### Group then summarize
@@ -212,28 +212,28 @@ heights_dt[, .(median_min_max(height))]
 The `group_by` followed by `summarize` in **dplyr** is performed in one line in **data.table**. We simply add the `by` argument to split the data into groups based on the values in categorical variable:
 
 ```{r}
-heights_dt[, .(avg = mean(height), sd = sd(height)), by = sex]
+rt_dt[, .(avg = mean(rt_ms), sd = sd(rt_ms)), by = sex]
 ```
 
 ## Sorting
 
-We can order rows using the same approach we use for filter. Here are the states ordered by murder rate:
+We can order rows using the same approach we use for filter. Here are the states ordered by incident rate:
 
 ```{r}
 #| eval: false
-murders_dt[order(population)]
+breaches_dt[order(population)]
 ```
 
 To sort the table in descending order, we can order by the negative of `population` or use the `decreasing` argument:
 
 ```{r, eval=FALSE}
-murders_dt[order(population, decreasing = TRUE)] 
+breaches_dt[order(population, decreasing = TRUE)] 
 ```
 
 Similarly, we can perform nested ordering by including more than one variable in order:
 
 ```{r, eval=FALSE}
-murders_dt[order(region, rate)] 
+breaches_dt[order(region, rate)] 
 ```
 
 :::{.callout-note}
@@ -243,46 +243,46 @@ You are ready to do exercises 8-12.
 ## Exercises
 
 
-1\. Load the **data.table** package and the `murders` dataset and convert it to `data.table` object:
+1\. Load the **data.table** package and the `app_data_breaches` dataset and convert it to `data.table` object:
 
 ```{r, eval=FALSE}
 library(data.table)
-library(dslabs)
-murders_dt <- as.data.table(murders)
+library(behdslabs)
+breaches_dt <- as.data.table(app_data_breaches)
 ```
 
 Remember you can add columns like this:
 
 ```{r, eval=FALSE}
-murders_dt[, population_in_millions := population / 10^6]
+breaches_dt[, population_in_millions := population / 10^6]
 ```
 
-Add a `murders` column named `rate` with the per 100,000 murder rate as in the example code above.
+Add a `app_data_breaches` column named `rate` with the per 100,000 incident rate as in the example code above.
 
-2\. Add a column `rank` containing the rank, from highest to lowest murder rate.
+2\. Add a column `rank` containing the rank, from highest to lowest incident rate.
 
 3\. If we want to only show the states and population sizes, we can use:
 
 ```{r, eval=FALSE}
-murders_dt[, .(state, population)] 
+breaches_dt[, .(state, population)] 
 ```
 
-Show the state names and abbreviations in `murders`.
+Show the state names and abbreviations in `app_data_breaches`.
 
 4\. You can show just the New York row like this:
 
 ```{r, eval=FALSE}
-murders_dt[state == "New York"]
+breaches_dt[state == "New York"]
 ```
 
 You can use other logical vectors to filter rows.
 
-Show the top 5 states with the highest murder rates. From here on, do not change the `murders` dataset, just show the result. Remember that you can filter based on the `rank` column.
+Show the top 5 states with the highest incident rates. From here on, do not change the `app_data_breaches` dataset, just show the result. Remember that you can filter based on the `rank` column.
 
 5\. We can remove rows using the `!=` operator. For example, to remove Florida, we would do this:
 
 ```{r, eval=FALSE}
-no_florida <- murders_dt[state != "Florida"]
+no_florida <- breaches_dt[state != "Florida"]
 ```
 
 Create a new data frame called `no_south` that removes states from the South region. How many states are in this category? You can use the function `nrow` for this.
@@ -290,18 +290,18 @@ Create a new data frame called `no_south` that removes states from the South reg
 6\. We can also use `%in%` to filter. You can therefore see the data from New York and Texas as follows:
 
 ```{r, eval=FALSE}
-murders_dt[state %in% c("New York", "Texas")]
+breaches_dt[state %in% c("New York", "Texas")]
 ```
 
-Create a new data frame called `murders_nw` with only the states from the Northeast and the West. How many states are in this category?
+Create a new data frame called `breaches_nw` with only the states from the Northeast and the West. How many states are in this category?
 
-7\. Suppose you want to live in the Northeast or West **and** want the murder rate to be less than 1. We want to see the data for the states satisfying these options. Note that you can use logical operators with `filter`. Here is an example in which we filter to keep only small states in the Northeast region.
+7\. Suppose you want to live in the Northeast or West **and** want the incident rate to be less than 1. We want to see the data for the states satisfying these options. Note that you can use logical operators with `filter`. Here is an example in which we filter to keep only small states in the Northeast region.
 
 ```{r, eval=FALSE}
-murders_dt[population < 5000000 & region == "Northeast"]
+breaches_dt[population < 5000000 & region == "Northeast"]
 ```
 
-Make sure `murders` has been defined with `rate` and `rank` and still has all states. Create a table called `my_states` that contains rows for states satisfying both the conditions: they are in the Northeast or West and the murder rate is less than 1. Show only the state name, the rate, and the rank.
+Make sure `app_data_breaches` has been defined with `rate` and `rank` and still has all states. Create a table called `my_states` that contains rows for states satisfying both the conditions: they are in the Northeast or West and the incident rate is less than 1. Show only the state name, the rate, and the rank.
 
 For exercises 8-12, we will be using the **NHANES** data.
 
