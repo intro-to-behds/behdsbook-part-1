@@ -2,11 +2,32 @@
 
 ## Motivating example: US data breaches
 
-Imagine you live in Europe and are offered a job at a US company with locations across all states. It is a great job, but part of it involves handling sensitive customer data, and news with headlines such as **US Reports Far More Data Breaches Than Other Developed Countries**[^r-basics-1] have you worried about how exposed you would be. A chart showing reported breach-notification counts climbing year after year would concern you even more.
+Imagine you live in Europe and are offered a job at a US company with locations across all states. It is a great job, but part of it involves handling sensitive customer data, and news with headlines such as **US Reports Far More Data Breaches Than Other Developed Countries**[^r-basics-1] have you worried about how exposed you would be. A chart ranking reported breach rates might concern you even more:
 
 [^r-basics-1]: Reported-breach counts depend heavily on each country's notification laws, so cross-country comparisons are difficult to interpret.
 
-But then you remember that the US is a large and diverse country with 50 very different states as well as the District of Columbia (DC), whose data-protection practices, breach-notification laws, and concentrations of data-heavy industry vary enormously. Once we adjust the reported incident counts for population, some states report many times the rate of others:
+```{r us-data-breaches-barplot, message=FALSE, echo=FALSE, fig.width=6, fig.height=9, out.width="70%"}
+library(tidyverse)
+library(behdslabs)
+app_data_breaches |>
+  mutate(incident_rate = round(incidents / population * 10^5, 1),
+         state = reorder(state, incident_rate)) |>
+  ggplot(aes(state, incident_rate, label = incident_rate)) +
+  geom_bar(stat = "identity", fill = "darkred", width = 0.6) +
+  geom_text(hjust = 0, nudge_y = 0.6, size = 2.3) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.12))) +
+  xlab("") + ylab("") +
+  ggtitle(toupper("Reported data-breach incidents per 100,000 residents")) +
+  theme_minimal() +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_text(size = 6),
+        axis.ticks.length = unit(-0.4, "cm"),
+        plot.title = element_text(size = 10)) +
+  coord_flip()
+```
+
+That is a lot of states to take in as one long ranked list, and it does not tell you *where* the trouble spots are relative to each other. But then you remember that the US is a large and diverse country with 50 very different states as well as the District of Columbia (DC), whose data-protection practices, breach-notification laws, and concentrations of data-heavy industry vary enormously -- and that this variation might follow a geographic pattern the ranked list alone can't show:
 
 ```{r us-data-breaches-by-state-map, message=FALSE, echo=FALSE}
 library(tidyverse)
