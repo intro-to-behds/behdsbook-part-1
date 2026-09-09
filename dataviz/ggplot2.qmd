@@ -359,7 +359,6 @@ In our illustrative example we introduced the scatterplot geometry `geom_point`.
 To generate a barplot we can use the `geom_bar` geometry. The default is to count the number of each category and draw a bar. Here is the plot for the regions of the US.
 
 ```{r barplot-geom}
-#| eval: false
 app_data_breaches |> ggplot(aes(region)) + geom_bar()
 ```
 
@@ -374,7 +373,6 @@ tab <- app_data_breaches |>
 In this case, we use `geom_col` instead of `geom_bar`:
 
 ```{r region-freq-barplot}
-#| eval: false
 tab |> ggplot(aes(region, proportion)) + geom_col()
 ```
 
