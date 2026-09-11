@@ -193,11 +193,11 @@ The way you phrase a drafting prompt makes a large difference to how well the re
 
 Example of a **bad** prompt for drafting:
 
-- _"Here I'm uploading the dataset, please make some analysis on UX and plots."_
+> "Here I'm uploading the dataset, please make some analysis on UX and plots."
 
 Example of a **good** prompt for drafting:
 
-- _"Please help me draft the code that performs the following steps: 1) import the data; 2) compute descriptives, including mean, median, etc.; 3) fit a regression with x as the predictor(s) and y as the dependent variable, and run diagnostics using the `performance` package."_
+> "Please help me draft the code that performs the following steps: 1) import the data; 2) compute descriptives, including mean, median, etc.; 3) fit a regression with x as the predictor(s) and y as the dependent variable, and run diagnostics using the `performance` package."
 
 Notice that the good prompt is almost entirely about **design**, and only marginally about implementation: it specifies which steps to take and in which order, not the code itself. This is exactly the PLAN step from @fig-ai-three-steps written out as a prompt — and planning is the part an LLM cannot do for you.
 
@@ -211,11 +211,11 @@ Prompts for fixing or checking code deserve the same care — and here the tempt
 
 Example of a **bad** prompt for verifying/checking:
 
-- _"The code is not working, fix it."_
+> "The code is not working, fix it."
 
 Example of a **good** prompt for verifying/checking, after spending some time checking the code on your own — and not asking for help immediately:
 
-- _"Without giving me the right solution, and considering I'm a beginner, can you help me find where the mistake is in this code? Please don't give me the solution directly — help me learn."_
+> "Without giving me the right solution, and considering I'm a beginner, can you help me find where the mistake is in this code? Please don't give me the solution directly, help me learn."
 
 This style of prompt keeps the debugging struggle in your hands rather than the model's. As noted above, the struggle is often what makes the underlying skill stick; a prompt like this lets the LLM guide you toward the mistake without doing the learning for you.
 
