@@ -26,7 +26,7 @@ dat |>
   xlab("") +
   ylab("Reported breaches\nper 100,000 population") +
   theme_economist() +
-  theme(axis.text.x = element_text(size = 8, angle = 20, hjust = 1),
+  theme(axis.text.x = element_text(size = 8, angle = 20, hjust = 1, vjust=0.8),
         plot.title = element_text(size = 11))
 rm(dat)
 ```
