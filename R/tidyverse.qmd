@@ -74,10 +74,10 @@ head(app_data_breaches)
 
 ### Row-wise subsetting
 
-Now suppose that we want to filter the data frame to only show the entries for which the incident rate is lower than 0.71. To do this we use the `filter` function, which takes the data frame as the first argument and then a conditional statement as the second. Like `mutate`, we can use the unquoted variable names from `app_data_breaches` inside the function and it will know we mean the columns and not objects in the workspace.
+Now suppose that we want to filter the data frame to only show the entries for which the incident rate is lower than 1.42. To do this we use the `filter` function, which takes the data frame as the first argument and then a conditional statement as the second. Like `mutate`, we can use the unquoted variable names from `app_data_breaches` inside the function and it will know we mean the columns and not objects in the workspace.
 
 ```{r}
-filter(app_data_breaches, rate <= 0.71)
+filter(app_data_breaches, rate <= 1.42)
 ```
 
 
@@ -87,7 +87,7 @@ Although our data frame only has six columns, some data frames include hundreds.
 
 ```{r}
 new_dataframe <- select(app_data_breaches, state, region, rate)
-filter(new_dataframe, rate <= 0.71)
+filter(new_dataframe, rate <= 1.42)
 ```
 
 In the call to `select`, the first argument `app_data_breaches` is an object, but `state`, `region`, and `rate` are variable names. 
@@ -149,7 +149,7 @@ You are ready to do exercises 5-11.
 
 In R we can perform a series of operations, for example `select` and then `filter`, by sending the results of one function to another using what is called the _pipe operator_: `%>%`. Since R version 4.1.0, you can also use `|>`. Some details are included below. 
 
-We wrote code in @sec-tidyverse-col-subset to show three variables (state, region, rate) for states that have incident rates below 0.71. To do this, we defined the intermediate object `new_dataframe`. In __dplyr__ we can write code that looks more like a description of what we want to do without intermediate objects: 
+We wrote code in @sec-tidyverse-col-subset to show three variables (state, region, rate) for states that have incident rates below 1.42. To do this, we defined the intermediate object `new_dataframe`. In __dplyr__ we can write code that looks more like a description of what we want to do without intermediate objects: 
 
 $$ \mbox{original data }
 \rightarrow \mbox{ select }
@@ -159,7 +159,7 @@ $$ \mbox{original data }
 For such an operation, we can use the pipe `|>`. The code looks like this:
 
 ```{r}
-app_data_breaches |> select(state, region, rate) |> filter(rate <= 0.71)
+app_data_breaches |> select(state, region, rate) |> filter(rate <= 1.42)
 ```
 
 This line of code is equivalent to the two lines in @sec-tidyverse-col-subset What is going on here? 
@@ -185,7 +185,7 @@ Remember that the pipe sends values to the first argument, so we can define othe
 Therefore, when using the pipe with data frames and __dplyr__, we no longer need to specify the required first argument since the __dplyr__ functions we have described all take the data as the first argument. In the code we wrote:
 
 ```{r, eval=FALSE}
-app_data_breaches |> select(state, region, rate) |> filter(rate <= 0.71)
+app_data_breaches |> select(state, region, rate) |> filter(rate <= 1.42)
 ```
 `app_data_breaches` is the first argument of the `select` function, and the new data frame (formerly `new_dataframe`) is the first argument of the `filter` function.
 
@@ -682,13 +682,13 @@ filter(app_data_breaches, state %in% c("New York", "Texas"))
 Create a new data frame called `breaches_nw` with only the states from the Northeast and the West.  How many states are in this category? 
 
 
-11\. Suppose you want to live in the Northeast or West **and** want the incident rate to be less than 1. We want to see the data for the states satisfying these options. Note that you can use logical operators like `&` with `filter`. Here is an example in which we filter to keep only small states in the Northeast region.
+11\. Suppose you want to live in the Northeast or West **and** want the incident rate to be less than 2. We want to see the data for the states satisfying these options. Note that you can use logical operators like `&` with `filter`. Here is an example in which we filter to keep only small states in the Northeast region.
 
 ```{r, eval=FALSE}
 filter(app_data_breaches, population < 5000000 & region == "Northeast")
 ```
 
-Make sure `app_data_breaches` has been defined with `rate` and `rank` and still has all states. Create a table called `my_states` that contains rows for states satisfying both the conditions: it is in the Northeast or West and the incident rate is less than 1.  Use `select` to show only the state name, the rate, and the rank.
+Make sure `app_data_breaches` has been defined with `rate` and `rank` and still has all states. Create a table called `my_states` that contains rows for states satisfying both the conditions: it is in the Northeast or West and the incident rate is less than 2.  Use `select` to show only the state name, the rate, and the rank.
 
 
 12\. The pipe `|>` can be used to perform operations sequentially without having to define intermediate objects. Start by redefining `app_data_breaches` to include rate and rank.
@@ -700,8 +700,8 @@ app_data_breaches <- mutate(app_data_breaches, rate =  incidents/population*1000
 
 In the solution to the previous exercise, we did the following:
 ```{r, eval=FALSE}
-my_states <- filter(app_data_breaches, region %in% c("Northeast", "West") & 
-                      rate < 1)
+my_states <- filter(app_data_breaches, region %in% c("Northeast", "West") &
+                      rate < 2)
 
 select(my_states, state, rate, rank)
 ```
