@@ -173,7 +173,7 @@ To motivate boxplots we will go back to the data-breach incident data. Suppose w
 
 ```{r hist-non-normal-data, echo=FALSE}
 app_data_breaches <- app_data_breaches |> mutate(rate = incidents/population*100000)
-app_data_breaches |> ggplot(aes(x = rate)) + geom_histogram(binwidth = 0.5, color = "black") + ggtitle("Histogram")
+app_data_breaches |> ggplot(aes(x = rate)) + geom_histogram(binwidth = 1, color = "black") + ggtitle("Histogram")
 ```
 
 In this case, the histogram above or a smooth density plot would serve as a relatively succinct summary.
@@ -184,12 +184,12 @@ The *boxplot* provides a five-number summary composed of the range (the minimum 
 
 ```{r first-boxplot, echo=FALSE}
 app_data_breaches |> ggplot(aes("", rate)) + geom_boxplot() +
-  coord_cartesian(xlim = c(0, 2)) + xlab("")
+  coord_cartesian(xlim = c(0, 4)) + xlab("")
 ```
 
 with the box defined by the 25% and 75% percentile and the whiskers showing the range. The distance between the 25% and 75% percentile is called the *interquartile* range. The two points are outliers according to the R implementation. The median is shown with a horizontal line.
 
-From just this simple plot, we know that the median is about 2.7, that the distribution is not symmetric, and that the range is 0 to 5 for the great majority of states with two exceptions.
+From just this simple plot, we know that the median is about 5.4, that the distribution is not symmetric, and that the range is 0 to 10 for the great majority of states with two exceptions.
 
 We discuss how to make boxplots in @sec-other-geometries.
 
