@@ -70,10 +70,10 @@ cognitive_battery_scores$total <- rowSums(cognitive_battery_scores[,-1], na.rm =
 cognitive_battery_scores |>
   filter(!is.na(score)) |>
   ggplot(aes(score, total)) +
-  annotate("rect", xmin = 65, xmax = 99, ymin = 0, ymax = 35000, alpha = .5) +
+  annotate("rect", xmin = 65, xmax = 99, ymin = 0, ymax = 28000, alpha = .5) +
   geom_bar(stat = "identity", color = "black", fill = "#C4843C") +
-  annotate("text", x = 66, y = 28000, label = "\"TYPICAL RANGE\"\nBENCHMARK\nSCORE IS 65", hjust = 0, size = 3) +
-  annotate("text", x = 0, y = 12000, label = "Scores on\nthe five cognitive-battery tasks", hjust = 0, size = 3) +
+  annotate("text", x = 66, y = 22400, label = "\"TYPICAL RANGE\"\nBENCHMARK\nSCORE IS 65", hjust = 0, size = 3) +
+  annotate("text", x = 0, y = 9600, label = "Scores on\nthe five cognitive-battery tasks", hjust = 0, size = 3) +
   scale_x_continuous(breaks = seq(5, 95, 5), limits = c(0,99)) +
   scale_y_continuous(position = "right", labels = scales::comma) +
   ggtitle("Scraping by") +
@@ -145,7 +145,7 @@ if (knitr::is_html_output()) {
     coord_cartesian(ylim = c(1, 10)) +
     xlab("Average price per app (USD)") +
     ylab("Average daily screen time (hours)") +
-    geom_text(aes(x = 7, y = 9.5, label = year), cex = 12, color = "grey") +
+    geom_text(aes(x = 10.5, y = 9.5, label = year), cex = 12, color = "grey") +
     facet_grid(. ~ year)
 
   p + theme(strip.background = element_blank(),
