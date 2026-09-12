@@ -78,8 +78,8 @@ filter(global_tech_adoption, year == 1962) |>
 
 Most points fall into two distinct categories:
 
-1.  Daily screen time around 8 hours and average app prices of about \$3 or less.
-2.  Daily screen time below about 7 hours and average app prices above \$5.
+1.  Daily screen time around 8 hours and average app prices of about \$4.5 or less.
+2.  Daily screen time below about 7 hours and average app prices above \$7.5.
 
 To confirm that indeed these countries are from the regions we expect, we can use color to represent continent.
 
@@ -157,7 +157,7 @@ global_tech_adoption |>
   geom_point()
 ```
 
-We see that the trend is not linear at all. Instead there is a sharp drop during the 1960s and 1970s to below \$2. Then the trend comes back to about \$2 and stabilizes during the 1990s.
+We see that the trend is not linear at all. Instead there is a sharp drop during the 1960s and 1970s to below \$3. Then the trend comes back to about \$3 and stabilizes during the 1990s.
 
 When the points are regularly and densely spaced, as they are here, we create curves by joining the points with lines, to convey that these data are from a single series, here a country. To do this, we use the `geom_line` function instead of `geom_point`.
 
@@ -218,7 +218,7 @@ The plot clearly shows how a rise in screen time followed the drop in app prices
 
 We now shift our attention to the second question related to the commonly held notion that the gap in monetization intensity across the world has become worse during the last decades. When general audiences are asked whether low-revenue markets have become even less lucrative and high-revenue markets even more so, the majority answers yes. By using stratification, histograms, smooth densities, and boxplots, we will be able to understand if this is in fact the case. First we learn how transformations can sometimes help provide more informative summaries and plots.
 
-The `global_tech_adoption` data table includes a column with the countries' gross domestic product (GDP), a rough summary of a country's economic output. Here we divide GDP by the active user base and by 365 to obtain a more interpretable measure: *revenue per user per day*, a proxy for how much economic value each active user in a market represents daily. A market where this figure is below \$2 a day is one where digital services are, on average, barely monetized. We add this variable to the data table:
+The `global_tech_adoption` data table includes a column with the countries' gross domestic product (GDP), a rough summary of a country's economic output. Here we divide GDP by the active user base and by 365 to obtain a more interpretable measure: *revenue per user per day*, a proxy for how much economic value each active user in a market represents daily. A market where this figure is below \$4 a day is one where digital services are, on average, barely monetized. We add this variable to the data table:
 
 ```{r}
 global_tech_adoption <- global_tech_adoption |>
@@ -241,9 +241,9 @@ global_tech_adoption |>
 
 We use the `color = "black"` argument to draw a boundary and clearly distinguish the bins.
 
-In this plot, we see that for the majority of countries, averages are below \$10 a day. However, the majority of the x-axis is dedicated to the `r filter(global_tech_adoption, year == past_year & !is.na(gdp)) |> summarise(x = sum(revenue_per_user_day>10)) |> pull(x)` countries with averages above \$10. So the plot is not very informative about countries with values below \$10 a day.
+In this plot, we see that for the majority of countries, averages are below \$20 a day. However, the majority of the x-axis is dedicated to the `r filter(global_tech_adoption, year == past_year & !is.na(gdp)) |> summarise(x = sum(revenue_per_user_day>20)) |> pull(x)` countries with averages above \$20. So the plot is not very informative about countries with values below \$20 a day.
 
-It might be more informative to quickly be able to see how many countries have a revenue per user per day of about \$1 (very low monetization), \$2, \$4, \$8, \$16, \$32, \$64 (very high monetization) per day. These changes are multiplicative, and log transformations convert multiplicative changes into additive ones: when using base 2, a doubling of a value turns into an increase by 1.
+It might be more informative to quickly be able to see how many countries have a revenue per user per day of about \$2 (very low monetization), \$4, \$8, \$16, \$32, \$64, \$128 (very high monetization) per day. These changes are multiplicative, and log transformations convert multiplicative changes into additive ones: when using base 2, a doubling of a value turns into an increase by 1.
 
 Here is the distribution if we apply a log base 2 transform:
 
@@ -314,7 +314,7 @@ There are other transformations available through the `trans` argument. As we le
 
 In the histogram above we see two *bumps*: one at about 4 and another at about 32. In statistics these bumps are sometimes referred to as *modes*. The mode of a distribution is the value with the highest frequency. The mode of the normal distribution is the average. When a distribution, like the one above, doesn't monotonically decrease from the mode, we call the locations where it goes up and down again *local modes* and say that the distribution has *multiple modes*.
 
-The histogram above suggests that the 1970 revenue-per-user distribution has two modes: one at about \$2 per user per day (1 in the log 2 scale) and another at about \$32 per user per day (5 in the log 2 scale). This *bimodality* is consistent with a dichotomous world made up of markets generating less than \$8 per user per day (3 in the log 2 scale) and markets above that.
+The histogram above suggests that the 1970 revenue-per-user distribution has two modes: one at about \$4 per user per day (2 in the log 2 scale) and another at about \$64 per user per day (6 in the log 2 scale). This *bimodality* is consistent with a dichotomous world made up of markets generating less than \$16 per user per day (4 in the log 2 scale) and markets above that.
 
 ## Comparing distributions
 
@@ -455,7 +455,7 @@ global_tech_adoption |>
   facet_grid(year ~ west)
 ```
 
-We now see that the high-revenue markets have grown a bit more, but percentage-wise, the lower-revenue markets appear to have grown more. In particular, we see that the proportion of *emerging* markets generating more than \$16 per user per day increased substantially.
+We now see that the high-revenue markets have grown a bit more, but percentage-wise, the lower-revenue markets appear to have grown more. In particular, we see that the proportion of *emerging* markets generating more than \$32 per user per day increased substantially.
 
 To see which specific regions changed the most, we can remake the boxplots we made above, but now adding the year 2010 and then using facet to compare the two years.
 
@@ -522,7 +522,7 @@ p <- global_tech_adoption |>
   filter(year %in% years & country %in% country_list) |>
   mutate(group = ifelse(group == "West", "Mature", "Emerging")) |>
   ggplot(aes(revenue_per_user_day, y = after_stat(count), fill = group)) +
-  scale_x_continuous(trans = "log2", limits = c(0.125, 300))
+  scale_x_continuous(trans = "log2", limits = c(0.25, 600))
 p + geom_density(alpha = 0.2) + facet_grid(year ~ .)
 ```
 
@@ -554,7 +554,7 @@ global_tech_adoption |>
   mutate(weight = active_user_base/sum(active_user_base)*2) |>
   ungroup() |>
   ggplot(aes(revenue_per_user_day, fill = group)) +
-  scale_x_continuous(trans = "log2", limits = c(0.125, 300)) + 
+  scale_x_continuous(trans = "log2", limits = c(0.25, 600)) + 
   geom_density(alpha = 0.2, bw = 0.75, position = "stack") + 
   facet_grid(year ~ .) 
 ```
@@ -574,7 +574,7 @@ global_tech_adoption |>
   mutate(weight = active_user_base/sum(active_user_base)*2) |>
   ungroup() |>
   ggplot(aes(revenue_per_user_day, fill = group, weight = weight)) +
-  scale_x_continuous(trans = "log2", limits = c(0.125, 300)) + 
+  scale_x_continuous(trans = "log2", limits = c(0.25, 600)) + 
   geom_density(alpha = 0.2, bw = 0.75, position = "stack") + facet_grid(year ~ .) 
 ```
 
@@ -613,7 +613,7 @@ surv_income <- global_tech_adoption |>
 #surv_income |> arrange(revenue) |> print(n=nrow(surv_income))
 
 surv_income |> ggplot(aes(revenue, retention_rate, label = group, color = group)) +
-  scale_x_continuous(trans = "log2", limits = c(0.25, 150)) +
+  scale_x_continuous(trans = "log2", limits = c(0.5, 300)) +
   scale_y_continuous(trans = "logit", limits = c(0.875, .9981),
                      breaks = c(.85,.90,.95,.99,.995,.998)) +
   geom_label_repel(size = 3, show.legend = FALSE)
@@ -648,7 +648,7 @@ highlight <- c("Sierra Leone", "Mauritius",  "Sudan", "Botswana", "Tunisia",
 global_tech_adoption |>filter(year %in% present_year & !is.na(gdp) & !is.na(app_uninstall_rate_per_1000) & !is.na(group) ) |>
   mutate(country_name = ifelse(country %in% highlight, as.character(country), "")) |>
   ggplot(aes(revenue_per_user_day, 1 - app_uninstall_rate_per_1000/1000, col = group, label = country_name)) +
-  scale_x_continuous(trans = "log2", limits = c(0.25, 150)) +
+  scale_x_continuous(trans = "log2", limits = c(0.5, 300)) +
   scale_y_continuous(trans = "logit",limits = c(0.875, .9981),
                      breaks = c(.85,.90,.95,.99,.995,.998)) +
   geom_point(alpha = 0.5, size = 3) +
@@ -744,10 +744,10 @@ dat |>
   geom_line(aes(year, rate, group = state),  color = "grey50",
             show.legend = FALSE, alpha = 0.2, linewidth = 1) +
   geom_line(mapping = aes(year, us_rate),  data = avg, linewidth = 1) +
-  scale_y_continuous(trans = "sqrt", breaks = c(5, 25, 125, 300)) +
+  scale_y_continuous(trans = "sqrt", breaks = c(10, 50, 250, 600)) +
   ggtitle("Downloads per 10,000 by state") +
   xlab("") + ylab("") +
-  geom_text(data = data.frame(x = 1955, y = 50),
+  geom_text(data = data.frame(x = 1955, y = 100),
             mapping = aes(x, y, label = "US average"),
             color = "black") +
   geom_vline(xintercept = 1963, col = "blue")
