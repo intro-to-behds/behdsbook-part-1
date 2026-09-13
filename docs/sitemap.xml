@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/index.html</loc>
-    <lastmod>2026-07-28T08:55:28.396Z</lastmod>
+    <lastmod>2026-09-08T09:49:08.307Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/intro.html</loc>
@@ -18,63 +18,63 @@
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/R/R-basics.html</loc>
-    <lastmod>2026-07-11T14:56:40.564Z</lastmod>
+    <lastmod>2026-09-12T09:21:56.223Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/R/programming-basics.html</loc>
-    <lastmod>2026-07-11T14:56:40.598Z</lastmod>
+    <lastmod>2026-09-08T10:14:24.111Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/R/tidyverse.html</loc>
-    <lastmod>2026-07-11T14:56:40.598Z</lastmod>
+    <lastmod>2026-09-12T09:23:11.422Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/R/data-table.html</loc>
-    <lastmod>2026-07-11T14:56:40.564Z</lastmod>
+    <lastmod>2026-09-12T09:24:12.558Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/R/importing-data.html</loc>
-    <lastmod>2026-07-11T14:56:40.597Z</lastmod>
+    <lastmod>2026-09-08T14:50:51.001Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/dataviz/intro-dataviz.html</loc>
-    <lastmod>2026-07-28T06:55:58.823Z</lastmod>
+    <lastmod>2026-09-12T09:25:48.720Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/dataviz/distributions.html</loc>
-    <lastmod>2026-07-28T09:02:40.990Z</lastmod>
+    <lastmod>2026-09-12T09:28:34.169Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/dataviz/ggplot2.html</loc>
-    <lastmod>2026-07-28T09:26:36.601Z</lastmod>
+    <lastmod>2026-09-09T19:13:08.953Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/dataviz/dataviz-principles.html</loc>
-    <lastmod>2026-07-27T13:49:17.758Z</lastmod>
+    <lastmod>2026-09-12T09:29:29.652Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/dataviz/dataviz-in-practice.html</loc>
-    <lastmod>2026-07-11T14:56:40.600Z</lastmod>
+    <lastmod>2026-09-12T09:34:08.581Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/wrangling/intro-to-wrangling.html</loc>
-    <lastmod>2026-07-11T14:56:40.969Z</lastmod>
+    <lastmod>2026-09-08T14:52:01.645Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/wrangling/reshaping-data.html</loc>
-    <lastmod>2026-07-11T14:56:40.970Z</lastmod>
+    <lastmod>2026-09-08T15:19:05.846Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/wrangling/joining-tables.html</loc>
-    <lastmod>2026-07-11T14:56:40.969Z</lastmod>
+    <lastmod>2026-09-09T14:04:48.403Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/wrangling/dates-and-times.html</loc>
-    <lastmod>2026-07-11T14:56:40.958Z</lastmod>
+    <lastmod>2026-09-09T14:08:02.691Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/wrangling/locales.html</loc>
-    <lastmod>2026-07-11T14:56:40.969Z</lastmod>
+    <lastmod>2026-09-08T15:32:08.949Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/wrangling/web-scraping.html</loc>
@@ -82,11 +82,11 @@
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/wrangling/string-processing.html</loc>
-    <lastmod>2026-07-11T14:56:40.970Z</lastmod>
+    <lastmod>2026-09-09T16:02:28.077Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/wrangling/text-analysis.html</loc>
-    <lastmod>2026-07-11T14:56:40.970Z</lastmod>
+    <lastmod>2026-09-08T15:46:01.023Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/productivity/intro-productivity.html</loc>
@@ -102,10 +102,14 @@
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/productivity/reproducible-projects.html</loc>
-    <lastmod>2026-07-11T14:56:40.954Z</lastmod>
+    <lastmod>2026-09-08T15:47:13.869Z</lastmod>
+  </url>
+  <url>
+    <loc>https://intro-to-behds.github.io/behdsbook-part-1/productivity/ai-assisted-coding.html</loc>
+    <lastmod>2026-09-11T11:08:16.616Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/Introduction-to-Behavioural-Data-Science.pdf</loc>
-    <lastmod>2026-07-29T09:52:32.399Z</lastmod>
+    <lastmod>2026-09-13T12:11:16.851Z</lastmod>
   </url>
 </urlset>

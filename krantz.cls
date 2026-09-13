@@ -801,7 +801,6 @@
                    \@topnewpage[\@makeschapterhead{#1}]%
                  \else
                    \@makeschapterhead{#1}%
-                                      \addcontentsline{toc}{fm}{#1}
                    \markboth{#1}{#1}
                    \@afterheading
                  \fi}

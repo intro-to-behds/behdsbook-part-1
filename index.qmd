@@ -17,8 +17,8 @@ The Quarto files used to generate this adaptation are available on [GitHub](http
 
 The website for the original book are the following:
 
-- Part 1 **Data Wrangling and Visualization with R** part is [here](http://rafalab.dfci.harvard.edu/dsbook-part-1/)[^index-1].
-- Part 2 **Statistics and Prediction Algorithms Through Case Studies** part is [here](http://rafalab.dfci.harvard.edu/dsbook-part-2/)[^index-2].
+- Part 1 **Data Wrangling and Visualization with R** part is [here](https://intro-to-behds.github.io/behdsbook-part-1/)[^index-1].
+- Part 2 **Statistics and Prediction Algorithms Through Case Studies** part is [here](https://intro-to-behds.github.io/behdsbook-part-2/)[^index-2].
 
 [^index-1]: <http://rafalab.dfci.harvard.edu/dsbook-part-1/>
 [^index-2]: <http://rafalab.dfci.harvard.edu/dsbook-part-2/>
@@ -28,7 +28,7 @@ The website for the original book are the following:
 
 In this version of the book, all examples and datasets are adaptations of the datasets in the original book, re-themed to fit a behavioural-science context. The numerical values derive from real datasets, but their behavioural framing is fictional: **these should not be interpreted or cited as genuine behavioural data**.
 
-The English translation and adaptation were produced with the assistance of _Claude Code (Sonnet 4.6)_. The model was used for programming and language revision only; it did not generate new content or ideas.
+The English translation and adaptation were produced with the assistance of _Claude Code (Sonnet 4.6)_. The model was used for programming, language revision, and to help "reflavour" the examples; LLM were not used to generate new ideas or to decide the content.
 
 # Preface to the Original Edition {.unnumbered}
 

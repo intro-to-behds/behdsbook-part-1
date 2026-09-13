@@ -327,6 +327,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Reproducible projects</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../productivity/ai-assisted-coding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">AI and responsible coding</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -340,7 +346,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#sec-stringr" id="toc-sec-stringr" class="nav-link active" data-scroll-target="#sec-stringr"><span class="header-section-number">16.1</span> The stringr package</a></li>
-  <li><a href="#case-study-1-self-reported-heights" id="toc-case-study-1-self-reported-heights" class="nav-link" data-scroll-target="#case-study-1-self-reported-heights"><span class="header-section-number">16.2</span> Case study 1: self-reported heights</a></li>
+  <li><a href="#case-study-1-self-reported-daily-screen-time" id="toc-case-study-1-self-reported-daily-screen-time" class="nav-link" data-scroll-target="#case-study-1-self-reported-daily-screen-time"><span class="header-section-number">16.2</span> Case study 1: self-reported daily screen time</a></li>
   <li><a href="#escaping" id="toc-escaping" class="nav-link" data-scroll-target="#escaping"><span class="header-section-number">16.3</span> Escaping</a></li>
   <li><a href="#sec-regex" id="toc-sec-regex" class="nav-link" data-scroll-target="#sec-regex"><span class="header-section-number">16.4</span> Regular expressions</a>
   <ul class="collapse">
@@ -389,10 +395,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>One of the most common data wrangling challenges involves extracting numeric data contained in character strings and converting them into the numeric representations required to make plots, compute summaries, or fit models in R. Also common is processing unorganized text into meaningful variable names or categorical variables. Many of the string processing challenges a data scientist faces are unique and often unexpected. It is therefore quite ambitious to write a comprehensive section on this topic. Here we use a series of case studies that help us demonstrate how string processing is a necessary step for many data wrangling challenges. Specifically, we describe the process of converting the original, <em>raw</em> data from which we extracted the <code>murders</code>, <code>heights</code>, and <code>research_funding_rates</code> examples into the data frames we have studied in this book.</p>
+<p>One of the most common data wrangling challenges involves extracting numeric data contained in character strings and converting them into the numeric representations required to make plots, compute summaries, or fit models in R. Also common is processing unorganized text into meaningful variable names or categorical variables. Many of the string processing challenges a data scientist faces are unique and often unexpected. It is therefore quite ambitious to write a comprehensive section on this topic. Here we use a series of case studies that help us demonstrate how string processing is a necessary step for many data wrangling challenges. Specifically, we describe the process of converting the original, <em>raw</em> data from which we extracted the <code>app_data_breaches</code>, <code>reaction_times</code>, and <code>research_funding_rates</code> examples into the data frames we have studied in this book.</p>
 <p>By going over these case studies, we will cover some of the most common tasks in string processing including extracting numbers from strings, removing unwanted characters from text, finding and replacing characters, extracting specific parts of strings, converting free form text to more uniform formats, and splitting strings into multiple values.</p>
 <p>Base R includes functions to perform many of these tasks. The <strong>stringi</strong> package adds significant functionality over what is available in base R, especially for complex and diverse text processing needs. The <strong>stringr</strong> package provides consistent, simple, and user friendly wrappers around the <strong>stringi</strong> package. For example, in <strong>stringr</strong>, all the string processing functions start with <code>str_</code>. This means that if you type <code>str_</code> and hit tab, R will auto-complete and show all the available functions. As a result, we don’t necessarily have to memorize all the function names. Another advantage is that in the functions in this package the string being processed is always the first argument, which means we can more easily use the pipe. Therefore, we will start by describing how to use the functions in the <strong>stringr</strong> package.</p>
-<p>Most of the examples will come from the second case study which deals with self-reported heights by students, and most of the chapter is dedicated to learning regular expressions (regex) and functions in the <strong>stringr</strong> package.</p>
+<p>Most of the examples will come from the first case study which deals with self-reported daily screen time, and most of the chapter is dedicated to learning regular expressions (regex) and functions in the <strong>stringr</strong> package.</p>
 <section id="sec-stringr" class="level2" data-number="16.1">
 <h2 data-number="16.1" class="anchored" data-anchor-id="sec-stringr"><span class="header-section-number">16.1</span> The stringr package</h2>
 <div class="cell" data-layout-align="center">
@@ -613,83 +619,83 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="case-study-1-self-reported-heights" class="level2" data-number="16.2">
-<h2 data-number="16.2" class="anchored" data-anchor-id="case-study-1-self-reported-heights"><span class="header-section-number">16.2</span> Case study 1: self-reported heights</h2>
-<p>The <strong>dslabs</strong> package includes the raw data from which the heights dataset was obtained. You can load it like this:</p>
+<section id="case-study-1-self-reported-daily-screen-time" class="level2" data-number="16.2">
+<h2 data-number="16.2" class="anchored" data-anchor-id="case-study-1-self-reported-daily-screen-time"><span class="header-section-number">16.2</span> Case study 1: self-reported daily screen time</h2>
+<p>The <strong>behdslabs</strong> package includes the raw data from which a “daily screen time in minutes” variable can be obtained. You can load it like this:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reported_heights)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;            time_stamp    sex height</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 2014-09-02 13:40:36   Male     75</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 2014-09-02 13:46:59   Male     70</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 2014-09-02 13:59:20   Male     68</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 2014-09-02 14:51:53   Male     74</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 2014-09-02 15:16:15   Male     61</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 2014-09-02 15:16:16 Female     65</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(behdslabs)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(reported_screen_time)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;            time_stamp platform screen_time</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 2024-09-03 09:02:44  Android         268</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 2024-09-12 00:09:47      iOS         275</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 2024-09-11 16:58:23  Android         243</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 2024-09-08 12:48:09      iOS         299</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 2024-09-03 20:33:18      iOS         405</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 2024-09-14 09:23:56  Android         182</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>These heights were obtained using a web form in which students were asked to enter their heights. They could enter anything, but the instructions asked for <em>height in inches</em>, a number. We compiled 1,095 submissions, but unfortunately the column vector with the reported heights had several non-numeric entries and as a result became a character vector:</p>
+<p>These screen-time values were obtained using a web form in which respondents were asked to enter their average daily screen time. They could enter anything, but the instructions asked for <em>screen time in minutes</em>, a number. We compiled 1,095 submissions, but unfortunately the column vector with the reported screen time had several non-numeric entries and as a result became a character vector:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(reported_heights<span class="sc">$</span>height)</span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(reported_screen_time<span class="sc">$</span>screen_time)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "character"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If we try to parse it into numbers, we get a warning:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(reported_heights<span class="sc">$</span>height)</span>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(reported_screen_time<span class="sc">$</span>screen_time)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: NAs introduced by coercion</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Although most values appear to be height in inches as requested we do end up with many <code>NA</code>s:</p>
+<p>Although most values appear to be screen time in minutes as requested we do end up with many <code>NA</code>s:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(x))</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 81</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 99</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Here are some of the entries that are not successfully converted:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>reported_heights <span class="sc">|&gt;</span> </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">new_height =</span> <span class="fu">as.numeric</span>(height)) <span class="sc">|&gt;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(new_height)) <span class="sc">|&gt;</span> </span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>reported_screen_time <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">new_screen_time =</span> <span class="fu">as.numeric</span>(screen_time)) <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(new_screen_time)) <span class="sc">|&gt;</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">10</span>)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             time_stamp    sex                 height new_height</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1  2014-09-02 15:16:28   Male                  5' 4"         NA</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  2014-09-02 15:16:37 Female                  165cm         NA</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3  2014-09-02 15:16:52   Male                    5'7         NA</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4  2014-09-02 15:16:56   Male                  &gt;9000         NA</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5  2014-09-02 15:16:56   Male                   5'7"         NA</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6  2014-09-02 15:17:09 Female                   5'3"         NA</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7  2014-09-02 15:18:00   Male 5 feet and 8.11 inches         NA</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8  2014-09-02 15:19:48   Male                   5'11         NA</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9  2014-09-04 00:46:45   Male                  5'9''         NA</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 2014-09-04 10:29:44   Male                 5'10''         NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             time_stamp platform        screen_time new_screen_time</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1  2024-09-06 04:20:34  Android               7,57              NA</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  2024-09-09 01:38:43      iOS               2,05              NA</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3  2024-09-09 04:44:20      iOS             2' 17"              NA</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4  2024-09-12 00:59:05      iOS              3'13"              NA</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5  2024-09-05 10:22:12  Android               asdf              NA</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6  2024-09-02 10:07:38  Android 1 hours 44 minutes              NA</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7  2024-09-13 03:20:19  Android             3 ' 51              NA</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8  2024-09-03 15:58:22  Android               0,65              NA</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9  2024-09-03 19:51:30  Android         5 hr 6 min              NA</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 2024-09-13 02:18:46  Android 1 hours 18 minutes              NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We immediately see what is happening. Some of the students did not report their heights in inches as requested. We could discard these data and continue. However, many of the entries follow patterns that, in principle, we can easily convert to inches. For example, in the output above, we see various cases that use the format <code>x'y"</code> or <code>x'y''</code> with <code>x</code> and <code>y</code> representing feet and inches, respectively. Each one of these cases can be read and converted to inches by a human, for example <code>5'4"</code> is <code>5*12 + 4 = 64</code>. So we could fix all the problematic entries <em>by hand</em>. However, humans are prone to making mistakes, so an automated approach is preferable. Also, because we plan on continuing to collect data, it will be convenient to write code that automatically corrects entries entered in error.</p>
+<p>We immediately see what is happening. Some respondents did not report their screen time in minutes as requested. We could discard these data and continue. However, many of the entries follow patterns that, in principle, we can easily convert to minutes. For example, in the output above, we see various cases that use the format <code>x'y"</code> or <code>x'y''</code> with <code>x</code> and <code>y</code> representing hours and minutes, respectively – a shorthand some respondents apparently borrowed from feet-and-inches height notation. Each one of these cases can be read and converted to minutes by a human, for example <code>2'15"</code> is <code>2*60 + 15 = 135</code>. So we could fix all the problematic entries <em>by hand</em>. However, humans are prone to making mistakes, so an automated approach is preferable. Also, because we plan on continuing to collect data, it will be convenient to write code that automatically corrects entries entered in error.</p>
 <p>A first step in this type of task is to survey the problematic entries and try to define specific patterns followed by a large groups of entries. The larger these groups, the more entries we can fix with a single programmatic approach. We want to find patterns that can be accurately described with a rule, such as “a digit, followed by a feet symbol, followed by one or two digits, followed by an inches symbol”.</p>
-<p>To look for such patterns, it helps to remove the entries that are consistent with being in inches and to view only the problematic entries. We thus write a function to automatically do this. We keep entries that either result in <code>NA</code>s when applying <code>as.numeric</code> or are outside a range of plausible heights. We permit a range that covers about 99.9999% of the adult population. We also use <code>suppressWarnings</code> to avoid the warning message we know <code>as.numeric</code> will gives us.</p>
+<p>To look for such patterns, it helps to remove the entries that are consistent with being in minutes and to view only the problematic entries. We thus write a function to automatically do this. We keep entries that either result in <code>NA</code>s when applying <code>as.numeric</code> or are outside a range of plausible daily screen-time values. We permit a fairly wide range, from 15 minutes to 10 hours a day. We also use <code>suppressWarnings</code> to avoid the warning message we know <code>as.numeric</code> will gives us.</p>
 <p>We apply this function and find the number of problematic entries:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>problems <span class="ot">&lt;-</span> reported_heights <span class="sc">|&gt;</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">inches =</span> <span class="fu">suppressWarnings</span>(<span class="fu">as.numeric</span>(height))) <span class="sc">|&gt;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(inches) <span class="sc">|</span> inches <span class="sc">&lt;</span> <span class="dv">50</span> <span class="sc">|</span> inches <span class="sc">&gt;</span> <span class="dv">84</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(height)</span>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>problems <span class="ot">&lt;-</span> reported_screen_time <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">minutes =</span> <span class="fu">suppressWarnings</span>(<span class="fu">as.numeric</span>(screen_time))) <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(minutes) <span class="sc">|</span> minutes <span class="sc">&lt;</span> <span class="dv">15</span> <span class="sc">|</span> minutes <span class="sc">&gt;</span> <span class="dv">600</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(screen_time)</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(problems)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 292</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 240</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can now view all the cases by simply printing them. If we do, we see that three patterns can be used to define three large groups within these exceptions.</p>
-<p>1. A pattern of the form <code>x'y</code> or <code>x' y''</code> or <code>x'y"</code> with <code>x</code> and <code>y</code> representing feet and inches, respectively. Here are ten examples:</p>
+<p>1. A pattern of the form <code>x'y</code> or <code>x' y''</code> or <code>x'y"</code> with <code>x</code> and <code>y</code> representing hours and minutes, respectively. Here are ten examples:</p>
 <div class="cell" data-layout-align="center">
-<pre><code>#&gt; 5' 4" 5'7 5'7" 5'3" 5'11 5'9'' 5'10'' 5' 10 5'5" 5'2"</code></pre>
+<pre><code>#&gt; 2' 17" 3'13" 3 ' 51 8'48.5'' 9'6" 4'32'' 1' 14" 1'50" 4'15 6'2''</code></pre>
 </div>
-<p>2. A pattern of the form <code>x.y</code> or <code>x,y</code> with <code>x</code> feet and <code>y</code> inches. Here are ten examples:</p>
+<p>2. A pattern of the form <code>x.y</code> or <code>x,y</code> with <code>x</code> hours and <code>y</code> minutes, written as if the two were joined by a decimal point instead of a colon. Here are ten examples:</p>
 <div class="cell" data-layout-align="center">
-<pre><code>#&gt; 5.3 5.5 6.5 5.8 5.6 5,3 5.9 6,8 5.5 6.2</code></pre>
+<pre><code>#&gt; 7,57 2,05 6.35 7.28 4.26 7.03 4.23 4.41 4,11 1,19</code></pre>
 </div>
-<p>3. Entries that were reported in centimeters rather than inches. Here are ten examples:</p>
+<p>3. Entries that were reported in seconds rather than minutes. Here are ten examples:</p>
 <div class="cell" data-layout-align="center">
-<pre><code>#&gt; 150 175 177 178 163 175 178 165 165 180</code></pre>
+<pre><code>#&gt; 27251 8598 2410 9112 7580 23890 8018 30435 26366 21055</code></pre>
 </div>
 <p>Once we see these large groups following specific patterns, we can develop a plan of attack.</p>
 <ol type="1">
 <li>Convert entries fitting the first two patterns into one standardized one.</li>
-<li>Leverage the standardization to extract the feet and inches and convert to inches.</li>
-<li>Define a procedure for identifying entries that are in centimeters and convert them to inches.</li>
+<li>Leverage the standardization to extract the hours and minutes and convert to minutes.</li>
+<li>Define a procedure for identifying entries that are in seconds and convert them to minutes.</li>
 <li>Check again to see what entries were not fixed and see if we can tweak our approach to be more comprehensive.</li>
 </ol>
 <p>At the end, we hope to have a script that makes web-based data collection methods robust to the most common user mistakes.</p>
@@ -726,12 +732,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(s)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now, what if we want our string to be 5 feet written like this <code>5'</code>? In this case, we can use the double quotes or escape the single quote</p>
+<p>Now, what if we want our string to be 5 hours written like this <code>5'</code>? In this case, we can use the double quotes or escape the single quote</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="st">"5'"</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="st">'5</span><span class="sc">\'</span><span class="st">'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>So we’ve learned how to write 5 feet and 10 inches separately, but what if we want to write them together to represent <em>5 feet and 10 inches</em> like this <code>5'10"</code>? In this case, neither the single nor double quotes will work since <code>'5'10"'</code> closes the string after 5 and this <code>"5'10""</code> closes the string after 10. Keep in mind that if we type one of the above code snippets into R, it will get stuck waiting for you to close the open quote and you will have to exit the execution with the <em>esc</em> button.</p>
+<p>So we’ve learned how to write 5 hours and 10 minutes separately, but what if we want to write them together to represent <em>5 hours and 10 minutes</em> like this <code>5'10"</code>? In this case, neither the single nor double quotes will work since <code>'5'10"'</code> closes the string after 5 and this <code>"5'10""</code> closes the string after 10. Keep in mind that if we type one of the above code snippets into R, it will get stuck waiting for you to close the open quote and you will have to exit the execution with the <em>esc</em> button.</p>
 <p>To achieve the desired result we need to escape both quotes with the backslash <code>\</code>. You can escape either character that can be confused with a closing quote. These are the two options:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="st">'5</span><span class="sc">\'</span><span class="st">10"'</span></span>
@@ -752,34 +758,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str_detect</span>(<span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"10"</span>, <span class="st">"100"</span>, <span class="st">"1,000"</span>, <span class="st">"10,000"</span>), pattern) </span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] FALSE FALSE FALSE  TRUE  TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Above, we noted that an entry included a <code>cm</code>. This is also a simple example of a regex. We can show all the entries that used <code>cm</code> like this:</p>
+<p>Above, we noted that an entry included seconds far too large to be minutes. Let’s instead look for entries that spelled out the unit – we can show all the entries that used <code>sec</code> like this:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_subset</span>(reported_heights<span class="sc">$</span>height, <span class="st">"cm"</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "165cm"  "170 cm"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_subset</span>(reported_screen_time<span class="sc">$</span>screen_time, <span class="st">"sec"</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "24640 sec"     "32381 seconds"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="special-characters" class="level3" data-number="16.4.2">
 <h3 data-number="16.4.2" class="anchored" data-anchor-id="special-characters"><span class="header-section-number">16.4.2</span> Special characters</h3>
-<p>Now let’s consider a slightly more complicated example. Which of the following strings contain the pattern <code>cm</code> or <code>inches</code>?</p>
+<p>Now let’s consider a slightly more complicated example. Which of the following strings contain the pattern <code>sec</code> or <code>hours</code>?</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>yes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"180 cm"</span>, <span class="st">"70 inches"</span>)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>no <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"180"</span>, <span class="st">"70''"</span>)</span>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>yes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"300 sec"</span>, <span class="st">"2 hours"</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>no <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"300"</span>, <span class="st">"2h"</span>)</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">c</span>(yes, no)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can do this with two searches:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_detect</span>(s, <span class="st">"cm"</span>) <span class="sc">|</span> <span class="fu">str_detect</span>(s, <span class="st">"inches"</span>)</span>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_detect</span>(s, <span class="st">"sec"</span>) <span class="sc">|</span> <span class="fu">str_detect</span>(s, <span class="st">"hours"</span>)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1]  TRUE  TRUE FALSE FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>However, we don’t need to do this. The main feature that distinguishes the regex <em>language</em> from plain strings is that we can use special characters. These are characters with a meaning. We start by introducing <code>|</code> which means <em>or</em>. So if we want to know if either <code>cm</code> or <code>inches</code> appears in the strings, we can use the regex <code>cm|inches</code>:</p>
+<p>However, we don’t need to do this. The main feature that distinguishes the regex <em>language</em> from plain strings is that we can use special characters. These are characters with a meaning. We start by introducing <code>|</code> which means <em>or</em>. So if we want to know if either <code>sec</code> or <code>hours</code> appears in the strings, we can use the regex <code>sec|hours</code>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_detect</span>(s, <span class="st">"cm|inches"</span>)</span>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_detect</span>(s, <span class="st">"sec|hours"</span>)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1]  TRUE  TRUE FALSE FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>and obtain the correct answer.</p>
-<p>Another special character that will be useful for identifying feet and inches values is <code>\d</code> which means any digit: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9. The backslash is used to distinguish it from the character <code>d</code>. In R, we have to <em>escape</em> the backslash <code>\</code> so we actually have to use <code>\\d</code> to represent digits. Here is an example:</p>
+<p>Another special character that will be useful for identifying hours and minutes values is <code>\d</code> which means any digit: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9. The backslash is used to distinguish it from the character <code>d</code>. In R, we have to <em>escape</em> the backslash <code>\</code> so we actually have to use <code>\\d</code> to represent digits. Here is an example:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>yes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"5"</span>, <span class="st">"6"</span>, <span class="st">"5'10"</span>, <span class="st">"5 feet"</span>, <span class="st">"4'11"</span>)</span>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>yes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"5"</span>, <span class="st">"6"</span>, <span class="st">"5'10"</span>, <span class="st">"5 hours"</span>, <span class="st">"4'11"</span>)</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>no <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">""</span>, <span class="st">"."</span>, <span class="st">"Five"</span>, <span class="st">"six"</span>)</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">c</span>(yes, no)</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>pattern <span class="ot">&lt;-</span> <span class="st">"</span><span class="sc">\\</span><span class="st">d"</span></span>
@@ -820,7 +826,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="anchors" class="level3" data-number="16.4.4">
 <h3 data-number="16.4.4" class="anchored" data-anchor-id="anchors"><span class="header-section-number">16.4.4</span> Anchors</h3>
-<p>What if we want a match when we have exactly 1 digit? This will be useful in our case study since feet are never more than 1 digit so a restriction will help us. One way to do this with regex is by using <em>anchors</em>, which let us define patterns that must start or end at a specific place. The two most common anchors are <code>^</code> and <code>$</code> which represent the beginning and end of a string, respectively. So the pattern <code>^\\d$</code> is read as “start of the string followed by one digit followed by end of string”.</p>
+<p>What if we want a match when we have exactly 1 digit? This will be useful in our case study since the hours part of a daily screen-time report is never more than 1 digit so a restriction will help us. One way to do this with regex is by using <em>anchors</em>, which let us define patterns that must start or end at a specific place. The two most common anchors are <code>^</code> and <code>$</code> which represent the beginning and end of a string, respectively. So the pattern <code>^\\d$</code> is read as “start of the string followed by one digit followed by end of string”.</p>
 <p>This pattern now only detects the strings with exactly one digit:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>pattern <span class="ot">&lt;-</span> <span class="st">"^</span><span class="sc">\\</span><span class="st">d$"</span></span>
@@ -834,7 +840,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="bounded-quantifiers" class="level3" data-number="16.4.5">
 <h3 data-number="16.4.5" class="anchored" data-anchor-id="bounded-quantifiers"><span class="header-section-number">16.4.5</span> Bounded quantifiers</h3>
-<p>For the inches part, we can have one or two digits. This can be specified in regex with <em>quantifiers</em>. This is done by following the pattern with curly brackets containing the number of times the previous entry can be repeated. We call the <em>bounded</em> because the numbers in the quantifier are limited by the numbers in the curly brackets. Later we learn about <em>unbounded quantifiers</em>.</p>
+<p>For the minutes part, we can have one or two digits. This can be specified in regex with <em>quantifiers</em>. This is done by following the pattern with curly brackets containing the number of times the previous entry can be repeated. We call the <em>bounded</em> because the numbers in the quantifier are limited by the numbers in the curly brackets. Later we learn about <em>unbounded quantifiers</em>.</p>
 <p>We use an example to illustrate. The pattern for one or two digits is:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>pattern <span class="ot">&lt;-</span> <span class="st">"^</span><span class="sc">\\</span><span class="st">d{1,2}$"</span></span>
@@ -843,30 +849,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str_view</span>(<span class="fu">c</span>(yes, no), pattern, <span class="at">match =</span> <span class="cn">NA</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><img src="img/str_view-5.png" class="img-fluid" style="width:80.0%"></p>
-<p>In this case, <code>123</code> does <strong>not</strong> match, but <code>12</code> does. To look for our feet and inches pattern, we can add the symbols for feet <code>'</code> and inches <code>"</code> after the digits.</p>
-<p>With what we have learned, we can now construct an example for the pattern <code>x'y"</code> with <code>x</code> feet and <code>y</code> inches.</p>
+<p>In this case, <code>123</code> does <strong>not</strong> match, but <code>12</code> does. To look for our hours and minutes pattern, we can add the symbols for hours <code>'</code> and minutes <code>"</code> after the digits.</p>
+<p>With what we have learned, we can now construct an example for the pattern <code>x'y"</code> with <code>x</code> hours and <code>y</code> minutes.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>pattern <span class="ot">&lt;-</span> <span class="st">"^[4-7]'</span><span class="sc">\\</span><span class="st">d{1,2}</span><span class="sc">\"</span><span class="st">$"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>pattern <span class="ot">&lt;-</span> <span class="st">"^[1-9]'</span><span class="sc">\\</span><span class="st">d{1,2}</span><span class="sc">\"</span><span class="st">$"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The pattern is now getting complex, but you can look at it carefully and break it down:</p>
 <ul>
 <li><code>^</code> = start of the string</li>
-<li><code>[4-7]</code> = one digit, either 4,5,6 or 7</li>
-<li><code>'</code> = feet symbol</li>
+<li><code>[1-9]</code> = one digit, from 1 through 9</li>
+<li><code>'</code> = hours symbol</li>
 <li><code>\\d{1,2}</code> = one or two digits</li>
-<li><code>\"</code> = inches symbol</li>
+<li><code>\"</code> = minutes symbol</li>
 <li><code>$</code> = end of the string</li>
 </ul>
 <p>Let’s test it out:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>yes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"5'7</span><span class="sc">\"</span><span class="st">"</span>, <span class="st">"6'2</span><span class="sc">\"</span><span class="st">"</span>,  <span class="st">"5'12</span><span class="sc">\"</span><span class="st">"</span>)</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>no <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"6,2</span><span class="sc">\"</span><span class="st">"</span>, <span class="st">"6.2</span><span class="sc">\"</span><span class="st">"</span>,<span class="st">"I am 5'11</span><span class="sc">\"</span><span class="st">"</span>, <span class="st">"3'2</span><span class="sc">\"</span><span class="st">"</span>, <span class="st">"64"</span>)</span>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>yes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"5'7</span><span class="sc">\"</span><span class="st">"</span>, <span class="st">"6'2</span><span class="sc">\"</span><span class="st">"</span>,  <span class="st">"5'70</span><span class="sc">\"</span><span class="st">"</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>no <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"6,2</span><span class="sc">\"</span><span class="st">"</span>, <span class="st">"6.2</span><span class="sc">\"</span><span class="st">"</span>,<span class="st">"I am 5'11</span><span class="sc">\"</span><span class="st">"</span>, <span class="st">"0'2</span><span class="sc">\"</span><span class="st">"</span>, <span class="st">"64"</span>)</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str_detect</span>(yes, pattern)</span>
 <span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] TRUE TRUE TRUE</span></span>
 <span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str_detect</span>(no, pattern)</span>
 <span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] FALSE FALSE FALSE FALSE FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>For now, we are permitting the inches to be 12 or larger. We will add a restriction later as the regex for this is a bit more complex than we are ready to show.</p>
+<p>For now, we are permitting the minutes to be 60 or larger. We will add a restriction later as the regex for this is a bit more complex than we are ready to show.</p>
 </section>
 <section id="white-space" class="level3" data-number="16.4.6">
 <h3 data-number="16.4.6" class="anchored" data-anchor-id="white-space"><span class="header-section-number">16.4.6</span> White space</h3>
@@ -877,9 +883,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>In regex, <code>\s</code> represents white space. To find patterns like <code>5' 4</code>, we can change our pattern to:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>pattern_2 <span class="ot">&lt;-</span> <span class="st">"^[4-7]'</span><span class="sc">\\</span><span class="st">s</span><span class="sc">\\</span><span class="st">d{1,2}</span><span class="sc">\"</span><span class="st">$"</span></span>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>pattern_2 <span class="ot">&lt;-</span> <span class="st">"^[1-9]'</span><span class="sc">\\</span><span class="st">s</span><span class="sc">\\</span><span class="st">d{1,2}</span><span class="sc">\"</span><span class="st">$"</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str_subset</span>(problems, pattern_2)</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "5' 4\""  "5' 11\"" "5' 7\""</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "2' 17\"" "1' 14\"" "5' 12\"" "2' 17\"" "7' 22\"" "1' 45\""</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [7] "9' 37\""</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>However, this will not match the patterns with no space. So do we need more than one regex pattern? It turns out we can use a quantifier for this as well.</p>
 </section>
@@ -908,7 +915,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4  A111B         TRUE        FALSE         TRUE</span></span>
 <span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 A1111B         TRUE        FALSE         TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We will actually use all three in our reported heights example, but we will see these in a later section.</p>
+<p>We will actually use all three in our reported screen time example, but we will see these in a later section.</p>
 </section>
 <section id="not" class="level3" data-number="16.4.8">
 <h3 data-number="16.4.8" class="anchored" data-anchor-id="not"><span class="header-section-number">16.4.8</span> Not</h3>
@@ -927,19 +934,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="sec-groups" class="level3" data-number="16.4.9">
 <h3 data-number="16.4.9" class="anchored" data-anchor-id="sec-groups"><span class="header-section-number">16.4.9</span> Groups</h3>
 <p><em>Groups</em> are a powerful aspect of regex that permits the extraction of values. Groups are defined using parentheses. They don’t affect the pattern matching per se. Instead, it permits tools to identify specific parts of the pattern so we can extract them.</p>
-<p>We want to change heights written like <code>5.6</code> to <code>5'6</code>.</p>
-<p>To avoid changing patterns such as <code>70.2</code>, we will require that the first digit be between 4 and 7 <code>[4-7]</code> and that the second be none or more digits <code>\\d*</code>. Let’s start by defining a simple pattern that matches this:</p>
+<p>We want to change screen times written like <code>5.6</code> to <code>5'6</code>.</p>
+<p>To avoid changing patterns such as <code>70.2</code>, we will require that the first digit be between 1 and 9 <code>[1-9]</code> and that the second be none or more digits <code>\\d*</code>. Let’s start by defining a simple pattern that matches this:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>pattern_without_groups <span class="ot">&lt;-</span> <span class="st">"^[4-7],</span><span class="sc">\\</span><span class="st">d*$"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>pattern_without_groups <span class="ot">&lt;-</span> <span class="st">"^[1-9],</span><span class="sc">\\</span><span class="st">d*$"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We want to extract the digits so we can then form the new version using a period. These are our two groups, so we encapsulate them with parentheses:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>pattern_with_groups <span class="ot">&lt;-</span>  <span class="st">"^([4-7]),(</span><span class="sc">\\</span><span class="st">d*)$"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>pattern_with_groups <span class="ot">&lt;-</span>  <span class="st">"^([1-9]),(</span><span class="sc">\\</span><span class="st">d*)$"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We encapsulate the part of the pattern that matches the parts we want to keep for later use. Adding groups does not affect the detection, since it only signals that we want to save what is captured by the groups. Note that both patterns return the same result when using <code>str_detect</code>:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>yes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"5,9"</span>, <span class="st">"5,11"</span>, <span class="st">"6,"</span>, <span class="st">"6,1"</span>)</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>no <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"5'9"</span>, <span class="st">","</span>, <span class="st">"2,8"</span>, <span class="st">"6.1.1"</span>)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>no <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"5'9"</span>, <span class="st">","</span>, <span class="st">"0,8"</span>, <span class="st">"6.1.1"</span>)</span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">c</span>(yes, no)</span>
 <span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str_detect</span>(s, pattern_without_groups)</span>
 <span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1]  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE</span></span>
@@ -959,7 +966,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [7,] NA     NA   NA  </span></span>
 <span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [8,] NA     NA   NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Notice that the second and third columns contain feet and inches, respectively. The first column is the part of the string matching the pattern. If no match occurred, we see an <code>NA</code>.</p>
+<p>Notice that the second and third columns contain hours and minutes, respectively. The first column is the part of the string matching the pattern. If no match occurred, we see an <code>NA</code>.</p>
 <p>Now we can understand the difference between the functions <code>str_extract</code> and <code>str_match</code>. <code>str_extract</code> extracts only strings that match a pattern, not the values defined by groups:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_extract</span>(s, pattern_with_groups)</span>
@@ -968,97 +975,102 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="search-and-replace" class="level3" data-number="16.4.10">
 <h3 data-number="16.4.10" class="anchored" data-anchor-id="search-and-replace"><span class="header-section-number">16.4.10</span> Search and replace</h3>
-<p>Earlier we defined the object <code>problems</code> containing the strings that do not appear to be in inches. We can see that not too many of our problematic strings match the pattern:</p>
+<p>Earlier we defined the object <code>problems</code> containing the strings that do not appear to be in minutes. We can see that not too many of our problematic strings match the pattern:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>pattern <span class="ot">&lt;-</span> <span class="st">"^[4-7]'</span><span class="sc">\\</span><span class="st">d{1,2}</span><span class="sc">\"</span><span class="st">$"</span></span>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>pattern <span class="ot">&lt;-</span> <span class="st">"^[1-9]'</span><span class="sc">\\</span><span class="st">d{1,2}</span><span class="sc">\"</span><span class="st">$"</span></span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">str_detect</span>(problems, pattern))</span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 14</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 8</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To see why this is, we show some examples that expose why we don’t have more matches:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>problems[<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">15</span>)] <span class="sc">|&gt;</span> <span class="fu">str_view</span>(pattern)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><img src="img/str_view-6.png" class="img-fluid" style="width:80.0%"></p>
-<p>An initial problem we see immediately is that some students wrote out the words “feet” and “inches”. We can see the entries that did this with the <code>str_subset</code> function:</p>
+<p>An initial problem we see immediately is that some respondents wrote out the words “hours” and “minutes” (or abbreviations like “hr” and “min”). We can see the entries that did this with the <code>str_subset</code> function:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_subset</span>(problems, <span class="st">"inches"</span>)</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "5 feet and 8.11 inches" "Five foot eight inches"</span></span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] "5 feet 7inches"         "5ft 9 inches"          </span></span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] "5 ft 9 inches"          "5 feet 6 inches"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_subset</span>(problems, <span class="st">"min"</span>)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] "1 hours 44 minutes"        "5 hr 6 min"               </span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [3] "1 hours 18 minutes"        "8 hours 39 minutes"       </span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [5] "One hour thirty minutes"   "8 hours 32 minutes"       </span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [7] "Two hours fifteen minutes" "6 hours 10 minutes"       </span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [9] "4 hours 2 minutes"         "4hr 20min"                </span></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [11] "7 hours 26 minutes"        "4 hours 28 minutes"       </span></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [13] "4 hours 21 minutes"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We also see that some entries used two single quotes <code>''</code> instead of a double quote <code>"</code>.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_subset</span>(problems, <span class="st">"''"</span>)</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] "5'9''"   "5'10''"  "5'10''"  "5'3''"   "5'7''"   "5'6''"  </span></span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [7] "5'7.5''" "5'7.5''" "5'10''"  "5'11''"  "5'10''"  "5'5''"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] "8'48.5''" "4'32''"   "6'2''"    "2'27.5''" "6'16.5''" "7'7.5''" </span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [7] "9'29.5''" "6'18''"   "5'54''"   "8'1.5''"  "6'39''"   "5'45.5''"</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [13] "5'52''"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>To correct this, we can replace the different ways of representing inches and feet with a uniform symbol. We will use <code>'</code> for feet, whereas for inches we will simply not use a symbol since some entries were of the form <code>x'y</code>. Now, if we no longer use the inches symbol, we have to change our pattern accordingly:</p>
+<p>To correct this, we can replace the different ways of representing hours and minutes with a uniform symbol. We will use <code>'</code> for hours, whereas for minutes we will simply not use a symbol since some entries were of the form <code>x'y</code>. Now, if we no longer use the minutes symbol, we have to change our pattern accordingly:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>pattern <span class="ot">&lt;-</span> <span class="st">"^[4-7]'</span><span class="sc">\\</span><span class="st">d{1,2}$"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>pattern <span class="ot">&lt;-</span> <span class="st">"^[1-9]'</span><span class="sc">\\</span><span class="st">d{1,2}$"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If we do this replacement before the matching, we get many more matches:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>problems <span class="sc">|&gt;</span> </span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_replace</span>(<span class="st">"feet|ft|foot"</span>, <span class="st">"'"</span>) <span class="sc">|&gt;</span> <span class="co"># replace feet, ft, foot with ' </span></span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_replace</span>(<span class="st">"inches|in|''|</span><span class="sc">\"</span><span class="st">"</span>, <span class="st">""</span>) <span class="sc">|&gt;</span> <span class="co"># remove all inches symbols</span></span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_detect</span>(pattern) <span class="sc">|&gt;</span> </span>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>problems <span class="sc">|&gt;</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_replace</span>(<span class="st">"hours|hour|hrs|hr"</span>, <span class="st">"'"</span>) <span class="sc">|&gt;</span> <span class="co"># replace hours, hour, hr with '</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_replace</span>(<span class="st">"minutes|minute|mins|min|''|</span><span class="sc">\"</span><span class="st">"</span>, <span class="st">""</span>) <span class="sc">|&gt;</span> <span class="co"># remove all minutes symbols</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_detect</span>(pattern) <span class="sc">|&gt;</span></span>
 <span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>()</span>
-<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 48</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 24</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>However, we still have many cases to go.</p>
 <p>Note that in the code above, we leveraged the <strong>stringr</strong> consistency and used the pipe.</p>
-<p>For now, we improve our pattern by adding <code>\\s*</code> in front of and after the feet symbol <code>'</code> to permit space between the feet symbol and the numbers. Now we match a few more entries:</p>
+<p>For now, we improve our pattern by adding <code>\\s*</code> in front of and after the hours symbol <code>'</code> to permit space between the hours symbol and the numbers. Now we match a few more entries:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>pattern <span class="ot">&lt;-</span> <span class="st">"^[4-7]</span><span class="sc">\\</span><span class="st">s*'</span><span class="sc">\\</span><span class="st">s*</span><span class="sc">\\</span><span class="st">d{1,2}$"</span></span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>problems <span class="sc">|&gt;</span> </span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_replace</span>(<span class="st">"feet|ft|foot"</span>, <span class="st">"'"</span>) <span class="sc">|&gt;</span> <span class="co"># replace feet, ft, foot with ' </span></span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_replace</span>(<span class="st">"inches|in|''|</span><span class="sc">\"</span><span class="st">"</span>, <span class="st">""</span>) <span class="sc">|&gt;</span> <span class="co"># remove all inches symbols</span></span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_detect</span>(pattern) <span class="sc">|&gt;</span> </span>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>pattern <span class="ot">&lt;-</span> <span class="st">"^[1-9]</span><span class="sc">\\</span><span class="st">s*'</span><span class="sc">\\</span><span class="st">s*</span><span class="sc">\\</span><span class="st">d{1,2}$"</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>problems <span class="sc">|&gt;</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_replace</span>(<span class="st">"hours|hour|hrs|hr"</span>, <span class="st">"'"</span>) <span class="sc">|&gt;</span> <span class="co"># replace hours, hour, hr with '</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_replace</span>(<span class="st">"minutes|minute|mins|min|''|</span><span class="sc">\"</span><span class="st">"</span>, <span class="st">""</span>) <span class="sc">|&gt;</span> <span class="co"># remove all minutes symbols</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_detect</span>(pattern) <span class="sc">|&gt;</span></span>
 <span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>()</span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 53</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 38</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We might be tempted to avoid doing this by removing all the spaces with <code>str_replace_all</code>. However, when doing such an operation we need to make sure that it does not have unintended effects. In our reported heights examples, this will be a problem because some entries are of the form <code>x y</code> with space separating the feet from the inches. If we remove all spaces, we will incorrectly turn <code>x y</code> into <code>xy</code> which implies that a <code>6 1</code> would become <code>61</code> inches instead of <code>73</code> inches.</p>
-<p>The second large type of problematic entries were of the form <code>x.y</code>, <code>x,y</code> and <code>x y</code>. We want to change all these to our common format <code>x'y</code>. But we can’t just do a search and replace because we would change values such as <code>70.5</code> into <code>70'5</code>. Our strategy will therefore be to search for a very specific pattern that assures us feet and inches are being provided and then, for those that match, replace appropriately.</p>
+<p>We might be tempted to avoid doing this by removing all the spaces with <code>str_replace_all</code>. However, when doing such an operation we need to make sure that it does not have unintended effects. In our reported screen time examples, this will be a problem because some entries are of the form <code>x y</code> with space separating the hours from the minutes. If we remove all spaces, we will incorrectly turn <code>x y</code> into <code>xy</code> which implies that a <code>6 1</code> would become <code>61</code> minutes instead of <code>361</code>.</p>
+<p>The second large type of problematic entries were of the form <code>x.y</code>, <code>x,y</code> and <code>x y</code>. We want to change all these to our common format <code>x'y</code>. But we can’t just do a search and replace because we would change values such as <code>70.5</code> into <code>70'5</code>. Our strategy will therefore be to search for a very specific pattern that assures us hours and minutes are being provided and then, for those that match, replace appropriately.</p>
 </section>
 <section id="search-and-replace-using-groups" class="level3" data-number="16.4.11">
 <h3 data-number="16.4.11" class="anchored" data-anchor-id="search-and-replace-using-groups"><span class="header-section-number">16.4.11</span> Search and replace using groups</h3>
 <p>Another powerful aspect of groups is that you can refer to the extracted values in a regex when searching and replacing.</p>
 <p>The regex special character for the <code>i</code>-th group is <code>\\i</code>. So <code>\\1</code> is the value extracted from the first group, <code>\\2</code> the value from the second and so on. As a simple example, note that the following code will replace a comma with period, but only if it is after a digit between 4 and 7, and followed by zero or more digits:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>pattern_with_groups <span class="ot">&lt;-</span>  <span class="st">"^([4-7]),(</span><span class="sc">\\</span><span class="st">d*)$"</span></span>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>pattern_with_groups <span class="ot">&lt;-</span>  <span class="st">"^([1-9]),(</span><span class="sc">\\</span><span class="st">d*)$"</span></span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>yes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"5,9"</span>, <span class="st">"5,11"</span>, <span class="st">"6,"</span>, <span class="st">"6,1"</span>)</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>no <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"5'9"</span>, <span class="st">","</span>, <span class="st">"2,8"</span>, <span class="st">"6.1.1"</span>)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>no <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"5'9"</span>, <span class="st">","</span>, <span class="st">"0,8"</span>, <span class="st">"6.1.1"</span>)</span>
 <span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">c</span>(yes, no)</span>
 <span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str_replace</span>(s, pattern_with_groups, <span class="st">"</span><span class="sc">\\</span><span class="st">1'</span><span class="sc">\\</span><span class="st">2"</span>)</span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "5'9"   "5'11"  "6'"    "6'1"   "5'9"   ","     "2,8"   "6.1.1"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "5'9"   "5'11"  "6'"    "6'1"   "5'9"   ","     "0,8"   "6.1.1"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We can use this to convert cases in our reported heights.</p>
+<p>We can use this to convert cases in our reported screen time.</p>
 <p>We are now ready to define a pattern that helps us convert all the <code>x.y</code>, <code>x,y</code> and <code>x y</code> to our preferred format. We need to adapt <code>pattern_with_groups</code> to be a bit more flexible and capture all the cases.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>pattern_with_groups <span class="ot">&lt;-</span> <span class="st">"^([4-7])</span><span class="sc">\\</span><span class="st">s*[,</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">s+]</span><span class="sc">\\</span><span class="st">s*(</span><span class="sc">\\</span><span class="st">d*)$"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>pattern_with_groups <span class="ot">&lt;-</span> <span class="st">"^([1-9])</span><span class="sc">\\</span><span class="st">s*[,</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">s+]</span><span class="sc">\\</span><span class="st">s*(</span><span class="sc">\\</span><span class="st">d*)$"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Let’s break this one down:</p>
 <ul>
 <li><code>^</code> = start of the string</li>
-<li><code>[4-7]</code> = one digit representing feet, either 4, 5, 6, or 7</li>
+<li><code>[1-9]</code> = one digit representing hours, from 1 through 9</li>
 <li><code>\\s*</code> = none or more white space</li>
-<li><code>[,\\.\\s+]</code> = feet and inches are separated by either <code>,</code>, <code>.</code> or at least one space</li>
+<li><code>[,\\.\\s+]</code> = hours and minutes are separated by either <code>,</code>, <code>.</code> or at least one space</li>
 <li><code>\\s*</code> = none or more white space</li>
-<li><code>\\d*</code> = none or more digits representing inches</li>
+<li><code>\\d*</code> = none or more digits representing minutes</li>
 <li><code>$</code> = end of the string</li>
 </ul>
 <p>We can see that it appears to be working:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_subset</span>(problems, pattern_with_groups) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "5.3"  "5.25" "5.5"  "6.5"  "5.8"  "5.6"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "7,57" "2,05" "6.35" "7.28" "4.26" "7.03"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>and will be able to perform the search and replace:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_subset</span>(problems, pattern_with_groups) <span class="sc">|&gt;</span> </span>
 <span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_replace</span>(pattern_with_groups, <span class="st">"</span><span class="sc">\\</span><span class="st">1'</span><span class="sc">\\</span><span class="st">2"</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "5'3"  "5'25" "5'5"  "6'5"  "5'8"  "5'6"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "7'57" "2'05" "6'35" "7'28" "4'26" "7'03"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Again, we will deal with the inches-larger-than-twelve challenge later.</p>
+<p>Again, we will deal with the minutes-larger-than-sixty challenge later.</p>
 </section>
 <section id="lookarounds" class="level3" data-number="16.4.12">
 <h3 data-number="16.4.12" class="anchored" data-anchor-id="lookarounds"><span class="header-section-number">16.4.12</span> Lookarounds</h3>
@@ -1084,14 +1096,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Note that using <code>separate_wider_delim</code> won’t work here because the delimiter can varies across entries. With <code>separate_wider_regex</code> we can define flexible patterns that are matched to define each column.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>patterns <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">feet =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">d"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">s*'</span><span class="sc">\\</span><span class="st">s*"</span>, <span class="at">inches =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">d{1,2}"</span>, <span class="st">".*"</span>)</span>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>patterns <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">hours =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">d"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">s*'</span><span class="sc">\\</span><span class="st">s*"</span>, <span class="at">minutes =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">d{1,2}"</span>, <span class="st">".*"</span>)</span>
 <span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>tab <span class="sc">|&gt;</span> <span class="fu">separate_wider_regex</span>(x, <span class="at">patterns =</span> patterns)</span>
 <span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 4 x 2</span></span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   feet  inches</span></span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt; </span></span>
-<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 5     10    </span></span>
-<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 6     1     </span></span>
-<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 5     9     </span></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   hours minutes</span></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;  </span></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 5     10     </span></span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 6     1      </span></span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 5     9      </span></span>
 <span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 5     11</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>By not naming the second and fourth entries of <code>patterns</code> we tell the function not to keep the values that match that pattern.</p>
@@ -1115,162 +1127,152 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="case-conversion" class="level2" data-number="16.6">
 <h2 data-number="16.6" class="anchored" data-anchor-id="case-conversion"><span class="header-section-number">16.6</span> Case conversion</h2>
-<p>Notice that regex is case sensitive. Often we want to match a word regardless of case. One approach to doing this is to first change everything to lower case and then proceeding ignoring case. As an example, note that one of the entries writes out numbers as words <code>Five foot eight inches</code>. Although not efficient, we could add 13 extra <code>str_replace</code> calls to convert <code>zero</code> to <code>0</code>, <code>one</code> to <code>1</code>, and so on. To avoid having to write two separate operations for <code>Zero</code> and <code>zero</code>, <code>One</code> and <code>one</code>, etc., we can use the <code>str_to_lower</code> function to make all works lower case first:</p>
+<p>Notice that regex is case sensitive. Often we want to match a word regardless of case. One approach to doing this is to first change everything to lower case and then proceeding ignoring case. As an example, note that one of the entries writes out numbers as words <code>Two hours fifteen minutes</code>. Although not efficient, we could add many extra <code>str_replace</code> calls to convert <code>zero</code> to <code>0</code>, <code>one</code> to <code>1</code>, and so on. To avoid having to write two separate operations for <code>Zero</code> and <code>zero</code>, <code>One</code> and <code>one</code>, etc., we can use the <code>str_to_lower</code> function to make all works lower case first:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Five feet eight inches"</span>)</span>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Two hours fifteen minutes"</span>)</span>
 <span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str_to_lower</span>(s)</span>
-<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "five feet eight inches"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "two hours fifteen minutes"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Other related functions are <code>str_to_upper</code> and <code>str_to_title</code>. We are now ready to define a procedure that converts all the problematic cases to inches.</p>
 </section>
 <section id="case-study-1-continued-putting-it-all-together" class="level2" data-number="16.7">
 <h2 data-number="16.7" class="anchored" data-anchor-id="case-study-1-continued-putting-it-all-together"><span class="header-section-number">16.7</span> Case study 1 continued: Putting it all together</h2>
-<p>We are now ready to put it all together and wrangle our reported heights data to try to recover as many heights as possible. The code is complex, but we will break it down into parts.</p>
-<p>Let’s see how many problematic entries we can recover with the approaches we covered in <a href="#sec-regex" class="quarto-xref"><span>Section 16.4</span></a>. We will first define a function that detects entries that are not reported as inches or centimeters:</p>
+<p>We are now ready to put it all together and wrangle our reported screen time data to try to recover as many values as possible. The code is complex, but we will break it down into parts.</p>
+<p>Let’s see how many problematic entries we can recover with the approaches we covered in <a href="#sec-regex" class="quarto-xref"><span>Section 16.4</span></a>. We will first define a function that detects entries that are not reported as minutes or seconds:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>not_inches_or_cm <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">smallest =</span> <span class="dv">50</span>, <span class="at">tallest =</span> <span class="dv">84</span>){</span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>  inches <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(<span class="fu">as.numeric</span>(x))</span>
-<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">is.na</span>(inches) <span class="sc">|</span></span>
-<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span>((inches <span class="sc">&gt;=</span> smallest <span class="sc">&amp;</span> inches <span class="sc">&lt;=</span> tallest) <span class="sc">|</span></span>
-<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>        (inches<span class="sc">/</span><span class="fl">2.54</span> <span class="sc">&gt;=</span> smallest <span class="sc">&amp;</span> inches<span class="sc">/</span><span class="fl">2.54</span> <span class="sc">&lt;=</span> tallest))</span>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>not_minutes_or_seconds <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">smallest =</span> <span class="dv">15</span>, <span class="at">tallest =</span> <span class="dv">600</span>){</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>  minutes <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(<span class="fu">as.numeric</span>(x))</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">is.na</span>(minutes) <span class="sc">|</span></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span>((minutes <span class="sc">&gt;=</span> smallest <span class="sc">&amp;</span> minutes <span class="sc">&lt;=</span> tallest) <span class="sc">|</span></span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>        (minutes<span class="sc">/</span><span class="dv">60</span> <span class="sc">&gt;=</span> smallest <span class="sc">&amp;</span> minutes<span class="sc">/</span><span class="dv">60</span> <span class="sc">&lt;=</span> tallest))</span>
 <span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We can see how many entries are not inches or centimeters:</p>
+<p>We can see how many entries are not minutes or seconds:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>problems <span class="ot">&lt;-</span> reported_heights <span class="sc">|&gt;</span> </span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">not_inches_or_cm</span>(height)) <span class="sc">|&gt;</span></span>
-<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(height)</span>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>problems <span class="ot">&lt;-</span> reported_screen_time <span class="sc">|&gt;</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">not_minutes_or_seconds</span>(screen_time)) <span class="sc">|&gt;</span></span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(screen_time)</span>
 <span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(problems)</span>
-<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 200</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 152</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Let’s see how many feet<code>'</code>inches format we can recover applying the finding from <a href="#sec-regex" class="quarto-xref"><span>Section 16.4</span></a>. Specifically we replace feet/foot/ft with <code>'</code>, we remove the word inches and its abbreviations, then rewrite similar patterns into the desired feet<code>'</code>inches pattern. Once this is done we see what proportion don’t fit the desired pattern</p>
+<p>Let’s see how many hours<code>'</code>minutes format we can recover applying the finding from <a href="#sec-regex" class="quarto-xref"><span>Section 16.4</span></a>. Specifically we replace hours/hour/hr/hrs with <code>'</code>, we remove the word minutes and its abbreviations, then rewrite similar patterns into the desired hours<code>'</code>minutes pattern. Once this is done we see what proportion don’t fit the desired pattern</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>converted <span class="ot">&lt;-</span> problems <span class="sc">|&gt;</span> </span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_replace</span>(<span class="st">"feet|foot|ft"</span>, <span class="st">"'"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_remove_all</span>(<span class="st">"inches|in|''|</span><span class="sc">\"</span><span class="st">"</span>) <span class="sc">|&gt;</span>  </span>
-<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_replace</span>(<span class="st">"^([4-7])</span><span class="sc">\\</span><span class="st">s*[,</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">s+]</span><span class="sc">\\</span><span class="st">s*(</span><span class="sc">\\</span><span class="st">d*)$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1'</span><span class="sc">\\</span><span class="st">2"</span>) </span>
-<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">str_detect</span>(converted, <span class="st">"^[4-7]</span><span class="sc">\\</span><span class="st">s*'</span><span class="sc">\\</span><span class="st">s*</span><span class="sc">\\</span><span class="st">d{1,2}$"</span>)</span>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>converted <span class="ot">&lt;-</span> problems <span class="sc">|&gt;</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_replace</span>(<span class="st">"hours|hour|hrs|hr"</span>, <span class="st">"'"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_remove_all</span>(<span class="st">"minutes|minute|mins|min|''|</span><span class="sc">\"</span><span class="st">"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_replace</span>(<span class="st">"^([1-9])</span><span class="sc">\\</span><span class="st">s*[,</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">s+]</span><span class="sc">\\</span><span class="st">s*(</span><span class="sc">\\</span><span class="st">d*)$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1'</span><span class="sc">\\</span><span class="st">2"</span>)</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">str_detect</span>(converted, <span class="st">"^[1-9]</span><span class="sc">\\</span><span class="st">s*'</span><span class="sc">\\</span><span class="st">s*</span><span class="sc">\\</span><span class="st">d{1,2}$"</span>)</span>
 <span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="sc">!</span>index)</span>
-<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.385</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.355</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We see that a substantial proportion has not yet been fixed. Trial and error is a common approach to finding the regex pattern that satisfies all desired conditions. We can examine the remaining cases to try to decipher if new patterns we can use to fix them:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>converted[<span class="sc">!</span>index]</span>
-<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] "6"             "165cm"         "511"           "6"            </span></span>
-<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [5] "2"             "&gt;9000"         "5 ' and 8.11 " "11111"        </span></span>
-<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [9] "6"             "103.2"         "19"            "5"            </span></span>
-<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [13] "300"           "6'"            "6"             "Five ' eight "</span></span>
-<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [17] "7"             "214"           "6"             "0.7"          </span></span>
-<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [21] "6"             "2'33"          "612"           "1,70"         </span></span>
-<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [25] "87"            "5'7.5"         "5'7.5"         "111"          </span></span>
-<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [29] "5' 7.78"       "12"            "6"             "yyy"          </span></span>
-<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [33] "89"            "34"            "25"            "6"            </span></span>
-<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [37] "6"             "22"            "684"           "6"            </span></span>
-<span id="cb64-12"><a href="#cb64-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [41] "1"             "1"             "6*12"          "87"           </span></span>
-<span id="cb64-13"><a href="#cb64-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [45] "6"             "1.6"           "120"           "120"          </span></span>
-<span id="cb64-14"><a href="#cb64-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [49] "23"            "1.7"           "6"             "5"            </span></span>
-<span id="cb64-15"><a href="#cb64-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [53] "69"            "5' 9 "         "5 ' 9 "        "6"            </span></span>
-<span id="cb64-16"><a href="#cb64-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [57] "6"             "86"            "708,661"       "5 ' 6 "       </span></span>
-<span id="cb64-17"><a href="#cb64-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [61] "6"             "649,606"       "10000"         "1"            </span></span>
-<span id="cb64-18"><a href="#cb64-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [65] "728,346"       "0"             "6"             "6"            </span></span>
-<span id="cb64-19"><a href="#cb64-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [69] "6"             "100"           "88"            "6"            </span></span>
-<span id="cb64-20"><a href="#cb64-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [73] "170 cm"        "7,283,465"     "5"             "5"            </span></span>
-<span id="cb64-21"><a href="#cb64-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [77] "34"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] "asdf"           "0.88"           "1 ' 44 "        "0,65"          </span></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [5] "5 ' 6 "         "1 ' 18 "        "8'48.5"         "lots"          </span></span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [9] "N/A"            "44*60"          "0.89"           "8 ' 39 "       </span></span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [13] "One ' thirty "  "0.69"           "8 ' 32 "        "&gt;500"          </span></span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [17] "2'27.5"         "2'"             "24/7"           "6'16.5"        </span></span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [21] "7'7.5"          "0.91"           "26782s"         "2"             </span></span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [25] "9'29.5"         "0.71"           "1"              "0.63"          </span></span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [29] "0.93"           "screen time"    "0.95"           "0,63"          </span></span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [33] "3'"             "0.73"           "8'1.5"          "2'"            </span></span>
+<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [37] "Two ' fifteen " "5'45.5"         "6 ' 10 "        "0.73"          </span></span>
+<span id="cb64-12"><a href="#cb64-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [41] "24640 sec"      "0"              "0.32"           "-30"           </span></span>
+<span id="cb64-13"><a href="#cb64-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [45] "4 ' 2 "         "3 . 4 5"        "idk"            "0.92"          </span></span>
+<span id="cb64-14"><a href="#cb64-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [49] "7 ' 26 "        "4 ' 28 "        "32381 seconds"  "1,234,567"     </span></span>
+<span id="cb64-15"><a href="#cb64-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [53] "0.29"           "4 ' 21 "</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We noticed that two students added <code>cm</code> and some entries have space at the end so we write incorporate this into our cleanup stage. We also notice that at least one entry wrote out numbers such as <code>Five foot eight inches</code>. We can use the <code>words()</code> function in the <strong>english</strong> package to change these to actual numbers. In preparation for our final product, we define a function that cleans up previously noticed problems and these new ones:</p>
+<p>We noticed that some respondents added <code>sec</code> (or spelled it out entirely, <code>seconds</code>) and some entries have space at the end so we incorporate this into our cleanup stage. We also notice that at least one entry wrote out numbers such as <code>Two hours fifteen minutes</code>. We can use the <code>words()</code> function in the <strong>english</strong> package to change these to actual numbers. In preparation for our final product, we define a function that cleans up previously noticed problems and these new ones:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(english)</span>
 <span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>cleanup <span class="ot">&lt;-</span> <span class="cf">function</span>(s){</span>
-<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>  s <span class="ot">&lt;-</span> <span class="fu">str_remove_all</span>(s, <span class="st">"inches|in|''|</span><span class="sc">\"</span><span class="st">|cm|and"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>  s <span class="ot">&lt;-</span> <span class="fu">str_remove_all</span>(s, <span class="st">"minutes|minute|mins|min|''|</span><span class="sc">\"</span><span class="st">|seconds|secs|sec|and"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_trim</span>() <span class="sc">|&gt;</span></span>
 <span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_to_lower</span>()</span>
-<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">11</span>) {</span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">59</span><span class="sc">:</span><span class="dv">0</span>) {</span>
 <span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>    s <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(s, <span class="fu">words</span>(i), <span class="fu">as.character</span>(i))</span>
 <span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(s)</span>
 <span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Many also notice that students measuring exactly 5 or 6 feet did not enter any inches, for example <code>6'</code>, and our pattern requires that inches be included, and that some entries are in meters and some of these use European decimals, for example <code>1.6</code> and <code>1,70</code>. So we create a function that add these corrections to those already identified as needed to reformat the entry as feet<code>'</code>inches:</p>
+<p>Note that we loop from 59 down to 0 rather than the other way around: a number word like “fourteen” contains the word “four” as a substring, so if we replaced <code>four</code> first we would corrupt <code>fourteen</code> before ever getting a chance to recognize it. Counting down avoids this, since every two-word or teen number (10 and up) is handled before the single digits it might contain.</p>
+<p>Many also notice that respondents reporting exactly a whole number of hours did not enter any minutes, for example <code>2'</code>, and our pattern requires that minutes be included, and that some entries are decimal hours below 1, and some of these use European decimals, for example <code>0.5</code> and <code>0,63</code>. So we create a function that add these corrections to those already identified as needed to reformat the entry as hours<code>'</code>minutes:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>convert_format <span class="ot">&lt;-</span> <span class="cf">function</span>(s){</span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>  s <span class="sc">|&gt;</span> <span class="fu">str_replace</span>(<span class="st">"feet|foot|ft"</span>, <span class="st">"'"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace</span>(<span class="st">"^([4-7])</span><span class="sc">\\</span><span class="st">s*[,</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">s+]</span><span class="sc">\\</span><span class="st">s*(</span><span class="sc">\\</span><span class="st">d*)$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1'</span><span class="sc">\\</span><span class="st">2"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace</span>(<span class="st">"^([56])'?$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1'0"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace</span>(<span class="st">"^([12])</span><span class="sc">\\</span><span class="st">s*,</span><span class="sc">\\</span><span class="st">s*(</span><span class="sc">\\</span><span class="st">d*)$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">2"</span>)</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>  s <span class="sc">|&gt;</span> <span class="fu">str_replace</span>(<span class="st">"hours|hour|hrs|hr"</span>, <span class="st">"'"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace</span>(<span class="st">"^([1-9])</span><span class="sc">\\</span><span class="st">s*[,</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">s+]</span><span class="sc">\\</span><span class="st">s*(</span><span class="sc">\\</span><span class="st">d*)$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1'</span><span class="sc">\\</span><span class="st">2"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace</span>(<span class="st">"^([1-9])'?$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1'0"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace</span>(<span class="st">"^(0)</span><span class="sc">\\</span><span class="st">s*,</span><span class="sc">\\</span><span class="st">s*(</span><span class="sc">\\</span><span class="st">d*)$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">2"</span>)</span>
 <span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now we are ready to wrangle our reported heights dataset. The strategy is as follows:</p>
-<p>1. We start by defining a variable to keep a copy of the original entry, we then clean up and covert the <code>height</code> entry using the functions described above.</p>
-<p>2. We then use the <code>separate_wider_regex_</code> function to extract feet and inches when the entry matches our feet<code>'</code>inches format.</p>
+<p>Now we are ready to wrangle our reported screen time dataset. The strategy is as follows:</p>
+<p>1. We start by defining a variable to keep a copy of the original entry, we then clean up and covert the <code>screen_time</code> entry using the functions described above.</p>
+<p>2. We then use the <code>separate_wider_regex_</code> function to extract hours and minutes when the entry matches our hours<code>'</code>minutes format.</p>
 <p>3. We use a lookaround to make sure that entries that have numbers with no <code>'</code> following them don’t match and return an <code>NA</code>.</p>
-<p>4.&nbsp;Once this is done, we convert the feet and inches into inches.</p>
-<p>5.&nbsp;Finally, we decide if the entries are in inches, centimeters, or meters and convert appropriately.</p>
+<p>4.&nbsp;Once this is done, we convert the hours and minutes into minutes.</p>
+<p>5.&nbsp;Finally, we decide if the entries are in minutes, seconds, or decimal hours and convert appropriately.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>patterns <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">feet =</span> <span class="st">"[4-7](?=</span><span class="sc">\\</span><span class="st">s*'</span><span class="sc">\\</span><span class="st">s*)"</span>, </span>
-<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>              <span class="st">"</span><span class="sc">\\</span><span class="st">s*'</span><span class="sc">\\</span><span class="st">s*"</span>, </span>
-<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">inches =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">d+</span><span class="sc">\\</span><span class="st">.?</span><span class="sc">\\</span><span class="st">d*"</span>)</span>
-<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>smallest <span class="ot">&lt;-</span> <span class="dv">50</span></span>
-<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>tallest <span class="ot">&lt;-</span> <span class="dv">84</span></span>
-<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>new_heights <span class="ot">&lt;-</span> reported_heights <span class="sc">|&gt;</span> </span>
-<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">original =</span> height, </span>
-<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">height =</span> <span class="fu">convert_format</span>(<span class="fu">cleanup</span>(height))) <span class="sc">|&gt;</span></span>
-<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate_wider_regex</span>(height, <span class="at">patterns =</span> patterns, </span>
-<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a>                       <span class="at">too_few =</span> <span class="st">"align_start"</span>, </span>
-<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">cols_remove =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(height, feet, inches), as.numeric)) <span class="sc">|&gt;</span></span>
-<span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">guess =</span> <span class="dv">12</span> <span class="sc">*</span> feet <span class="sc">+</span> inches) <span class="sc">|&gt;</span></span>
-<span id="cb67-14"><a href="#cb67-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">height =</span> <span class="fu">case_when</span>(</span>
-<span id="cb67-15"><a href="#cb67-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">is.na</span>(height) <span class="sc">~</span> <span class="fu">as.numeric</span>(<span class="cn">NA</span>),</span>
-<span id="cb67-16"><a href="#cb67-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">between</span>(height, smallest, tallest) <span class="sc">~</span> height,  <span class="co">#inches</span></span>
-<span id="cb67-17"><a href="#cb67-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">between</span>(height<span class="sc">/</span><span class="fl">2.54</span>, smallest, tallest) <span class="sc">~</span> height<span class="sc">/</span><span class="fl">2.54</span>, <span class="co">#cm</span></span>
-<span id="cb67-18"><a href="#cb67-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">between</span>(height<span class="sc">*</span><span class="dv">100</span><span class="sc">/</span><span class="fl">2.54</span>, smallest, tallest) <span class="sc">~</span> height<span class="sc">*</span><span class="dv">100</span><span class="sc">/</span><span class="fl">2.54</span>, <span class="co">#meters</span></span>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>patterns <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">hours =</span> <span class="st">"[1-9](?=</span><span class="sc">\\</span><span class="st">s*'</span><span class="sc">\\</span><span class="st">s*)"</span>,</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>              <span class="st">"</span><span class="sc">\\</span><span class="st">s*'</span><span class="sc">\\</span><span class="st">s*"</span>,</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">minutes =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">d+</span><span class="sc">\\</span><span class="st">.?</span><span class="sc">\\</span><span class="st">d*"</span>)</span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>smallest <span class="ot">&lt;-</span> <span class="dv">15</span></span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>tallest <span class="ot">&lt;-</span> <span class="dv">600</span></span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>new_screen_time <span class="ot">&lt;-</span> reported_screen_time <span class="sc">|&gt;</span></span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">original =</span> screen_time,</span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">screen_time =</span> <span class="fu">convert_format</span>(<span class="fu">cleanup</span>(screen_time))) <span class="sc">|&gt;</span></span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate_wider_regex</span>(screen_time, <span class="at">patterns =</span> patterns,</span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a>                       <span class="at">too_few =</span> <span class="st">"align_start"</span>,</span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">cols_remove =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(screen_time, hours, minutes), as.numeric)) <span class="sc">|&gt;</span></span>
+<span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">guess =</span> <span class="dv">60</span> <span class="sc">*</span> hours <span class="sc">+</span> minutes) <span class="sc">|&gt;</span></span>
+<span id="cb67-14"><a href="#cb67-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">screen_time =</span> <span class="fu">case_when</span>(</span>
+<span id="cb67-15"><a href="#cb67-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">is.na</span>(screen_time) <span class="sc">~</span> <span class="fu">as.numeric</span>(<span class="cn">NA</span>),</span>
+<span id="cb67-16"><a href="#cb67-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">between</span>(screen_time, smallest, tallest) <span class="sc">~</span> screen_time,  <span class="co">#minutes</span></span>
+<span id="cb67-17"><a href="#cb67-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">between</span>(screen_time<span class="sc">/</span><span class="dv">60</span>, smallest, tallest) <span class="sc">~</span> screen_time<span class="sc">/</span><span class="dv">60</span>, <span class="co">#seconds</span></span>
+<span id="cb67-18"><a href="#cb67-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">between</span>(screen_time<span class="sc">*</span><span class="dv">60</span>, smallest, tallest) <span class="sc">~</span> screen_time<span class="sc">*</span><span class="dv">60</span>, <span class="co">#decimal hours</span></span>
 <span id="cb67-19"><a href="#cb67-19" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">as.numeric</span>(<span class="cn">NA</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb67-20"><a href="#cb67-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">height =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(height) <span class="sc">&amp;</span> </span>
-<span id="cb67-21"><a href="#cb67-21" aria-hidden="true" tabindex="-1"></a>                           inches <span class="sc">&lt;=</span> <span class="dv">12</span> <span class="sc">&amp;</span> <span class="fu">between</span>(guess, smallest, tallest),</span>
-<span id="cb67-22"><a href="#cb67-22" aria-hidden="true" tabindex="-1"></a>                         guess, height)) <span class="sc">|&gt;</span></span>
-<span id="cb67-23"><a href="#cb67-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>feet, <span class="sc">-</span>inches, <span class="sc">-</span>guess)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb67-20"><a href="#cb67-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">screen_time =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(screen_time) <span class="sc">&amp;</span></span>
+<span id="cb67-21"><a href="#cb67-21" aria-hidden="true" tabindex="-1"></a>                           minutes <span class="sc">&lt;=</span> <span class="dv">60</span> <span class="sc">&amp;</span> <span class="fu">between</span>(guess, smallest, tallest),</span>
+<span id="cb67-22"><a href="#cb67-22" aria-hidden="true" tabindex="-1"></a>                         guess, screen_time)) <span class="sc">|&gt;</span></span>
+<span id="cb67-23"><a href="#cb67-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>hours, <span class="sc">-</span>minutes, <span class="sc">-</span>guess)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We see that we fix all but 44 entries. You can see that these are mostly un-fixable:</p>
+<p>We see that we fix all but 13 entries. You can see that these are mostly un-fixable:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>new_heights <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="fu">is.na</span>(height)) <span class="sc">|&gt;</span> <span class="fu">pull</span>(original)</span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] "511"       "&gt;9000"     "5.25"      "11111"     "103.2"    </span></span>
-<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [6] "19"        "300"       "5.75"      "7"         "214"      </span></span>
-<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [11] "0.7"       "2'33"      "612"       "87"        "111"      </span></span>
-<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [16] "12"        "yyy"       "89"        "34"        "25"       </span></span>
-<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [21] "22"        "684"       "1"         "1"         "6*12"     </span></span>
-<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [26] "87"        "120"       "120"       "23"        "5.51"     </span></span>
-<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [31] "5.69"      "86"        "708,661"   "5.25"      "649,606"  </span></span>
-<span id="cb68-9"><a href="#cb68-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [36] "10000"     "1"         "728,346"   "0"         "100"      </span></span>
-<span id="cb68-10"><a href="#cb68-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [41] "5.57"      "88"        "7,283,465" "34"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>new_screen_time <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="fu">is.na</span>(screen_time)) <span class="sc">|&gt;</span> <span class="fu">pull</span>(original)</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] "asdf"        "lots"        "N/A"         "44*60"      </span></span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [5] "&gt;500"        "24/7"        "26782s"      "screen time"</span></span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [9] "0"           "-30"         "3 . 4 5"     "idk"        </span></span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [13] "1,234,567"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You can review the ones we did fix by typing:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>new_heights <span class="sc">|&gt;</span></span>
-<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">not_inches_or_cm</span>(original)) <span class="sc">|&gt;</span></span>
-<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(original, height) <span class="sc">|&gt;</span> </span>
-<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(height) <span class="sc">|&gt;</span></span>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>new_screen_time <span class="sc">|&gt;</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">not_minutes_or_seconds</span>(original)) <span class="sc">|&gt;</span></span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(original, screen_time) <span class="sc">|&gt;</span></span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(screen_time) <span class="sc">|&gt;</span></span>
 <span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">View</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>A final observation is that if we look at the shortest students in our course:</p>
+<p>A final observation is that if we look at the respondents with the shortest recovered screen time in our sample:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>new_heights <span class="sc">|&gt;</span> <span class="fu">arrange</span>(height) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">6</span>)</span>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>new_screen_time <span class="sc">|&gt;</span> <span class="fu">arrange</span>(screen_time) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">6</span>)</span>
 <span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 x 4</span></span>
-<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   time_stamp          sex    height original</span></span>
-<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;               &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;   </span></span>
-<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 2017-07-04 01:30:25 Male       50 50      </span></span>
-<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 2017-09-07 10:40:35 Male       50 50      </span></span>
-<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 2014-09-02 15:18:30 Female     51 51      </span></span>
-<span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 2016-06-05 14:07:20 Female     52 52      </span></span>
-<span id="cb70-9"><a href="#cb70-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 2016-06-05 14:07:38 Female     52 52      </span></span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   time_stamp          platform screen_time original</span></span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;               &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;   </span></span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 2024-09-11 05:13:17 Android         17.4 0.29    </span></span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 2024-09-12 16:46:18 iOS             19   19      </span></span>
+<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 2024-09-12 19:25:20 Android         19.2 0.32    </span></span>
+<span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 2024-09-03 04:21:53 iOS             25.0 1503    </span></span>
+<span id="cb70-9"><a href="#cb70-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 2024-09-05 08:53:11 iOS             26   26      </span></span>
 <span id="cb70-10"><a href="#cb70-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # i 1 more row</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We see heights of 50, 51, 52, and so on. These short heights are rare and it is likely that the students actually meant 5’0, 5’1, 5’2 and so on. Because we are not completely sure, we will leave them as reported. The object new_heights contains our final solution for this case study.</p>
+<p>Some of the shortest recovered values come from the decimal-hours branch (a bare number like <code>0.29</code>, multiplied by 60). Unlike the hours<code>'</code>minutes cases, there is no independent check on these – a genuinely tiny decimal and a mistyped one look identical once parsed as a number. Because we are not completely sure, we will leave them as reported. The object <code>new_screen_time</code> contains our final solution for this case study.</p>
 </section>
 <section id="case-study-2-extracting-tables-from-a-pdf" class="level2" data-number="16.8">
 <h2 data-number="16.8" class="anchored" data-anchor-id="case-study-2-extracting-tables-from-a-pdf"><span class="header-section-number">16.8</span> Case study 2: extracting tables from a PDF</h2>
-<p>One of the datasets provided in <strong>dslabs</strong> shows scientific funding rates by gender in the Netherlands:</p>
+<p>One of the datasets provided in <strong>behdslabs</strong> shows scientific funding rates by gender in the Netherlands:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(behdslabs)</span>
 <span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>research_funding_rates <span class="sc">|&gt;</span> </span>
 <span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">"discipline"</span>, <span class="st">"success_rates_men"</span>, <span class="st">"success_rates_women"</span>)</span>
 <span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;            discipline success_rates_men success_rates_women</span></span>
@@ -1312,7 +1314,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>raw_data_research_funding_rates <span class="ot">&lt;-</span> txt[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The steps above can actually be skipped because we include this raw data in the <strong>dslabs</strong> package as well.</p>
+<p>The steps above can actually be skipped because we include this raw data in the <strong>behdslabs</strong> package as well.</p>
 <p>Examining the object <code>raw_data_research_funding_rates</code> we see that it is a long string and each line on the page, including the table rows, are separated by the symbol for newline: <code>\n</code>. A first step in converting this into a data frame is to store rows separately in a way that will make them easy to access. For this we use the <code>str_split</code> function:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> <span class="fu">str_split</span>(raw_data_research_funding_rates, <span class="st">"</span><span class="sc">\n</span><span class="st">+"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1414,13 +1416,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Rather than changing each entry, a more efficient approach is to change the levels.</p>
 <p>Here is an example that shows how to rename countries with long names:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(behdslabs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Suppose we want to show life expectancy time series by country for the Caribbean. If we make this plot</p>
+<p>Suppose we want to show daily screen-time trends by country for the Caribbean. If we make this plot</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span> </span>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>global_tech_adoption <span class="sc">|&gt;</span></span>
 <span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(region <span class="sc">==</span> <span class="st">"Caribbean"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(year, life_expectancy, <span class="at">color =</span> country)) <span class="sc">+</span></span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(year, avg_daily_screen_time_hours, <span class="at">color =</span> country)) <span class="sc">+</span></span>
 <span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -1432,16 +1434,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>we see that the legend takes up much of the plot because we have four countries with names longer than 12 characters. We can rename these levels using the <code>case_when</code> function:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">levels</span>(gapminder<span class="sc">$</span>country)</span>
-<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(gapminder<span class="sc">$</span>country) <span class="ot">&lt;-</span> <span class="fu">case_when</span>(</span>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">levels</span>(global_tech_adoption<span class="sc">$</span>country)</span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(global_tech_adoption<span class="sc">$</span>country) <span class="ot">&lt;-</span> <span class="fu">case_when</span>(</span>
 <span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">==</span> <span class="st">"Antigua and Barbuda"</span> <span class="sc">~</span> <span class="st">"Barbuda"</span>,</span>
 <span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">==</span> <span class="st">"Dominican Republic"</span> <span class="sc">~</span> <span class="st">"DR"</span>,</span>
 <span id="cb86-5"><a href="#cb86-5" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">==</span> <span class="st">"St. Vincent and the Grenadines"</span> <span class="sc">~</span> <span class="st">"St. Vincent"</span>,</span>
 <span id="cb86-6"><a href="#cb86-6" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">==</span> <span class="st">"Trinidad and Tobago"</span> <span class="sc">~</span> <span class="st">"Trinidad"</span>,</span>
 <span id="cb86-7"><a href="#cb86-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">.default =</span> x)</span>
-<span id="cb86-8"><a href="#cb86-8" aria-hidden="true" tabindex="-1"></a>gapminder <span class="sc">|&gt;</span> </span>
+<span id="cb86-8"><a href="#cb86-8" aria-hidden="true" tabindex="-1"></a>global_tech_adoption <span class="sc">|&gt;</span></span>
 <span id="cb86-9"><a href="#cb86-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(region <span class="sc">==</span> <span class="st">"Caribbean"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb86-10"><a href="#cb86-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(year, life_expectancy, <span class="at">color =</span> country)) <span class="sc">+</span></span>
+<span id="cb86-10"><a href="#cb86-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(year, avg_daily_screen_time_hours, <span class="at">color =</span> country)) <span class="sc">+</span></span>
 <span id="cb86-11"><a href="#cb86-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -1454,8 +1456,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We can instead use the <code>fct_recode</code> function in the <strong>forcats</strong> package:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forcats)</span>
-<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>gapminder<span class="sc">$</span>country <span class="ot">&lt;-</span> </span>
-<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fct_recode</span>(gapminder<span class="sc">$</span>country, </span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>global_tech_adoption<span class="sc">$</span>country <span class="ot">&lt;-</span></span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fct_recode</span>(global_tech_adoption<span class="sc">$</span>country,</span>
 <span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Barbuda"</span> <span class="ot">=</span> <span class="st">"Antigua and Barbuda"</span>,</span>
 <span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a>             <span class="st">"DR"</span> <span class="ot">=</span> <span class="st">"Dominican Republic"</span>,</span>
 <span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>             <span class="st">"St. Vincent"</span> <span class="ot">=</span> <span class="st">"St. Vincent and the Grenadines"</span>,</span>
@@ -1465,10 +1467,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="exercises" class="level2" data-number="16.10">
 <h2 data-number="16.10" class="anchored" data-anchor-id="exercises"><span class="header-section-number">16.10</span> Exercises</h2>
 <p>1. Complete all lessons and exercises in the RegexOne<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> online interactive tutorial.</p>
-<p>2. In the <code>extdata</code> directory of the <strong>dslabs</strong> package, you will find a PDF file containing daily mortality data for Puerto Rico from Jan 1, 2015 to May 31, 2018. You can find the file like this:</p>
+<p>2. In the <code>extdata</code> directory of the <strong>behdslabs</strong> package, you will find a PDF file containing daily mortality data for Puerto Rico from Jan 1, 2015 to May 31, 2018. You can find the file like this:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>fn <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"RD-Mortality-Report_2015-18-180531.pdf"</span>,</span>
-<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">package=</span><span class="st">"dslabs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">package=</span><span class="st">"behdslabs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Find and open the file or open it directly from RStudio. On a Mac, you can type:</p>
 <div class="cell" data-layout-align="center">

@@ -15,8 +15,10 @@ Untitled*
 fixsh.R
 .DS_Store
 *.tex
+!before-body.tex
 *.pdf
 ziptex
 crc-stuff/
 irizarrycr9781032116556introductiontodatasciencep/
 **/*.quarto_ipynb
+wrangling/*.jsonl
