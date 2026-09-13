@@ -207,7 +207,7 @@ Let's now write a script that downloads a file into the data directory. We will 
 The content of this file will be:
 
 ```{r, eval=FALSE}
-url <- "https://raw.githubusercontent.com/rafalab/dslabs/master/inst/
+url <- "https://raw.githubusercontent.com/intro-to-behds/behdslabs/master/inst/
 extdata/murders.csv"
 dest_file <- "data/murders.csv"
 download.file(url, destfile = dest_file)

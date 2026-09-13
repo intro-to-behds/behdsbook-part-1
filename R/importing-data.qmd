@@ -24,15 +24,15 @@ The _path_ of a file is a list of directory names that can be thought of as inst
 To see an example of a full path on your system type the following:
 
 ```{r}
-system.file(package = "dslabs")
+system.file(package = "behdslabs")
 ```
 
-Note that the output will be different across different computers. The `system.file` function finds the full path to the files that were added to your system when you installed the __dslabs__ package. The strings separated by slashes are the directory names. The first slash represents the root directory and we know this is a full path because it starts with a slash. 
+Note that the output will be different across different computers. The `system.file` function finds the full path to the files that were added to your system when you installed the __behdslabs__ package. The strings separated by slashes are the directory names. The first slash represents the root directory and we know this is a full path because it starts with a slash. 
 
-We can use the function `list.files` to show the names of files and directories in any directory. For example, here are the files in the **dslabs** package directory:
+We can use the function `list.files` to show the names of files and directories in any directory. For example, here are the files in the **behdslabs** package directory:
 
 ```{r}
-dir <- system.file(package = "dslabs")
+dir <- system.file(package = "behdslabs")
 list.files(dir)
 ```
 
@@ -50,11 +50,11 @@ When starting a project, choose a directory to store all related files and set i
 
 ### Generating path names
 
-The `file.path` function combines characters to form a complete path, ensuring compatibility with the respective operating system. Linux and Mac use forward slashes `/`, while Windows uses backslashes `\`, to separate directories. This function is useful because often you want to define paths using a variable. Here is an example that constructs the full path for a spreadsheet containing the murders data. Here the variable `dir` contains the full path for the __dslabs__ package and `extdata/murders.csv` is the relative path of the spreadsheet if `dir` is considered the working directory.
+The `file.path` function combines characters to form a complete path, ensuring compatibility with the respective operating system. Linux and Mac use forward slashes `/`, while Windows uses backslashes `\`, to separate directories. This function is useful because often you want to define paths using a variable. Here is an example that constructs the full path for a spreadsheet containing the murders data. Here the variable `dir` contains the full path for the __behdslabs__ package and `extdata/murders.csv` is the relative path of the spreadsheet if `dir` is considered the working directory.
 
 ```{r}
 #| cache: false
-dir <- system.file(package = "dslabs")
+dir <- system.file(package = "behdslabs")
 file_path <- file.path(dir, "extdata", "murders.csv")
 ```
 
@@ -98,12 +98,12 @@ Opening image files such as jpg or png in a text editor or using `readLines` in 
 A frequent issue when importing data, whether text or binary, is incorrectly identifying the file's _encoding_. 
 At its core, a computer translates everything into sequences of 0s and 1s. ASCII is an _encoding_ system that assigns specific numbers to characters. Using 7 bits, ASCII can represent $2^7 = 128$ unique symbols, sufficient for all English keyboard characters. However, many global languages contain characters outside ASCII's range. For instance, the é in "México" isn't in ASCII's catalog. To address this, broader encodings, such as Unicode, emerged. Unicode offers variations using 8, 16, or 32 bits, known as UTF-8, UTF-16, and UTF-32. RStudio typically uses UTF-8 as its default. Notably, ASCII is a subset of UTF-8, meaning that if a file is ASCII-encoded, presuming it's UTF-8 encoded won't cause issues. However, there other encodings, such as ISO-8859-1 (also known as Latin-1) developed for the western European languages, Big5 for Traditional Chinese, and ISO-8859-6 for Arabic.
 
-The __dslabs__ package includes a file that is not UTF-8 encoded to serve as an example. Notice the strange characters that appear you attempt to read in the first line:
+The __behdslabs__ package includes a file that is not UTF-8 encoded to serve as an example. Notice the strange characters that appear you attempt to read in the first line:
 
 ```{r}
 #| cache: false
 fn <- "calificaciones.csv"
-file.copy(file.path(system.file("extdata", package = "dslabs"), fn), fn)
+file.copy(file.path(system.file("extdata", package = "behdslabs"), fn), fn)
 readLines(fn, n = 1)
 ```
 
@@ -219,11 +219,11 @@ Note `fread` returns a `data.table` object.
 
 ### Downloading files
 
-A common place for data to reside is on the internet. When these data are in files, we can download them and then import them or even read them directly from the web. For example, we note that because our __dslabs__ package is on GitHub, the file we downloaded with the package has a url:
+A common place for data to reside is on the internet. When these data are in files, we can download them and then import them or even read them directly from the web. For example, we note that because our __behdslabs__ package is on GitHub, the file we downloaded with the package has a url:
 
 ```{r}
 url <- paste0("https://raw.githubusercontent.com/",
-              "rafalab/dslabs/master/inst/extdata/murders.csv")
+              "intro-to-behds/behdslabs/master/inst/extdata/murders.csv")
 ```
 
 Most parsers can read these files directly:
@@ -278,7 +278,7 @@ we summarize the recommendations made in paper by Karl Broman and Kara Woo^[<htt
 1\. Use the `read_csv` function to read each of the files that the following code saves in the `files` object: 
 
 ```{r, eval=FALSE}
-path <- system.file("extdata", package = "dslabs")
+path <- system.file("extdata", package = "behdslabs")
 files <- list.files(path)
 files
 ```

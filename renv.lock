@@ -1373,33 +1373,6 @@
       "Maintainer": "Hadley Wickham <hadley@posit.co>",
       "Repository": "CRAN"
     },
-    "dslabs": {
-      "Package": "dslabs",
-      "Version": "0.9.0",
-      "Source": "Local",
-      "Title": "Data Science Labs",
-      "Description": "Datasets and functions that can be used for data analysis practice, homework and projects in data science courses and workshops. Forked as behdslabs for the Behavioural Data Science course (PS3140, Cognitive Science for Human-Centric Technologies, UniPD), with a set of datasets relabeled with a digital-technology / wearable / neurophysiological theme. NOTE: these relabeled datasets are not real behavioural, usage, or physiological data -- they are the original dslabs datasets (Irizarry & Gill), renamed and in some cases linearly rescaled for narrative fit. A synthetic or real, ethically-sourced replacement is planned for a future release.",
-      "Author": "Rafael A. Irizarry, Amy Gill",
-      "Maintainer": "Rafael A. Irizarry <rafael_irizarry@dfci.harvard.edu>",
-      "Depends": [
-        "R (>= 4.1.0)"
-      ],
-      "Imports": [
-        "ggplot2"
-      ],
-      "Suggests": [
-        "testthat (>= 3.0.0)",
-        "dplyr",
-        "tidyr"
-      ],
-      "Config/testthat/edition": "3",
-      "License": "Artistic-2.0",
-      "Encoding": "UTF-8",
-      "LazyData": "true",
-      "RoxygenNote": "7.3.3",
-      "RemoteType": "local",
-      "RemoteUrl": "/Users/giorgioarcara/Documents/Projects/2026 - Introduction to Behavioural Data Science/behdslabs"
-    },
     "dtplyr": {
       "Package": "dtplyr",
       "Version": "1.3.2",

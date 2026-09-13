@@ -17,7 +17,7 @@ section on this topic. Here we use a series of case studies that help us
 demonstrate how string processing is a necessary step for many data
 wrangling challenges. Specifically, we describe the process of
 converting the original, *raw* data from which we extracted
-the `murders`, `heights`, and `research_funding_rates` examples into the
+the `app_data_breaches`, `reaction_times`, and `research_funding_rates` examples into the
 data frames we have studied in this book.
 
 By going over these case studies, we will cover some of the most common
@@ -40,8 +40,8 @@ being processed is always the first argument, which means we can more
 easily use the pipe. Therefore, we will start by describing how to use
 the functions in the **stringr** package.
 
-Most of the examples will come from the second case study which deals
-with self-reported heights by students, and most of the chapter is
+Most of the examples will come from the first case study which deals
+with self-reported daily screen time, and most of the chapter is
 dedicated to learning regular expressions (regex) and functions in the
 **stringr** package.
 
@@ -100,35 +100,37 @@ explained in @sec-groups.
 | `str_wrap`        | Manipulate | Wrap things into formatted paragraphs.                                                           |                                |
 | `str_interp`      | Manipulate | String interpolation.                                                                            | `sprintf`                      |
 
-## Case study 1: self-reported heights
+## Case study 1: self-reported daily screen time
 
-The **dslabs** package includes the raw data from which the heights
-dataset was obtained. You can load it like this:
+The **behdslabs** package includes the raw data from which a "daily
+screen time in minutes" variable can be obtained. You can load it like
+this:
 
 ```{r, cache=FALSE}
-library(dslabs)
-head(reported_heights)
+library(behdslabs)
+head(reported_screen_time)
 ```
 
-These heights were obtained using a web form in which students were
-asked to enter their heights. They could enter anything, but the
-instructions asked for *height in inches*, a number. We compiled
-`r prettyNum(nrow(reported_heights), big.mark=",")` submissions, but
-unfortunately the column vector with the reported heights had several
-non-numeric entries and as a result became a character vector:
+These screen-time values were obtained using a web form in which
+respondents were asked to enter their average daily screen time. They
+could enter anything, but the instructions asked for *screen time in
+minutes*, a number. We compiled
+`r prettyNum(nrow(reported_screen_time), big.mark=",")` submissions, but
+unfortunately the column vector with the reported screen time had
+several non-numeric entries and as a result became a character vector:
 
 ```{r}
-class(reported_heights$height)
+class(reported_screen_time$screen_time)
 ```
 
 If we try to parse it into numbers, we get a warning:
 
 ```{r}
-x <- as.numeric(reported_heights$height)
+x <- as.numeric(reported_screen_time$screen_time)
 ```
 
-Although most values appear to be height in inches as requested we do
-end up with many `NA`s:
+Although most values appear to be screen time in minutes as requested
+we do end up with many `NA`s:
 
 ```{r}
 sum(is.na(x))
@@ -137,24 +139,25 @@ sum(is.na(x))
 Here are some of the entries that are not successfully converted:
 
 ```{r, warning=FALSE}
-reported_heights |> 
-  mutate(new_height = as.numeric(height)) |>
-  filter(is.na(new_height)) |> 
+reported_screen_time |>
+  mutate(new_screen_time = as.numeric(screen_time)) |>
+  filter(is.na(new_screen_time)) |>
   head(n = 10)
 ```
 
-We immediately see what is happening. Some of the students did not
-report their heights in inches as requested. We could discard these data
+We immediately see what is happening. Some respondents did not report
+their screen time in minutes as requested. We could discard these data
 and continue. However, many of the entries follow patterns that, in
-principle, we can easily convert to inches. For example, in the output
+principle, we can easily convert to minutes. For example, in the output
 above, we see various cases that use the format `x'y"` or `x'y''` with `x` and `y`
-representing feet and inches, respectively. Each one of these cases can
-be read and converted to inches by a human, for example `5'4"` is
-`5*12 + 4 = 64`. So we could fix all the problematic entries *by hand*.
-However, humans are prone to making mistakes, so an automated approach
-is preferable. Also, because we plan on continuing to collect data, it
-will be convenient to write code that automatically corrects entries
-entered in error.
+representing hours and minutes, respectively -- a shorthand some
+respondents apparently borrowed from feet-and-inches height notation.
+Each one of these cases can be read and converted to minutes by a
+human, for example `2'15"` is `2*60 + 15 = 135`. So we could fix all the
+problematic entries *by hand*. However, humans are prone to making
+mistakes, so an automated approach is preferable. Also, because we plan
+on continuing to collect data, it will be convenient to write code that
+automatically corrects entries entered in error.
 
 A first step in this type of task is to survey the problematic entries
 and try to define specific patterns followed by a large groups of
@@ -164,26 +167,21 @@ accurately described with a rule, such as "a digit, followed by a feet
 symbol, followed by one or two digits, followed by an inches symbol".
 
 To look for such patterns, it helps to remove the entries that are
-consistent with being in inches and to view only the problematic
+consistent with being in minutes and to view only the problematic
 entries. We thus write a function to automatically do this. We keep
 entries that either result in `NA`s when applying `as.numeric` or are
-outside a range of plausible heights. We permit a range that covers
-about 99.9999% of the adult population. We also use `suppressWarnings`
-to avoid the warning message we know `as.numeric` will gives us.
-
-```{r, echo=FALSE, eval=FALSE}
-alpha <- 1 / 10^6
-qnorm(1 - alpha / 2, 69.1, 2.9)
-qnorm(alpha / 2, 63.7, 2.7)
-```
+outside a range of plausible daily screen-time values. We permit a
+fairly wide range, from 15 minutes to 10 hours a day. We also use
+`suppressWarnings` to avoid the warning message we know `as.numeric`
+will gives us.
 
 We apply this function and find the number of problematic entries:
 
 ```{r}
-problems <- reported_heights |> 
-  mutate(inches = suppressWarnings(as.numeric(height))) |>
-  filter(is.na(inches) | inches < 50 | inches > 84) |>
-  pull(height)
+problems <- reported_screen_time |>
+  mutate(minutes = suppressWarnings(as.numeric(screen_time))) |>
+  filter(is.na(minutes) | minutes < 15 | minutes > 600) |>
+  pull(screen_time)
 length(problems)
 ```
 
@@ -191,26 +189,27 @@ We can now view all the cases by simply printing them. If we do, we see
 that three patterns can be used to define three large groups within these exceptions.
 
 1\. A pattern of the form `x'y` or `x' y''` or `x'y"` with `x` and `y`
-representing feet and inches, respectively. Here are ten examples:
+representing hours and minutes, respectively. Here are ten examples:
 
 ```{r, echo=FALSE}
 pattern <- "^\\d\\s*'\\s*\\d{1,2}\\.*\\d*'*\"*$"
 str_subset(problems, pattern) |> head(n = 10) |> cat()
 ```
 
-2\. A pattern of the form `x.y` or `x,y` with `x` feet and `y` inches.
-Here are ten examples:
+2\. A pattern of the form `x.y` or `x,y` with `x` hours and `y` minutes,
+written as if the two were joined by a decimal point instead of a
+colon. Here are ten examples:
 
 ```{r, echo=FALSE}
-pattern <- "^[4-6]\\s*[\\.|,]\\s*([0-9]|10|11)$"
+pattern <- "^[1-9]\\s*[\\.|,]\\s*([0-9]|[0-5][0-9])$"
 str_subset(problems, pattern) |> head(n = 10) |> cat()
 ```
 
-3\. Entries that were reported in centimeters rather than inches. Here
+3\. Entries that were reported in seconds rather than minutes. Here
 are ten examples:
 
 ```{r, echo=FALSE}
-ind <- which(between(suppressWarnings(as.numeric(problems))/2.54, 54, 81) )
+ind <- which(between(suppressWarnings(as.numeric(problems))/60, 15, 600) )
 ind <- ind[!is.na(ind)]
 problems[ind] |> head(n = 10) |> cat()
 ```
@@ -220,10 +219,10 @@ develop a plan of attack.
 
 1.  Convert entries fitting the first two patterns into one standardized
     one.
-2.  Leverage the standardization to extract the feet and inches and
-    convert to inches.
-3.  Define a procedure for identifying entries that are in centimeters
-    and convert them to inches.
+2.  Leverage the standardization to extract the hours and minutes and
+    convert to minutes.
+3.  Define a procedure for identifying entries that are in seconds
+    and convert them to minutes.
 4.  Check again to see what entries were not fixed and see if we can
     tweak our approach to be more comprehensive.
 
@@ -289,7 +288,7 @@ like:
 cat(s)
 ```
 
-Now, what if we want our string to be 5 feet written like this `5'`? In
+Now, what if we want our string to be 5 hours written like this `5'`? In
 this case, we can use the double quotes or escape the single quote
 
 ```{r}
@@ -297,8 +296,8 @@ s <- "5'"
 s <- '5\''
 ```
 
-So we've learned how to write 5 feet and 10 inches separately, but what
-if we want to write them together to represent *5 feet and 10 inches*
+So we've learned how to write 5 hours and 10 minutes separately, but what
+if we want to write them together to represent *5 hours and 10 minutes*
 like this `5'10"`? In this case, neither the single nor double quotes
 will work since `'5'10"'` closes the string after 5 and this `"5'10""`
 closes the string after 10. Keep in mind that if we type one of the
@@ -358,51 +357,51 @@ pattern <- ","
 str_detect(c("1", "10", "100", "1,000", "10,000"), pattern) 
 ```
 
-Above, we noted that an entry included a `cm`. This is also a simple
-example of a regex. We can show all the entries that used `cm` like
-this:
+Above, we noted that an entry included seconds far too large to be
+minutes. Let's instead look for entries that spelled out the unit --
+we can show all the entries that used `sec` like this:
 
 ```{r}
-str_subset(reported_heights$height, "cm")
+str_subset(reported_screen_time$screen_time, "sec")
 ```
 
 ### Special characters
 
 Now let's consider a slightly more complicated example. Which of the
-following strings contain the pattern `cm` or `inches`?
+following strings contain the pattern `sec` or `hours`?
 
 ```{r}
-yes <- c("180 cm", "70 inches")
-no <- c("180", "70''")
+yes <- c("300 sec", "2 hours")
+no <- c("300", "2h")
 s <- c(yes, no)
 ```
 
 We can do this with two searches:
 
 ```{r}
-str_detect(s, "cm") | str_detect(s, "inches")
+str_detect(s, "sec") | str_detect(s, "hours")
 ```
 
 However, we don't need to do this. The main feature that distinguishes
 the regex *language* from plain strings is that we can use special
 characters. These are characters with a meaning. We start by introducing
-`|` which means *or*. So if we want to know if either `cm` or `inches`
-appears in the strings, we can use the regex `cm|inches`:
+`|` which means *or*. So if we want to know if either `sec` or `hours`
+appears in the strings, we can use the regex `sec|hours`:
 
 ```{r}
-str_detect(s, "cm|inches")
+str_detect(s, "sec|hours")
 ```
 
 and obtain the correct answer.
 
-Another special character that will be useful for identifying feet and
-inches values is `\d` which means any digit: 0, 1, 2, 3, 4, 5, 6, 7, 8,
+Another special character that will be useful for identifying hours and
+minutes values is `\d` which means any digit: 0, 1, 2, 3, 4, 5, 6, 7, 8,
 9. The backslash is used to distinguish it from the character `d`. In R,
 we have to *escape* the backslash `\` so we actually have to use `\\d`
 to represent digits. Here is an example:
 
 ```{r}
-yes <- c("5", "6", "5'10", "5 feet", "4'11")
+yes <- c("5", "6", "5'10", "5 hours", "4'11")
 no <- c("", ".", "Five", "six")
 s <- c(yes, no)
 pattern <- "\\d"
@@ -476,8 +475,9 @@ Notice that `\w` is equivalent to `[a-zA-Z0-9_]`.
 ### Anchors
 
 What if we want a match when we have exactly 1 digit? This will be
-useful in our case study since feet are never more than 1 digit so a
-restriction will help us. One way to do this with regex is by using
+useful in our case study since the hours part of a daily screen-time
+report is never more than 1 digit so a restriction will help us. One
+way to do this with regex is by using
 *anchors*, which let us define patterns that must start or end at a
 specific place. The two most common anchors are `^` and `$` which
 represent the beginning and end of a string, respectively. So the
@@ -502,7 +502,7 @@ rather with a space, which is not easy to see.
 
 ### Bounded quantifiers
 
-For the inches part, we can have one or two digits. This can be
+For the minutes part, we can have one or two digits. This can be
 specified in regex with *quantifiers*. This is done by following the
 pattern with curly brackets containing the number of times the previous
 entry can be repeated. We call the *bounded* because the numbers in the
@@ -521,36 +521,36 @@ str_view(c(yes, no), pattern, match = NA)
 ![](img/str_view-5.png){width="80%"}
 
 In this case, `123` does **not** match, but `12` does. To look for
-our feet and inches pattern, we can add the symbols for feet `'` and
-inches `"` after the digits.
+our hours and minutes pattern, we can add the symbols for hours `'` and
+minutes `"` after the digits.
 
 With what we have learned, we can now construct an example for the
-pattern `x'y"` with `x` feet and `y` inches.
+pattern `x'y"` with `x` hours and `y` minutes.
 
 ```{r}
-pattern <- "^[4-7]'\\d{1,2}\"$"
+pattern <- "^[1-9]'\\d{1,2}\"$"
 ```
 
 The pattern is now getting complex, but you can look at it carefully and
 break it down:
 
 -   `^` = start of the string
--   `[4-7]` = one digit, either 4,5,6 or 7
--   `'` = feet symbol
+-   `[1-9]` = one digit, from 1 through 9
+-   `'` = hours symbol
 -   `\\d{1,2}` = one or two digits
--   `\"` = inches symbol
+-   `\"` = minutes symbol
 -   `$` = end of the string
 
 Let's test it out:
 
 ```{r}
-yes <- c("5'7\"", "6'2\"",  "5'12\"")
-no <- c("6,2\"", "6.2\"","I am 5'11\"", "3'2\"", "64")
+yes <- c("5'7\"", "6'2\"",  "5'70\"")
+no <- c("6,2\"", "6.2\"","I am 5'11\"", "0'2\"", "64")
 str_detect(yes, pattern)
 str_detect(no, pattern)
 ```
 
-For now, we are permitting the inches to be 12 or larger. We will add a
+For now, we are permitting the minutes to be 60 or larger. We will add a
 restriction later as the regex for this is a bit more complex than we
 are ready to show.
 
@@ -569,7 +569,7 @@ In regex, `\s` represents white space. To find patterns like `5' 4`, we
 can change our pattern to:
 
 ```{r}
-pattern_2 <- "^[4-7]'\\s\\d{1,2}\"$"
+pattern_2 <- "^[1-9]'\\s\\d{1,2}\"$"
 str_subset(problems, pattern_2)
 ```
 
@@ -607,7 +607,7 @@ data.frame(string = c("AB", "A1B", "A11B", "A111B", "A1111B"),
            once_or_more = str_detect(yes, "A1+B"))
 ```
 
-We will actually use all three in our reported heights example, but we
+We will actually use all three in our reported screen time example, but we
 will see these in a later section.
 
 ### Not
@@ -638,15 +638,15 @@ values. Groups are defined using parentheses. They don't affect the
 pattern matching per se. Instead, it permits tools to identify specific
 parts of the pattern so we can extract them.
 
-We want to change heights written like `5.6` to `5'6`.
+We want to change screen times written like `5.6` to `5'6`.
 
 To avoid changing patterns such as `70.2`, we will require that the
-first digit be between 4 and 7 `[4-7]` and that the second be none or
+first digit be between 1 and 9 `[1-9]` and that the second be none or
 more digits `\\d*`. Let's start by defining a simple pattern that
 matches this:
 
 ```{r}
-pattern_without_groups <- "^[4-7],\\d*$"
+pattern_without_groups <- "^[1-9],\\d*$"
 ```
 
 We want to extract the digits so we can then form the new version using
@@ -654,7 +654,7 @@ a period. These are our two groups, so we encapsulate them with
 parentheses:
 
 ```{r}
-pattern_with_groups <-  "^([4-7]),(\\d*)$"
+pattern_with_groups <-  "^([1-9]),(\\d*)$"
 ```
 
 We encapsulate the part of the pattern that matches the parts we want to
@@ -664,7 +664,7 @@ Note that both patterns return the same result when using `str_detect`:
 
 ```{r}
 yes <- c("5,9", "5,11", "6,", "6,1")
-no <- c("5'9", ",", "2,8", "6.1.1")
+no <- c("5'9", ",", "0,8", "6.1.1")
 s <- c(yes, no)
 str_detect(s, pattern_without_groups)
 str_detect(s, pattern_with_groups)
@@ -677,7 +677,7 @@ the values these groups define:
 str_match(s, pattern_with_groups)
 ```
 
-Notice that the second and third columns contain feet and inches,
+Notice that the second and third columns contain hours and minutes,
 respectively. The first column is the part of the string matching the
 pattern. If no match occurred, we see an `NA`.
 
@@ -694,11 +694,11 @@ str_extract(s, pattern_with_groups)
 ### Search and replace
 
 Earlier we defined the object `problems` containing the strings that do
-not appear to be in inches. We can see that not too many of our
+not appear to be in minutes. We can see that not too many of our
 problematic strings match the pattern:
 
 ```{r}
-pattern <- "^[4-7]'\\d{1,2}\"$"
+pattern <- "^[1-9]'\\d{1,2}\"$"
 sum(str_detect(problems, pattern))
 ```
 
@@ -711,12 +711,12 @@ problems[c(2, 10, 11, 12, 15)] |> str_view(pattern)
 
 ![](img/str_view-6.png){width="80%"}
 
-An initial problem we see immediately is that some students wrote out
-the words "feet" and "inches". We can see the entries that did this with
-the `str_subset` function:
+An initial problem we see immediately is that some respondents wrote out
+the words "hours" and "minutes" (or abbreviations like "hr" and "min").
+We can see the entries that did this with the `str_subset` function:
 
 ```{r}
-str_subset(problems, "inches")
+str_subset(problems, "min")
 ```
 
 We also see that some entries used two single quotes `''` instead of a
@@ -727,22 +727,22 @@ str_subset(problems, "''")
 ```
 
 To correct this, we can replace the different ways of representing
-inches and feet with a uniform symbol. We will use `'` for feet, whereas
-for inches we will simply not use a symbol since some entries were of
-the form `x'y`. Now, if we no longer use the inches symbol, we have to
+hours and minutes with a uniform symbol. We will use `'` for hours, whereas
+for minutes we will simply not use a symbol since some entries were of
+the form `x'y`. Now, if we no longer use the minutes symbol, we have to
 change our pattern accordingly:
 
 ```{r}
-pattern <- "^[4-7]'\\d{1,2}$"
+pattern <- "^[1-9]'\\d{1,2}$"
 ```
 
 If we do this replacement before the matching, we get many more matches:
 
 ```{r}
-problems |> 
-  str_replace("feet|ft|foot", "'") |> # replace feet, ft, foot with ' 
-  str_replace("inches|in|''|\"", "") |> # remove all inches symbols
-  str_detect(pattern) |> 
+problems |>
+  str_replace("hours|hour|hrs|hr", "'") |> # replace hours, hour, hr with '
+  str_replace("minutes|minute|mins|min|''|\"", "") |> # remove all minutes symbols
+  str_detect(pattern) |>
   sum()
 ```
 
@@ -752,31 +752,31 @@ Note that in the code above, we leveraged the **stringr** consistency
 and used the pipe.
 
 For now, we improve our pattern by adding `\\s*` in front of and after
-the feet symbol `'` to permit space between the feet symbol and the
+the hours symbol `'` to permit space between the hours symbol and the
 numbers. Now we match a few more entries:
 
 ```{r}
-pattern <- "^[4-7]\\s*'\\s*\\d{1,2}$"
-problems |> 
-  str_replace("feet|ft|foot", "'") |> # replace feet, ft, foot with ' 
-  str_replace("inches|in|''|\"", "") |> # remove all inches symbols
-  str_detect(pattern) |> 
+pattern <- "^[1-9]\\s*'\\s*\\d{1,2}$"
+problems |>
+  str_replace("hours|hour|hrs|hr", "'") |> # replace hours, hour, hr with '
+  str_replace("minutes|minute|mins|min|''|\"", "") |> # remove all minutes symbols
+  str_detect(pattern) |>
   sum()
 ```
 
 We might be tempted to avoid doing this by removing all the spaces with
 `str_replace_all`. However, when doing such an operation we need to make
-sure that it does not have unintended effects. In our reported heights
-examples, this will be a problem because some entries are of the form
-`x y` with space separating the feet from the inches. If we remove all
-spaces, we will incorrectly turn `x y` into `xy` which implies that a
-`6 1` would become `61` inches instead of `73` inches.
+sure that it does not have unintended effects. In our reported screen
+time examples, this will be a problem because some entries are of the
+form `x y` with space separating the hours from the minutes. If we
+remove all spaces, we will incorrectly turn `x y` into `xy` which
+implies that a `6 1` would become `61` minutes instead of `361`.
 
 The second large type of problematic entries were of the form `x.y`,
 `x,y` and `x y`. We want to change all these to our common format `x'y`.
 But we can't just do a search and replace because we would change values
 such as `70.5` into `70'5`. Our strategy will therefore be to search for
-a very specific pattern that assures us feet and inches are being
+a very specific pattern that assures us hours and minutes are being
 provided and then, for those that match, replace appropriately.
 
 ### Search and replace using groups
@@ -790,14 +790,14 @@ second and so on. As a simple example, note that the following code will
 replace a comma with period, but only if it is after a digit between 4 and 7, and followed by zero or more digits:
 
 ```{r}
-pattern_with_groups <-  "^([4-7]),(\\d*)$"
+pattern_with_groups <-  "^([1-9]),(\\d*)$"
 yes <- c("5,9", "5,11", "6,", "6,1")
-no <- c("5'9", ",", "2,8", "6.1.1")
+no <- c("5'9", ",", "0,8", "6.1.1")
 s <- c(yes, no)
 str_replace(s, pattern_with_groups, "\\1'\\2")
 ```
 
-We can use this to convert cases in our reported heights.
+We can use this to convert cases in our reported screen time.
 
 We are now ready to define a pattern that helps us convert all the
 `x.y`, `x,y` and `x y` to our preferred format. We need to adapt
@@ -805,17 +805,17 @@ We are now ready to define a pattern that helps us convert all the
 cases.
 
 ```{r}
-pattern_with_groups <- "^([4-7])\\s*[,\\.\\s+]\\s*(\\d*)$"
+pattern_with_groups <- "^([1-9])\\s*[,\\.\\s+]\\s*(\\d*)$"
 ```
 
 Let's break this one down:
 
 -   `^` = start of the string
--   `[4-7]` = one digit representing feet, either 4, 5, 6, or 7
+-   `[1-9]` = one digit representing hours, from 1 through 9
 -   `\\s*` = none or more white space
--   `[,\\.\\s+]` = feet and inches are separated by either `,`, `.` or at least one space
+-   `[,\\.\\s+]` = hours and minutes are separated by either `,`, `.` or at least one space
 -   `\\s*` = none or more white space
--   `\\d*` = none or more digits representing inches
+-   `\\d*` = none or more digits representing minutes
 -   `$` = end of the string
 
 We can see that it appears to be working:
@@ -831,7 +831,7 @@ str_subset(problems, pattern_with_groups) |>
   str_replace(pattern_with_groups, "\\1'\\2") |> head()
 ```
 
-Again, we will deal with the inches-larger-than-twelve challenge later.
+Again, we will deal with the minutes-larger-than-sixty challenge later.
 
 ### Lookarounds
 
@@ -863,7 +863,7 @@ str_replace_all(s, "(?<=[Ss]uper)man", "girl")
 
 ### Separating variables {#sec-separate_regex}
 
-In @sec-separate we introduced functions that can split columns into new ones. The `separate_wider_regex` uses regex instead of delimiters to separate variables in data frames. It uses an approach similar to regex groups and turns each of groups into a new column. 
+In @sec-separate we introduced functions that can split columns into new ones. The `separate_wider_regex` uses regex instead of delimiters to separate variables in data frames. It uses an approach similar to regex groups and turns each of groups into a new column.
 
 Suppose we have data frame like this:
 
@@ -871,10 +871,10 @@ Suppose we have data frame like this:
 tab <- data.frame(x = c("5'10", "6' 1", "5 ' 9", "5'11\""))
 ```
 
-Note that using `separate_wider_delim` won't work here because the delimiter can varies across entries. With `separate_wider_regex` we can define flexible patterns that are matched to define each column. 
+Note that using `separate_wider_delim` won't work here because the delimiter can varies across entries. With `separate_wider_regex` we can define flexible patterns that are matched to define each column.
 
 ```{r}
-patterns <- c(feet = "\\d", "\\s*'\\s*", inches = "\\d{1,2}", ".*")
+patterns <- c(hours = "\\d", "\\s*'\\s*", minutes = "\\d{1,2}", ".*")
 tab |> separate_wider_regex(x, patterns = patterns)
 ```
 
@@ -906,14 +906,14 @@ Notice that regex is case sensitive. Often we want to match a word
 regardless of case. One approach to doing this is to first change
 everything to lower case and then proceeding ignoring case. As an
 example, note that one of the entries writes out numbers as words
-`Five foot eight inches`. Although not efficient, we could add 13 extra
+`Two hours fifteen minutes`. Although not efficient, we could add many extra
 `str_replace` calls to convert `zero` to `0`, `one` to `1`, and so on.
 To avoid having to write two separate operations for `Zero` and `zero`,
 `One` and `one`, etc., we can use the `str_to_lower` function to make
 all works lower case first:
 
 ```{r}
-s <- c("Five feet eight inches")
+s <- c("Two hours fifteen minutes")
 str_to_lower(s)
 ```
 
@@ -923,36 +923,36 @@ to inches.
 
 ## Case study 1 continued: Putting it all together
 
-We are now ready to put it all together and wrangle our reported heights data to try to recover as many heights as possible. The code is complex, but we will break it down into parts.
+We are now ready to put it all together and wrangle our reported screen time data to try to recover as many values as possible. The code is complex, but we will break it down into parts.
 
-Let's see how many problematic entries we can recover with the approaches we covered in @sec-regex. We will first define a function that detects entries that are not reported as inches or centimeters:
+Let's see how many problematic entries we can recover with the approaches we covered in @sec-regex. We will first define a function that detects entries that are not reported as minutes or seconds:
 
 ```{r}
-not_inches_or_cm <- function(x, smallest = 50, tallest = 84){
-  inches <- suppressWarnings(as.numeric(x))
-  is.na(inches) |
-    !((inches >= smallest & inches <= tallest) |
-        (inches/2.54 >= smallest & inches/2.54 <= tallest))
+not_minutes_or_seconds <- function(x, smallest = 15, tallest = 600){
+  minutes <- suppressWarnings(as.numeric(x))
+  is.na(minutes) |
+    !((minutes >= smallest & minutes <= tallest) |
+        (minutes/60 >= smallest & minutes/60 <= tallest))
 }
 ```
 
-We can see how many entries are not inches or centimeters:
+We can see how many entries are not minutes or seconds:
 
 ```{r}
-problems <- reported_heights |> 
-  filter(not_inches_or_cm(height)) |>
-  pull(height)
+problems <- reported_screen_time |>
+  filter(not_minutes_or_seconds(screen_time)) |>
+  pull(screen_time)
 length(problems)
 ```
 
-Let's see how many feet`'`inches format we can recover applying the finding from @sec-regex. Specifically we replace feet/foot/ft with `'`, we remove the word inches and its abbreviations, then rewrite similar patterns into the desired feet`'`inches pattern. Once this is done we see what proportion don't fit the desired pattern
+Let's see how many hours`'`minutes format we can recover applying the finding from @sec-regex. Specifically we replace hours/hour/hr/hrs with `'`, we remove the word minutes and its abbreviations, then rewrite similar patterns into the desired hours`'`minutes pattern. Once this is done we see what proportion don't fit the desired pattern
 
 ```{r}
-converted <- problems |> 
-  str_replace("feet|foot|ft", "'") |> 
-  str_remove_all("inches|in|''|\"") |>  
-  str_replace("^([4-7])\\s*[,\\.\\s+]\\s*(\\d*)$", "\\1'\\2") 
-index <- str_detect(converted, "^[4-7]\\s*'\\s*\\d{1,2}$")
+converted <- problems |>
+  str_replace("hours|hour|hrs|hr", "'") |>
+  str_remove_all("minutes|minute|mins|min|''|\"") |>
+  str_replace("^([1-9])\\s*[,\\.\\s+]\\s*(\\d*)$", "\\1'\\2")
+index <- str_detect(converted, "^[1-9]\\s*'\\s*\\d{1,2}$")
 mean(!index)
 ```
 
@@ -963,107 +963,109 @@ converted[!index]
 ```
 
 
-We noticed that two students added `cm` and some entries have space at the end so we write incorporate this into our cleanup stage. We also notice that at least one entry wrote out numbers such as `Five foot eight inches`. We can use  the `words()` function in the **english** package to change these to actual numbers. In preparation for our final product, we define a function that cleans up previously noticed problems and these new ones:
+We noticed that some respondents added `sec` (or spelled it out entirely, `seconds`) and some entries have space at the end so we incorporate this into our cleanup stage. We also notice that at least one entry wrote out numbers such as `Two hours fifteen minutes`. We can use the `words()` function in the **english** package to change these to actual numbers. In preparation for our final product, we define a function that cleans up previously noticed problems and these new ones:
 
 ```{r, warning=FALSE, message=FALSE}
 library(english)
 cleanup <- function(s){
-  s <- str_remove_all(s, "inches|in|''|\"|cm|and") |> 
+  s <- str_remove_all(s, "minutes|minute|mins|min|''|\"|seconds|secs|sec|and") |>
     str_trim() |>
     str_to_lower()
-  for (i in 0:11) {
+  for (i in 59:0) {
     s <- str_replace_all(s, words(i), as.character(i))
   }
   return(s)
 }
 ```
 
-Many also notice that students measuring exactly 5 or 6 feet did not enter any inches, for example `6'`, and our pattern requires that inches be included, and that some entries are in meters and some of these use European decimals, for example `1.6` and `1,70`. So we 
-create a function that add these corrections to those already identified as needed to reformat the entry as feet`'`inches:
+Note that we loop from 59 down to 0 rather than the other way around: a number word like "fourteen" contains the word "four" as a substring, so if we replaced `four` first we would corrupt `fourteen` before ever getting a chance to recognize it. Counting down avoids this, since every two-word or teen number (10 and up) is handled before the single digits it might contain.
+
+Many also notice that respondents reporting exactly a whole number of hours did not enter any minutes, for example `2'`, and our pattern requires that minutes be included, and that some entries are decimal hours below 1, and some of these use European decimals, for example `0.5` and `0,63`. So we
+create a function that add these corrections to those already identified as needed to reformat the entry as hours`'`minutes:
 
 ```{r}
 convert_format <- function(s){
-  s |> str_replace("feet|foot|ft", "'") |> 
-    str_replace("^([4-7])\\s*[,\\.\\s+]\\s*(\\d*)$", "\\1'\\2") |> 
-    str_replace("^([56])'?$", "\\1'0") |> 
-    str_replace("^([12])\\s*,\\s*(\\d*)$", "\\1\\.\\2")
+  s |> str_replace("hours|hour|hrs|hr", "'") |>
+    str_replace("^([1-9])\\s*[,\\.\\s+]\\s*(\\d*)$", "\\1'\\2") |>
+    str_replace("^([1-9])'?$", "\\1'0") |>
+    str_replace("^(0)\\s*,\\s*(\\d*)$", "\\1\\.\\2")
 }
 ```
 
-Now we are ready to wrangle our reported heights dataset. The strategy is as follows: 
+Now we are ready to wrangle our reported screen time dataset. The strategy is as follows:
 
-1\. We start by defining a variable to keep a copy of the original entry, we then clean up and covert the `height` entry using the functions described above. 
+1\. We start by defining a variable to keep a copy of the original entry, we then clean up and covert the `screen_time` entry using the functions described above.
 
-2\. We then use the `separate_wider_regex_` function to extract feet and inches when the entry matches our feet`'`inches format. 
+2\. We then use the `separate_wider_regex_` function to extract hours and minutes when the entry matches our hours`'`minutes format.
 
-3\. We use a lookaround to make sure that entries that have numbers with no `'` following them don't match and return an `NA`. 
+3\. We use a lookaround to make sure that entries that have numbers with no `'` following them don't match and return an `NA`.
 
-4.\ Once this is done, we convert the feet and inches into inches.
+4.\ Once this is done, we convert the hours and minutes into minutes.
 
-5.\ Finally, we decide if the entries are in inches, centimeters, or meters and convert appropriately.
+5.\ Finally, we decide if the entries are in minutes, seconds, or decimal hours and convert appropriately.
 
 
 ```{r, warning=FALSE, message=FALSE}
-patterns <- c(feet = "[4-7](?=\\s*'\\s*)", 
-              "\\s*'\\s*", 
-              inches = "\\d+\\.?\\d*")
-smallest <- 50
-tallest <- 84
-new_heights <- reported_heights |> 
-  mutate(original = height, 
-         height = convert_format(cleanup(height))) |>
-  separate_wider_regex(height, patterns = patterns, 
-                       too_few = "align_start", 
-                       cols_remove = FALSE) |> 
-  mutate(across(c(height, feet, inches), as.numeric)) |>
-  mutate(guess = 12 * feet + inches) |>
-  mutate(height = case_when(
-    is.na(height) ~ as.numeric(NA),
-    between(height, smallest, tallest) ~ height,  #inches
-    between(height/2.54, smallest, tallest) ~ height/2.54, #cm
-    between(height*100/2.54, smallest, tallest) ~ height*100/2.54, #meters
+patterns <- c(hours = "[1-9](?=\\s*'\\s*)",
+              "\\s*'\\s*",
+              minutes = "\\d+\\.?\\d*")
+smallest <- 15
+tallest <- 600
+new_screen_time <- reported_screen_time |>
+  mutate(original = screen_time,
+         screen_time = convert_format(cleanup(screen_time))) |>
+  separate_wider_regex(screen_time, patterns = patterns,
+                       too_few = "align_start",
+                       cols_remove = FALSE) |>
+  mutate(across(c(screen_time, hours, minutes), as.numeric)) |>
+  mutate(guess = 60 * hours + minutes) |>
+  mutate(screen_time = case_when(
+    is.na(screen_time) ~ as.numeric(NA),
+    between(screen_time, smallest, tallest) ~ screen_time,  #minutes
+    between(screen_time/60, smallest, tallest) ~ screen_time/60, #seconds
+    between(screen_time*60, smallest, tallest) ~ screen_time*60, #decimal hours
     TRUE ~ as.numeric(NA))) |>
-  mutate(height = ifelse(is.na(height) & 
-                           inches <= 12 & between(guess, smallest, tallest),
-                         guess, height)) |>
-  select(-feet, -inches, -guess)
+  mutate(screen_time = ifelse(is.na(screen_time) &
+                           minutes <= 60 & between(guess, smallest, tallest),
+                         guess, screen_time)) |>
+  select(-hours, -minutes, -guess)
 ```
 
-We see that we fix all but `r sum(is.na(new_heights$height))` entries. You can see that these are mostly un-fixable:
+We see that we fix all but `r sum(is.na(new_screen_time$screen_time))` entries. You can see that these are mostly un-fixable:
 
 ```{r}
-new_heights |> filter(is.na(height)) |> pull(original)
+new_screen_time |> filter(is.na(screen_time)) |> pull(original)
 ```
 
 You can review the ones we did fix by typing:
 
 ```{r}
 #| eval: false
-new_heights |>
-  filter(not_inches_or_cm(original)) |>
-  select(original, height) |> 
-  arrange(height) |>
+new_screen_time |>
+  filter(not_minutes_or_seconds(original)) |>
+  select(original, screen_time) |>
+  arrange(screen_time) |>
   View()
 ```
 
-A final observation is that if we look at the shortest students in our course:
+A final observation is that if we look at the respondents with the shortest recovered screen time in our sample:
 
 ```{r}
-new_heights |> arrange(height) |> head(n = 6)
+new_screen_time |> arrange(screen_time) |> head(n = 6)
 ```
 
-We see heights of 50, 51, 52, and so on. These short heights are rare and it is likely that the students actually meant 5'0,  5'1, 5'2 and so on. Because we are not completely sure, we will leave them as reported. The object new_heights contains our final solution for this case study.
+Some of the shortest recovered values come from the decimal-hours branch (a bare number like `0.29`, multiplied by 60). Unlike the hours`'`minutes cases, there is no independent check on these -- a genuinely tiny decimal and a mistyped one look identical once parsed as a number. Because we are not completely sure, we will leave them as reported. The object `new_screen_time` contains our final solution for this case study.
 
 
 
 
 ## Case study 2: extracting tables from a PDF
 
-One of the datasets provided in **dslabs** shows scientific funding
+One of the datasets provided in **behdslabs** shows scientific funding
 rates by gender in the Netherlands:
 
 ```{r}
-library(dslabs)
+library(behdslabs)
 research_funding_rates |> 
   select("discipline", "success_rates_men", "success_rates_women")
 ```
@@ -1108,7 +1110,7 @@ with an entry for each page. So we keep the page we want:
 raw_data_research_funding_rates <- txt[2]
 ```
 
-The steps above can actually be skipped because we include this raw data in the **dslabs** package as well. 
+The steps above can actually be skipped because we include this raw data in the **behdslabs** package as well.
 
 Examining the object `raw_data_research_funding_rates` we see that it is a long string and each line on the page, including the table rows, are separated by the symbol for newline: `\n`. A first step in converting this into a data frame is to store rows separately in a way that will make them easy to access. For this we use the `str_split` function:
 
@@ -1216,32 +1218,32 @@ Rather than changing each entry, a more efficient approach is to change the leve
 Here is an example that shows how to rename countries with long names:
 
 ```{r}
-library(dslabs)
+library(behdslabs)
 ```
 
-Suppose we want to show life expectancy time series by country for the
+Suppose we want to show daily screen-time trends by country for the
 Caribbean. If we make this plot
 
 ```{r caribbean}
-gapminder |> 
+global_tech_adoption |>
   filter(region == "Caribbean") |>
-  ggplot(aes(year, life_expectancy, color = country)) +
+  ggplot(aes(year, avg_daily_screen_time_hours, color = country)) +
   geom_line()
 ```
 
 we see that the legend takes up much of the plot because we have four countries with names longer than 12 characters. We can rename these levels using the `case_when` function:
 
 ```{r country-long-names}
-x <- levels(gapminder$country)
-levels(gapminder$country) <- case_when(
+x <- levels(global_tech_adoption$country)
+levels(global_tech_adoption$country) <- case_when(
   x == "Antigua and Barbuda" ~ "Barbuda",
   x == "Dominican Republic" ~ "DR",
   x == "St. Vincent and the Grenadines" ~ "St. Vincent",
   x == "Trinidad and Tobago" ~ "Trinidad",
   .default = x)
-gapminder |> 
+global_tech_adoption |>
   filter(region == "Caribbean") |>
-  ggplot(aes(year, life_expectancy, color = country)) +
+  ggplot(aes(year, avg_daily_screen_time_hours, color = country)) +
   geom_line()
 ```
 
@@ -1250,8 +1252,8 @@ We can instead use the `fct_recode` function in the **forcats** package:
 ```{r}
 #| eval: false
 library(forcats)
-gapminder$country <- 
-  fct_recode(gapminder$country, 
+global_tech_adoption$country <-
+  fct_recode(global_tech_adoption$country,
              "Barbuda" = "Antigua and Barbuda",
              "DR" = "Dominican Republic",
              "St. Vincent" = "St. Vincent and the Grenadines",
@@ -1263,13 +1265,13 @@ gapminder$country <-
 1\. Complete all lessons and exercises in the RegexOne^[<https://regexone.com/>]
 online interactive tutorial.
 
-2\. In the `extdata` directory of the **dslabs** package, you will find
+2\. In the `extdata` directory of the **behdslabs** package, you will find
 a PDF file containing daily mortality data for Puerto Rico from Jan 1,
 2015 to May 31, 2018. You can find the file like this:
 
 ```{r, eval=FALSE}
 fn <- system.file("extdata", "RD-Mortality-Report_2015-18-180531.pdf",
-                  package="dslabs")
+                  package="behdslabs")
 ```
 
 Find and open the file or open it directly from RStudio. On a Mac, you
