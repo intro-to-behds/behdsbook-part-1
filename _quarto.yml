@@ -76,10 +76,11 @@ format:
     code-link: true
     author-meta: "Rafael A. Irizarry (original); adapted by Giorgio Arcara for Behavioural Data Science"
     callout-appearance: simple
-  pdf: 
+  pdf:
     documentclass: krantz
     classoption: [krantz2,10pt,twoside,onecolumn,final,openright]
     include-in-header: preamble.tex
+    include-before-body: cover-page.tex
     header-includes: |
      \usepackage{amssymb}
      \usepackage{amsmath}
