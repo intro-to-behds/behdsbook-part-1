@@ -358,6 +358,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Reproducible projects</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../productivity/ai-assisted-coding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">AI and responsible coding</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -428,7 +434,7 @@ window.Quarto = {
 <section id="encoding-data-using-visual-cues" class="level2" data-number="9.1">
 <h2 data-number="9.1" class="anchored" data-anchor-id="encoding-data-using-visual-cues"><span class="header-section-number">9.1</span> Encoding data using visual cues</h2>
 <p>We start by describing some principles for encoding data. There are several visual cues at our disposal including position, aligned lengths, angles, area, brightness, and color hue.</p>
-<p>To illustrate how some of these visual cues compare, let’s suppose we want to report the results from two hypothetical polls regarding browser preference taken in 2000 and then 2015. For each year, we are simply comparing five quantities – the five percentages. A widely used graphical representation of percentages, popularized by Microsoft Excel, is the pie chart:</p>
+<p>To illustrate how some of these visual cues compare, let’s suppose we want to report the results from two hypothetical surveys asking people which type of digital content they spend the most time on, taken in 2010 and then 2020. For each year, we are simply comparing five quantities – the five percentages. A widely used graphical representation of percentages, popularized by Microsoft Excel, is the pie chart:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -448,43 +454,43 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>To see how hard it is to quantify angles and area, note that the rankings and all the percentages in the plots above changed from 2000 to 2015. Can you determine the actual percentages and rank the browsers’ popularity? Can you see how the percentages changed from 2000 to 2015? It is not easy to tell from the plot.</p>
+<p>To see how hard it is to quantify angles and area, note that the rankings and all the percentages in the plots above changed from 2010 to 2020. Can you determine the actual percentages and rank the content types’ popularity? Can you see how the percentages changed from 2010 to 2020? It is not easy to tell from the plot.</p>
 <p>In this case, simply showing the numbers is not only clearer, but would also saves on printing costs if printing a paper copy:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <table class="table table-striped caption-top table-sm small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">Browser</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">2000</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">2015</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Type</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">2010</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">2020</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Opera</td>
+<td style="text-align: left;">News</td>
 <td style="text-align: right;">3</td>
 <td style="text-align: right;">2</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Safari</td>
+<td style="text-align: left;">Games</td>
 <td style="text-align: right;">21</td>
 <td style="text-align: right;">22</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Firefox</td>
+<td style="text-align: left;">Messaging</td>
 <td style="text-align: right;">23</td>
 <td style="text-align: right;">21</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Chrome</td>
-<td style="text-align: right;">26</td>
-<td style="text-align: right;">29</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">IE</td>
+<td style="text-align: left;">Social</td>
 <td style="text-align: right;">28</td>
 <td style="text-align: right;">27</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Video</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">29</td>
 </tr>
 </tbody>
 </table>
@@ -556,7 +562,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>When using position rather than length, it is then not necessary to include 0. This is particularly the case when we want to compare differences between groups relative to the within-group variability. Here is an illustrative example showing country average life expectancy stratified across continents in 2012:</p>
+<p>When using position rather than length, it is then not necessary to include 0. This is particularly the case when we want to compare differences between groups relative to the within-group variability. Here is an illustrative example showing country average daily screen time stratified across continents in 2012:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -566,7 +572,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Note that in the plot on the left, which includes 0, the space between 0 and 43 adds no information and makes it harder to compare the between and within group variability.</p>
+<p>Note that in the plot on the left, which includes 0, the space between 0 and about 5 adds no information and makes it harder to compare the between and within group variability.</p>
 </section>
 <section id="do-not-distort-quantities" class="level2" data-number="9.3">
 <h2 data-number="9.3" class="anchored" data-anchor-id="do-not-distort-quantities"><span class="header-section-number">9.3</span> Do not distort quantities</h2>
@@ -598,8 +604,8 @@ window.Quarto = {
 </section>
 <section id="order-categories-by-a-meaningful-value" class="level2" data-number="9.4">
 <h2 data-number="9.4" class="anchored" data-anchor-id="order-categories-by-a-meaningful-value"><span class="header-section-number">9.4</span> Order categories by a meaningful value</h2>
-<p>When one of the axes is used to show categories, as is done in barplots and boxplots, the default <strong>ggplot2</strong> behavior is to order the categories alphabetically when they are defined by character strings. If they are defined by factors, they are ordered by the factor levels. We rarely want to use alphabetical order. Instead, we should order by a meaningful quantity. In all the cases above, the barplots were ordered by the values being displayed. The exception was the graph showing barplots comparing browsers. In this case, we kept the order the same across the barplots to ease the comparison. Specifically, instead of ordering the browsers separately in the two years, we ordered both years by the average value of 2000 and 2015.</p>
-<p>To appreciate how the right order can help convey a message, suppose we want to create a plot to compare the murder rate across states. We are particularly interested in the most dangerous and safest states. Note the difference when we order alphabetically (the default) versus when we order by the actual rate:</p>
+<p>When one of the axes is used to show categories, as is done in barplots and boxplots, the default <strong>ggplot2</strong> behavior is to order the categories alphabetically when they are defined by character strings. If they are defined by factors, they are ordered by the factor levels. We rarely want to use alphabetical order. Instead, we should order by a meaningful quantity. In all the cases above, the barplots were ordered by the values being displayed. The exception was the graph showing barplots comparing content types. In this case, we kept the order the same across the barplots to ease the comparison. Specifically, instead of ordering the content types separately in the two years, we ordered both years by the average value of 2010 and 2020.</p>
+<p>To appreciate how the right order can help convey a message, suppose we want to create a plot to compare the data-breach incident rate across states. We are particularly interested in the states with the most and fewest incidents. Note the difference when we order alphabetically (the default) versus when we order by the actual rate:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -609,7 +615,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Here is an example showing boxplots of income distributions across regions. Here are the two versions plotted against each other:</p>
+<p>Here is an example showing boxplots of revenue-per-user distributions across regions. Here are the two versions plotted against each other:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -624,7 +630,7 @@ window.Quarto = {
 <section id="show-the-data" class="level2" data-number="9.5">
 <h2 data-number="9.5" class="anchored" data-anchor-id="show-the-data"><span class="header-section-number">9.5</span> Show the data</h2>
 <p>We have focused on displaying single quantities across categories. We now shift our attention to displaying data, with a focus on comparing groups.</p>
-<p>To motivate the principle, “show the data”, we go back to our artificial example of describing heights to ET, an extraterrestrial. This time let’s assume ET is interested in the difference in heights between males and females. A commonly seen plot used for comparisons between groups, popularized by software such as Microsoft Excel, is the dynamite plot, which shows the average and standard errors (standard errors are defined in a later chapter, but do not confuse them with the standard deviation of the data). The plot looks like this:</p>
+<p>To motivate the principle, “show the data”, we go back to our example of describing reaction times to ET, an extraterrestrial. This time let’s assume ET is interested in the difference in reaction times between males and females. A commonly seen plot used for comparisons between groups, popularized by software such as Microsoft Excel, is the dynamite plot, which shows the average and standard errors (standard errors are defined in a later chapter, but do not confuse them with the standard deviation of the data). The plot looks like this:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -634,7 +640,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>The average of each group is represented by the top of each bar and the antennae extend out from the average to the average plus two standard errors. If all ET receives is this plot, he will have little information on what to expect if he meets a group of human males and females. The bars go to 0: does this mean there are tiny humans measuring less than one foot? Are all males taller than the tallest females? Is there a range of heights? ET can’t answer these questions since we have provided almost no information on the height distribution.</p>
+<p>The average of each group is represented by the top of each bar and the antennae extend out from the average to the average plus two standard errors. If all ET receives is this plot, they will have little information on what to expect if they test a group of human males and females. The bars go to 0: does this mean some people respond in essentially no time at all? Are all males slower than the fastest females? Is there a range of reaction times? ET can’t answer these questions since we have provided almost no information on the reaction-time distribution.</p>
 <p>This brings us the “show the data” principle. This simple <strong>ggplot2</strong> code already generates a more informative plot than the barplot by simply showing all the data points:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -646,11 +652,11 @@ window.Quarto = {
 </div>
 </div>
 <p>For example, this plot gives us an idea of the range of the data. However, this plot has limitations as well, since we can’t really see all the 238 and 812 points plotted for females and males, respectively, and many points are plotted on top of each other. As we have previously described, visualizing the distribution is much more informative. But before doing this, we point out two ways we can improve a plot showing all the points.</p>
-<p>The first is to add <em>jitter</em>, which adds a small random shift to each point. In this case, adding horizontal jitter does not alter the interpretation, since the point heights do not change, but we minimize the number of points that fall on top of each other and, therefore, get a better visual sense of how the data is distributed. A second improvement comes from using <em>alpha blending</em>: making the points somewhat transparent. The more points fall on top of each other, the darker the plot, which also helps us get a sense of how the points are distributed. Here is the same plot with jitter and alpha blending:</p>
+<p>The first is to add <em>jitter</em>, which adds a small random shift to each point. In this case, adding horizontal jitter does not alter the interpretation, since the reaction-time values do not change, but we minimize the number of points that fall on top of each other and, therefore, get a better visual sense of how the data is distributed. A second improvement comes from using <em>alpha blending</em>: making the points somewhat transparent. The more points fall on top of each other, the darker the plot, which also helps us get a sense of how the points are distributed. Here is the same plot with jitter and alpha blending:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>heights <span class="sc">|&gt;</span> </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(sex, height)) <span class="sc">+</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.05</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>reaction_times <span class="sc">|&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(sex, rt_ms)) <span class="sc">+</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.05</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -659,7 +665,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Now we start getting a sense that, on average, males are taller than females. We also note dark horizontal bands of points, demonstrating that many report values that are rounded to the nearest integer.</p>
+<p>Now we start getting a sense that, on average, males respond more slowly than females. We also note faint horizontal bands of points, a sign that the original timing measurements were recorded at a limited resolution.</p>
 </section>
 <section id="ease-comparisons" class="level2" data-number="9.6">
 <h2 data-number="9.6" class="anchored" data-anchor-id="ease-comparisons"><span class="header-section-number">9.6</span> Ease comparisons</h2>
@@ -675,7 +681,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>However, from this plot it is not immediately obvious that males are, on average, taller than females. We have to look carefully to notice that the x-axis has a higher range of values in the male histogram. An important principle here is to <strong>keep the axes the same</strong> when comparing data across two plots. Below we see how the comparison becomes a little easier:</p>
+<p>However, from this plot it is not immediately obvious that males are, on average, slower than females. We have to look carefully to notice that the x-axis has a higher range of values in the male histogram. An important principle here is to <strong>keep the axes the same</strong> when comparing data across two plots. Below we see how the comparison becomes a little easier:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -688,7 +694,7 @@ window.Quarto = {
 </section>
 <section id="aligning-plots-for-comparisons" class="level3" data-number="9.6.2">
 <h3 data-number="9.6.2" class="anchored" data-anchor-id="aligning-plots-for-comparisons"><span class="header-section-number">9.6.2</span> Aligning plots for comparisons</h3>
-<p>In these histograms, the visual cue related to decreases or increases in height are shifts to the left or right, respectively: horizontal changes. Aligning the plots vertically helps us see this change when the axes are fixed:</p>
+<p>In these histograms, the visual cue related to decreases or increases in reaction time are shifts to the left or right, respectively: horizontal changes. Aligning the plots vertically helps us see this change when the axes are fixed:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -698,8 +704,8 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>This plot makes it much easier to notice that men are, on average, taller.</p>
-<p>If we want the more compact summary provided by boxplots, we then align them horizontally since, by default, boxplots move up and down with changes in height. Following our <em>show the data</em> principle, we then overlay all the data points:</p>
+<p>This plot makes it much easier to notice that men are, on average, slower to respond.</p>
+<p>If we want the more compact summary provided by boxplots, we then align them horizontally since, by default, boxplots move up and down with changes in reaction time. Following our <em>show the data</em> principle, we then overlay all the data points:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -724,7 +730,7 @@ window.Quarto = {
 </section>
 <section id="sec-log-transform" class="level2" data-number="9.7">
 <h2 data-number="9.7" class="anchored" data-anchor-id="sec-log-transform"><span class="header-section-number">9.7</span> Log transformations</h2>
-<p>The combination of an incorrectly chosen barplot and a failure to use a transformation when one is merited can be particularly distorting. As an example, consider this barplot showing the average population sizes for each continent in 2015:</p>
+<p>The combination of an incorrectly chosen barplot and a failure to use a transformation when one is merited can be particularly distorting. As an example, consider this barplot showing the average active user base for each continent in 2015:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -734,7 +740,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>From this plot, one would conclude that countries in Asia are much more populous than in other continents. Following the <em>show the data</em> principle, we quickly notice that this is due to two very large countries, which we assume are India and China:</p>
+<p>From this plot, one would conclude that apps in Asia have far larger user bases than in other continents. Following the <em>show the data</em> principle, we quickly notice that this is due to two very large countries, which we assume are China and India:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -747,8 +753,8 @@ window.Quarto = {
 <p>Here, we focus on examples in which the log transformation improves data visualization of skewed data. Other common transformations to be aware of include the logistic transformation (<code>logit</code>), which is useful for interpreting fold changes in odds, and the square root transformation (<code>sqrt</code>), which is often applied to stabilize variance in count data.</p>
 <section id="right-skewed-distributions" class="level3" data-number="9.7.1">
 <h3 data-number="9.7.1" class="anchored" data-anchor-id="right-skewed-distributions"><span class="header-section-number">9.7.1</span> Right-skewed distributions</h3>
-<p>Country population sizes provide a clear example of a <em>right-skewed</em> distribution: most countries have relatively small populations, while a few have extremely large ones. As shown in the box plot above, this imbalance causes most of the data points to be compressed into a small area of the plot, while a large portion of the plotting space is left empty. This makes it difficult to see meaningful differences among the majority of countries.</p>
-<p>In <a href="ggplot2.html#sec-scales" class="quarto-xref"><span>Section 8.10</span></a>, we saw how applying a log transformation improved the readability of a scatter plot by addressing this kind of skew. Similarly, applying a log transformation to population sizes here produces a much more informative visualization. Below, we compare the original barplot to a boxplot with a log-transformed y-axis to illustrate the improvement.</p>
+<p>Country user-base sizes provide a clear example of a <em>right-skewed</em> distribution: most countries have relatively small user bases, while a few have extremely large ones. As shown in the box plot above, this imbalance causes most of the data points to be compressed into a small area of the plot, while a large portion of the plotting space is left empty. This makes it difficult to see meaningful differences among the majority of countries.</p>
+<p>In <a href="ggplot2.html#sec-scales" class="quarto-xref"><span>Section 8.10</span></a>, we saw how applying a log transformation improved the readability of a scatter plot by addressing this kind of skew. Similarly, applying a log transformation to user-base sizes here produces a much more informative visualization. Below, we compare the original barplot to a boxplot with a log-transformed y-axis to illustrate the improvement.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -758,7 +764,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>With the new plot, we realize that countries in Africa actually have a larger median population size than those in Asia.</p>
+<p>With the new plot, we realize that countries in Africa actually have a larger median user base than those in Asia.</p>
 </section>
 <section id="ratios" class="level3" data-number="9.7.2">
 <h3 data-number="9.7.2" class="anchored" data-anchor-id="ratios"><span class="header-section-number">9.7.2</span> Ratios</h3>
@@ -798,7 +804,7 @@ This means that if <span class="math inline">\(A\)</span> is three times larger 
 </section>
 <section id="visual-cues-to-be-compared-should-be-adjacent" class="level2" data-number="9.8">
 <h2 data-number="9.8" class="anchored" data-anchor-id="visual-cues-to-be-compared-should-be-adjacent"><span class="header-section-number">9.8</span> Visual cues to be compared should be adjacent</h2>
-<p>For each continent, let’s compare income in 1970 versus 2010. When comparing income data across regions between 1970 and 2010, we made a figure similar to the one below, but this time we investigate continents rather than regions.</p>
+<p>For each continent, let’s compare revenue per user in 1970 versus 2010. When comparing revenue-per-user data across regions between 1970 and 2010, we made a figure similar to the one below, but this time we investigate continents rather than regions.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -851,10 +857,10 @@ This means that if <span class="math inline">\(A\)</span> is three times larger 
 </section>
 <section id="plots-for-two-variables" class="level2" data-number="9.10">
 <h2 data-number="9.10" class="anchored" data-anchor-id="plots-for-two-variables"><span class="header-section-number">9.10</span> Plots for two variables</h2>
-<p>In general, you should use scatterplots to visualize the relationship between two variables. In every single instance in which we have examined the relationship between two variables, including total murders versus population size and life expectancy versus fertility rates, we have used scatterplots. This is the plot we generally recommend. However, there are some exceptions and we describe two alternative plots here: the <em>slope chart</em> and the <em>Bland-Altman plot</em>.</p>
+<p>In general, you should use scatterplots to visualize the relationship between two variables. In every single instance in which we have examined the relationship between two variables, including total data-breach incidents versus population size and daily screen time versus app price, we have used scatterplots. This is the plot we generally recommend. However, there are some exceptions and we describe two alternative plots here: the <em>slope chart</em> and the <em>Bland-Altman plot</em>.</p>
 <section id="slope-charts" class="level3" data-number="9.10.1">
 <h3 data-number="9.10.1" class="anchored" data-anchor-id="slope-charts"><span class="header-section-number">9.10.1</span> Slope charts</h3>
-<p>One exception where another type of plot may be more informative is when you are comparing variables of the same type, but at different time points and for a relatively small number of comparisons. For example, comparing life expectancy between 2010 and 2015. In this case, we might recommend a <em>slope chart</em>.</p>
+<p>One exception where another type of plot may be more informative is when you are comparing variables of the same type, but at different time points and for a relatively small number of comparisons. For example, comparing average daily screen time between 2010 and 2015. In this case, we might recommend a <em>slope chart</em>.</p>
 <p>There is no geometry for slope charts in <strong>ggplot2</strong>, but we can construct one using <code>geom_line</code>. We need to do some tinkering to add labels. Below is an example comparing 2010 to 2015 for large western countries:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -865,7 +871,7 @@ This means that if <span class="math inline">\(A\)</span> is three times larger 
 </div>
 </div>
 </div>
-<p>An advantage of the slope chart is that it permits us to quickly get an idea of changes based on the slope of the lines. Although we are using angle as the visual cue, we also have position to determine the exact values. Comparing the improvements is a bit harder with a scatterplot:</p>
+<p>An advantage of the slope chart is that it permits us to quickly get an idea of changes based on the slope of the lines. Although we are using angle as the visual cue, we also have position to determine the exact values. Comparing the changes is a bit harder with a scatterplot:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -889,12 +895,12 @@ This means that if <span class="math inline">\(A\)</span> is three times larger 
 </div>
 </div>
 </div>
-<p>Here, by simply looking at the y-axis, we quickly see which countries have shown the most improvement. We also get an idea of the overall value from the x-axis.</p>
+<p>Here, by simply looking at the y-axis, we quickly see which countries have shown the largest change. We also get an idea of the overall value from the x-axis.</p>
 </section>
 </section>
 <section id="encoding-a-third-variable" class="level2" data-number="9.11">
 <h2 data-number="9.11" class="anchored" data-anchor-id="encoding-a-third-variable"><span class="header-section-number">9.11</span> Encoding a third variable</h2>
-<p>An earlier scatterplot showed the relationship between infant survival and average income. Below is a version of this plot that encodes three additional variables: OPEC membership, region, and population.</p>
+<p>An earlier scatterplot showed the relationship between app retention and revenue per user. Below is a version of this plot that encodes three additional variables: emerging-tech-market membership, region, and active user base.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -925,7 +931,7 @@ This means that if <span class="math inline">\(A\)</span> is three times larger 
 </div>
 </div>
 </div>
-<p>Diverging colors are used to represent values that diverge from a center. We put equal emphasis on both ends of the data range: higher than the center and lower than the center. An example of when we would use a divergent pattern would be if we were to show height in standard deviations away from the average. Here are some examples of divergent patterns:</p>
+<p>Diverging colors are used to represent values that diverge from a center. We put equal emphasis on both ends of the data range: higher than the center and lower than the center. An example of when we would use a divergent pattern would be if we were to show reaction time in standard deviations away from the average. Here are some examples of divergent patterns:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -968,7 +974,7 @@ This means that if <span class="math inline">\(A\)</span> is three times larger 
 </section>
 <section id="avoid-too-many-significant-digits" class="level2" data-number="9.13">
 <h2 data-number="9.13" class="anchored" data-anchor-id="avoid-too-many-significant-digits"><span class="header-section-number">9.13</span> Avoid too many significant digits</h2>
-<p>By default, statistical software like R returns many significant digits. The default behavior in R is to show 7 significant digits. That many digits often adds no information and the added visual clutter can make it hard for the viewer to understand the message. As an example, here are the per 10,000 disease rates, computed from totals and population in R, for California across the five decades:</p>
+<p>By default, statistical software like R returns many significant digits. The default behavior in R is to show 7 significant digits. That many digits often adds no information and the added visual clutter can make it hard for the viewer to understand the message. As an example, here are the per 10,000 download rates, computed from download counts and population in R, for California across the five decades:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <table class="table table-striped caption-top table-sm small" data-quarto-postprocess="true">
@@ -976,52 +982,52 @@ This means that if <span class="math inline">\(A\)</span> is three times larger 
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">state</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">year</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Measles</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Pertussis</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Polio</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Guided Meditation</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Heart-Rate Monitoring</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Yoga &amp; Stretching</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">California</td>
 <td style="text-align: right;">1940</td>
-<td style="text-align: right;">37.8826320</td>
-<td style="text-align: right;">18.3397861</td>
-<td style="text-align: right;">0.8266512</td>
+<td style="text-align: right;">75.7652641</td>
+<td style="text-align: right;">1.6533025</td>
+<td style="text-align: right;">36.6795722</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">California</td>
 <td style="text-align: right;">1950</td>
-<td style="text-align: right;">13.9124205</td>
-<td style="text-align: right;">4.7467350</td>
-<td style="text-align: right;">1.9742639</td>
+<td style="text-align: right;">27.8248410</td>
+<td style="text-align: right;">3.9485278</td>
+<td style="text-align: right;">9.4934700</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">California</td>
 <td style="text-align: right;">1960</td>
-<td style="text-align: right;">14.1386471</td>
+<td style="text-align: right;">28.2772941</td>
+<td style="text-align: right;">0.5280837</td>
 <td style="text-align: right;">NA</td>
-<td style="text-align: right;">0.2640419</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">California</td>
 <td style="text-align: right;">1970</td>
-<td style="text-align: right;">0.9767889</td>
+<td style="text-align: right;">1.9535778</td>
 <td style="text-align: right;">NA</td>
 <td style="text-align: right;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">California</td>
 <td style="text-align: right;">1980</td>
-<td style="text-align: right;">0.3743467</td>
-<td style="text-align: right;">0.0515466</td>
+<td style="text-align: right;">0.7486933</td>
 <td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.1030932</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<p>We are reporting precision up to 0.00001 cases per 10,000, a very small value in the context of the changes that are occurring across the dates. In this case, one significant figures is enough and clearly makes the point that rates are decreasing:</p>
+<p>We are reporting precision up to 0.00001 downloads per 10,000, a very small value in the context of the changes that are occurring across the dates. In this case, one significant figures is enough and clearly makes the point that rates are decreasing:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <table class="table table-striped caption-top table-sm small" data-quarto-postprocess="true">
@@ -1029,46 +1035,46 @@ This means that if <span class="math inline">\(A\)</span> is three times larger 
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">state</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">year</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Measles</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Pertussis</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Polio</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Guided Meditation</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Heart-Rate Monitoring</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Yoga &amp; Stretching</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">California</td>
 <td style="text-align: right;">1940</td>
-<td style="text-align: right;">37.9</td>
-<td style="text-align: right;">18.3</td>
-<td style="text-align: right;">0.8</td>
+<td style="text-align: right;">75.8</td>
+<td style="text-align: right;">1.7</td>
+<td style="text-align: right;">36.7</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">California</td>
 <td style="text-align: right;">1950</td>
-<td style="text-align: right;">13.9</td>
-<td style="text-align: right;">4.7</td>
-<td style="text-align: right;">2.0</td>
+<td style="text-align: right;">27.8</td>
+<td style="text-align: right;">3.9</td>
+<td style="text-align: right;">9.5</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">California</td>
 <td style="text-align: right;">1960</td>
-<td style="text-align: right;">14.1</td>
+<td style="text-align: right;">28.3</td>
+<td style="text-align: right;">0.5</td>
 <td style="text-align: right;">NA</td>
-<td style="text-align: right;">0.3</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">California</td>
 <td style="text-align: right;">1970</td>
-<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">2.0</td>
 <td style="text-align: right;">NA</td>
 <td style="text-align: right;">NA</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">California</td>
 <td style="text-align: right;">1980</td>
-<td style="text-align: right;">0.4</td>
-<td style="text-align: right;">0.1</td>
+<td style="text-align: right;">0.7</td>
 <td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.1</td>
 </tr>
 </tbody>
 </table>
@@ -1082,7 +1088,7 @@ This means that if <span class="math inline">\(A\)</span> is three times larger 
 <thead>
 <tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">State</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Disease</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Category</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">1940</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">1950</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">1960</th>
@@ -1093,30 +1099,30 @@ This means that if <span class="math inline">\(A\)</span> is three times larger 
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">California</td>
-<td style="text-align: left;">Measles</td>
-<td style="text-align: right;">37.9</td>
-<td style="text-align: right;">13.9</td>
-<td style="text-align: right;">14.1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">0.4</td>
+<td style="text-align: left;">Guided Meditation</td>
+<td style="text-align: right;">75.8</td>
+<td style="text-align: right;">27.8</td>
+<td style="text-align: right;">28.3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.7</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">California</td>
-<td style="text-align: left;">Pertussis</td>
-<td style="text-align: right;">18.3</td>
-<td style="text-align: right;">4.7</td>
+<td style="text-align: left;">Heart-Rate Monitoring</td>
+<td style="text-align: right;">1.7</td>
+<td style="text-align: right;">3.9</td>
+<td style="text-align: right;">0.5</td>
 <td style="text-align: right;">NA</td>
 <td style="text-align: right;">NA</td>
-<td style="text-align: right;">0.1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">California</td>
-<td style="text-align: left;">Polio</td>
-<td style="text-align: right;">0.8</td>
-<td style="text-align: right;">2.0</td>
-<td style="text-align: right;">0.3</td>
+<td style="text-align: left;">Yoga &amp; Stretching</td>
+<td style="text-align: right;">36.7</td>
+<td style="text-align: right;">9.5</td>
 <td style="text-align: right;">NA</td>
 <td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.1</td>
 </tr>
 </tbody>
 </table>
@@ -1130,9 +1136,9 @@ This means that if <span class="math inline">\(A\)</span> is three times larger 
 </section>
 <section id="exercises" class="level2" data-number="9.15">
 <h2 data-number="9.15" class="anchored" data-anchor-id="exercises"><span class="header-section-number">9.15</span> Exercises</h2>
-<p>For these exercises, we will be using the vaccines data in the <strong>dslabs</strong> package:</p>
+<p>For these exercises, we will be using the fitness-app download data in the <strong>behdslabs</strong> package:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(behdslabs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>1. Pie charts are appropriate:</p>
 <ol type="a">
@@ -1157,12 +1163,12 @@ This means that if <span class="math inline">\(A\)</span> is three times larger 
 <li>The colors should be the same.</li>
 <li>Percentages should be shown as a pie chart.</li>
 </ol>
-<p>3. Take a look at the following two plots. They show the same information: 1928 rates of measles across the 50 states.</p>
+<p>3. Take a look at the following two plots. They show the same information: 1928 download rates for the Guided Meditation app category across the 50 states.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="dataviz-principles_files/figure-html/measels-exercise-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+<p><img src="dataviz-principles_files/figure-html/meditation-downloads-exercise-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
 </figure>
 </div>
 </div>
@@ -1171,14 +1177,14 @@ This means that if <span class="math inline">\(A\)</span> is three times larger 
 <ol type="a">
 <li>They provide the same information, so they are both equally as good.</li>
 <li>The plot on the right is better because it orders the states alphabetically.</li>
-<li>The plot on the right is better because alphabetical order has nothing to do with the disease and by ordering according to actual rate, we quickly see the states with most and least rates.</li>
+<li>The plot on the right is better because alphabetical order has nothing to do with the download rate and by ordering according to actual rate, we quickly see the states with most and least downloads.</li>
 <li>Both plots should be a pie chart.</li>
 </ol>
 <p>4. To make the plot on the left, we have to reorder the levels of the states’ variables.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> us_contagious_diseases <span class="sc">|&gt;</span>  </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">1967</span> <span class="sc">&amp;</span> disease<span class="sc">==</span><span class="st">"Measles"</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(population)) <span class="sc">|&gt;</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rate =</span> count <span class="sc">/</span> population <span class="sc">*</span> <span class="dv">10000</span> <span class="sc">*</span> <span class="dv">52</span> <span class="sc">/</span> weeks_reporting)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> fitness_app_downloads_by_state <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">1967</span> <span class="sc">&amp;</span> app_category<span class="sc">==</span><span class="st">"Guided Meditation"</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(population)) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rate =</span> downloads <span class="sc">/</span> population <span class="sc">*</span> <span class="dv">10000</span> <span class="sc">*</span> <span class="dv">52</span> <span class="sc">/</span> weeks_tracked)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note what happens when we make a barplot:</p>
 <div class="cell" data-layout-align="center">
@@ -1196,24 +1202,24 @@ This means that if <span class="math inline">\(A\)</span> is three times larger 
 <p>Define these objects:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>state <span class="ot">&lt;-</span> dat<span class="sc">$</span>state</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>rate <span class="ot">&lt;-</span> dat<span class="sc">$</span>count<span class="sc">/</span>dat<span class="sc">$</span>population<span class="sc">*</span><span class="dv">10000</span><span class="sc">*</span><span class="dv">52</span><span class="sc">/</span>dat<span class="sc">$</span>weeks_reporting</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>rate <span class="ot">&lt;-</span> dat<span class="sc">$</span>downloads<span class="sc">/</span>dat<span class="sc">$</span>population<span class="sc">*</span><span class="dv">10000</span><span class="sc">*</span><span class="dv">52</span><span class="sc">/</span>dat<span class="sc">$</span>weeks_tracked</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Redefine the <code>state</code> object so that the levels are re-ordered. Print the new object <code>state</code> and its levels so you can see that the vector is not re-ordered by the levels.</p>
 <p>5. Now with one line of code, define the <code>dat</code> table as done above, but change the use mutate to create a rate variable and re-order the state variable so that the levels are re-ordered by this variable. Then make a barplot using the code above, but for this new <code>dat</code>.</p>
-<p>6. Say we are interested in comparing gun homicide rates across regions of the US. We see this plot:</p>
+<p>6. Say we are interested in comparing data-breach incident rates across regions of the US. We see this plot:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>murders <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">rate =</span> total<span class="sc">/</span>population<span class="sc">*</span><span class="dv">100000</span>) <span class="sc">|&gt;</span></span>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(behdslabs)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>app_data_breaches <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">rate =</span> incidents<span class="sc">/</span>population<span class="sc">*</span><span class="dv">100000</span>) <span class="sc">|&gt;</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">group_by</span>(region) <span class="sc">|&gt;</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize</span>(<span class="at">avg =</span> <span class="fu">mean</span>(rate)) <span class="sc">|&gt;</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(<span class="at">region =</span> <span class="fu">factor</span>(region)) <span class="sc">|&gt;</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(region, avg)) <span class="sc">+</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_col</span>() <span class="sc">+</span> </span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ylab</span>(<span class="st">"Murder Rate Average"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ylab</span>(<span class="st">"Incident Rate Average"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="dataviz-principles_files/figure-html/us-murders-barplot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+<p><img src="dataviz-principles_files/figure-html/data-breaches-barplot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
 </figure>
 </div>
 </div>
@@ -1222,12 +1228,12 @@ This means that if <span class="math inline">\(A\)</span> is three times larger 
 <ol type="a">
 <li>The categories are ordered alphabetically.</li>
 <li>The graph does not show standard errors.</li>
-<li>It does not show all the data. We do not see the variability within a region and it’s possible that the safest states are not in the West.</li>
+<li>It does not show all the data. We do not see the variability within a region and it’s possible that the states with the fewest incidents are not in the West.</li>
 <li>The Northeast has the lowest average.</li>
 </ol>
-<p>7. Make a boxplot of the murder rates defined as</p>
+<p>7. Make a boxplot of the incident rates defined as</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>murders <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">rate =</span> total<span class="sc">/</span>population<span class="sc">*</span><span class="dv">100000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>app_data_breaches <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">rate =</span> incidents<span class="sc">/</span>population<span class="sc">*</span><span class="dv">100000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>by region, showing all the points and ordering the regions by their median rate.</p>
 <p>8. The plots below show three continuous variables.</p>

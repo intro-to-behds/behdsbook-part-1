@@ -327,6 +327,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Reproducible projects</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../productivity/ai-assisted-coding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">AI and responsible coding</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -339,10 +345,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#case-study-trump-tweets" id="toc-case-study-trump-tweets" class="nav-link active" data-scroll-target="#case-study-trump-tweets"><span class="header-section-number">17.1</span> Case study: Trump tweets</a></li>
+  <li><a href="#case-study-human-versus-ai-answers" id="toc-case-study-human-versus-ai-answers" class="nav-link active" data-scroll-target="#case-study-human-versus-ai-answers"><span class="header-section-number">17.1</span> Case study: human versus AI answers</a>
+  <ul class="collapse">
+  <li><a href="#getting-the-data" id="toc-getting-the-data" class="nav-link" data-scroll-target="#getting-the-data"><span class="header-section-number">17.1.1</span> Getting the data</a></li>
+  <li><a href="#a-first-look" id="toc-a-first-look" class="nav-link" data-scroll-target="#a-first-look"><span class="header-section-number">17.1.2</span> A first look</a></li>
+  </ul></li>
   <li><a href="#text-as-data" id="toc-text-as-data" class="nav-link" data-scroll-target="#text-as-data"><span class="header-section-number">17.2</span> Text as data</a></li>
-  <li><a href="#sentiment-analysis" id="toc-sentiment-analysis" class="nav-link" data-scroll-target="#sentiment-analysis"><span class="header-section-number">17.3</span> Sentiment analysis</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">17.4</span> Exercises</a></li>
+  <li><a href="#which-words-distinguish-the-authors" id="toc-which-words-distinguish-the-authors" class="nav-link" data-scroll-target="#which-words-distinguish-the-authors"><span class="header-section-number">17.3</span> Which words distinguish the authors?</a></li>
+  <li><a href="#sentiment-analysis" id="toc-sentiment-analysis" class="nav-link" data-scroll-target="#sentiment-analysis"><span class="header-section-number">17.4</span> Sentiment analysis</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">17.5</span> Exercises</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/intro-to-behds/behdsbook-part-1/blob/main/wrangling/text-analysis.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/intro-to-behds/behdsbook-part-1/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -368,91 +379,102 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>With the exception of labels used to represent categorical data, we have focused on numerical data. But in many applications, data starts as text. Well-known examples are spam filtering, cyber-crime prevention, counter-terrorism and sentiment analysis. In all these cases, the raw data is composed of free form text. Our task is to extract insights from these data. In this section, we learn how to generate useful numerical summaries from text data to which we can apply some of the powerful data visualization and analysis techniques we have learned.</p>
-<section id="case-study-trump-tweets" class="level2" data-number="17.1">
-<h2 data-number="17.1" class="anchored" data-anchor-id="case-study-trump-tweets"><span class="header-section-number">17.1</span> Case study: Trump tweets</h2>
-<p>During the 2016 US presidential election, then candidate Donald J. Trump used his twitter account as a way to communicate with potential voters. On August 6, 2016, Todd Vaziri tweeted<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> about Trump that “Every non-hyperbolic tweet is from iPhone (his staff). Every hyperbolic tweet is from Android (from him).” David Robinson conducted an analysis<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> to determine if data supported this assertion. Here, we go through David’s analysis to learn some of the basics of text analysis. To learn more about text analysis in R, we recommend the Text Mining with R book<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> by Julia Silge and David Robinson.</p>
-<p>We will use the following libraries:</p>
+<p>With the exception of labels used to represent categorical data, we have focused on numerical data. But in many applications, data starts as text. Well-known examples are spam filtering, cyber-crime prevention, counter-terrorism, and sentiment analysis. In all these cases, the raw data is composed of free-form text. Our task is to extract insights from these data. In this section, we learn how to generate useful numerical summaries from text data to which we can apply some of the powerful data visualization and analysis techniques we have learned.</p>
+<section id="case-study-human-versus-ai-answers" class="level2" data-number="17.1">
+<h2 data-number="17.1" class="anchored" data-anchor-id="case-study-human-versus-ai-answers"><span class="header-section-number">17.1</span> Case study: human versus AI answers</h2>
+<p>Since late 2022, large language models (LLMs) such as ChatGPT can produce fluent answers to almost any question. This raises a practical question for anyone working with user-generated text – product reviews, survey responses, forum posts, homework: <strong>can we tell, from the text alone, whether a human or an LLM wrote it?</strong> This matters for detecting fake reviews, for flagging AI-assisted exam answers, and, more generally, for understanding how machine-generated text differs from the human kind.</p>
+<p>To study this we use the <strong>Human ChatGPT Comparison Corpus (HC3)</strong><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, introduced in a 2023 paper by Guo and co-authors<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. For each of thousands of questions the corpus provides one or more answers written by people (often domain experts, or highly rated forum answers) <em>and</em> one or more answers generated by ChatGPT for the same question. Because the question is held fixed, any systematic difference we find between the two sets of answers is a difference in <em>authorship</em>, not in topic. This is the same idea behind a classic text-analysis case study<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> that asked whether two different people were posting from a single social-media account by comparing the language coming from each device.</p>
+<section id="getting-the-data" class="level3" data-number="17.1.1">
+<h3 data-number="17.1.1" class="anchored" data-anchor-id="getting-the-data"><span class="header-section-number">17.1.1</span> Getting the data</h3>
+<p>HC3 is <strong>not</strong> included in the <strong>behdslabs</strong> package. It is hosted by its authors on the Hugging Face Hub, it is fairly large, and part of the lesson here is learning to obtain and document a dataset you did not get from a package. The code below downloads four of the corpus’s topic domains – computer-science Wikipedia entries, open-domain quiz questions, finance, and medicine – and skips the much larger <code>reddit_eli5</code> domain, whose text is subject to Reddit’s terms of use. You only need to run the download once; the <code>if (!file.exists(...))</code> guard means re-running the chapter will reuse the local copies.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytext)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(textdata)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>X, formerly known as twitter, provides an API that permits downloading tweets. Brendan Brown runs the trump archive<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>, which compiles tweet data from Trump’s account. The <strong>dslabs</strong> package includes tweets from the following range:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(trump_tweets<span class="sc">$</span>created_at)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "2009-05-04 13:54:25 EST" "2018-01-01 08:37:52 EST"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>domains <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"wiki_csai"</span>, <span class="st">"open_qa"</span>, <span class="st">"finance"</span>, <span class="st">"medicine"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>base_url <span class="ot">&lt;-</span> <span class="st">"https://huggingface.co/datasets/Hello-SimpleAI/HC3/resolve/main/"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>hc3_raw <span class="ot">&lt;-</span> <span class="fu">map_df</span>(domains, <span class="cf">function</span>(domain) {</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  file <span class="ot">&lt;-</span> <span class="fu">paste0</span>(domain, <span class="st">".jsonl"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(file)) <span class="fu">download.file</span>(<span class="fu">paste0</span>(base_url, file), file, <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stream_in</span>(<span class="fu">file</span>(file), <span class="at">verbose =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">source =</span> domain)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The data frame includes the the following variables:</p>
+<p>Each row is one question, and the human and ChatGPT answers are stored in <em>list columns</em> because a question can have more than one of each:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(trump_tweets)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "source"                  "id_str"                 </span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] "text"                    "created_at"             </span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] "retweet_count"           "in_reply_to_user_id_str"</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [7] "favorite_count"          "is_retweet"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(hc3_raw)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 7,210</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Columns: 4</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ question        &lt;chr&gt; "Please explain what is \"Animal cognition\"",~</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ human_answers   &lt;list&gt; "Animal cognition encompasses the mental capa~</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ chatgpt_answers &lt;list&gt; "Animal cognition refers to the mental capaci~</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ source          &lt;chr&gt; "wiki_csai", "wiki_csai", "wiki_csai", "wiki_c~</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The help file <code>?trump_tweets</code> provides details on what each variable represents. The actual tweets are in the <code>text</code> variable:</p>
+<p>We want a table with one <em>answer</em> per row, labeled by who wrote it. We use <code>pivot_longer</code> to stack the two answer columns and then <code>unnest_longer</code> to expand the lists:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>trump_tweets<span class="sc">$</span>text[<span class="dv">16413</span>] <span class="sc">|&gt;</span> <span class="fu">str_wrap</span>(<span class="at">width =</span> <span class="fu">options</span>()<span class="sc">$</span>width) <span class="sc">|&gt;</span> <span class="fu">cat</span>()</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Great to be back in Iowa! #TBT with @JerryJrFalwell joining me in</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Davenport- this past winter. #MAGA https://t.co/A5IF0QHnic</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>answers <span class="ot">&lt;-</span> hc3_raw <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(question, source,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">human =</span> human_answers, <span class="at">ai =</span> chatgpt_answers) <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">c</span>(human, ai), <span class="at">names_to =</span> <span class="st">"author"</span>, <span class="at">values_to =</span> <span class="st">"text"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_longer</span>(text) <span class="sc">|&gt;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(text) <span class="sc">&amp;</span> <span class="fu">str_squish</span>(text) <span class="sc">!=</span> <span class="st">""</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">answer_id =</span> <span class="fu">row_number</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>and the source variable tells us which device was used to compose and upload each tweet:</p>
+<p>This leaves us with a good-sized corpus:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>trump_tweets <span class="sc">|&gt;</span> <span class="fu">count</span>(source) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">5</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                source     n</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1  Twitter Web Client 10718</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 Twitter for Android  4652</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3  Twitter for iPhone  3962</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4           TweetDeck   468</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5     TwitLonger Beta   288</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>answers <span class="sc">|&gt;</span> <span class="fu">count</span>(author)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 x 2</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   author     n</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;  &lt;int&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 ai     10225</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 human   7210</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We are interested in what happened during the 2016 campaign, so for this analysis we will focus on what was tweeted between the day Trump announced his campaign and election day. We define the following table containing just the tweets from that time period. We remove the <code>Twitter for</code> part of the source, only keep tweets from Android or iPhone, and filter out retweets.</p>
+</section>
+<section id="a-first-look" class="level3" data-number="17.1.2">
+<h3 data-number="17.1.2" class="anchored" data-anchor-id="a-first-look"><span class="header-section-number">17.1.2</span> A first look</h3>
+<p>Before touching individual words, one blunt summary already separates the two groups: <strong>length</strong>. Here is the distribution of answer lengths, in characters, for each author:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>campaign_tweets <span class="ot">&lt;-</span> trump_tweets <span class="sc">|&gt;</span> </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(source <span class="sc">%in%</span> <span class="fu">paste</span>(<span class="st">"Twitter for"</span>, <span class="fu">c</span>(<span class="st">"Android"</span>, <span class="st">"iPhone"</span>)) <span class="sc">&amp;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>           created_at <span class="sc">&gt;=</span> <span class="fu">ymd</span>(<span class="st">"2015-06-17"</span>) <span class="sc">&amp;</span> </span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>           created_at <span class="sc">&lt;</span> <span class="fu">ymd</span>(<span class="st">"2016-11-08"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">source =</span> <span class="fu">str_remove</span>(source, <span class="st">"Twitter for "</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>is_retweet) <span class="sc">|&gt;</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(created_at) <span class="sc">|&gt;</span> </span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>We can now use data visualization to explore the possibility that two different groups were tweeting from these devices. For each tweet, we will extract the hour, Eastern Standard Time (EST), it was tweeted and then compute the proportion of tweets tweeted at each hour for each device:</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>campaign_tweets <span class="sc">|&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">hour =</span> <span class="fu">hour</span>(<span class="fu">with_tz</span>(created_at, <span class="st">"EST"</span>))) <span class="sc">|&gt;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(source, hour) <span class="sc">|&gt;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(source) <span class="sc">|&gt;</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percent =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">|&gt;</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(hour, percent, <span class="at">color =</span> source)) <span class="sc">+</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">percent_format</span>()) <span class="sc">+</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Hour of day (EST)"</span>, <span class="at">y =</span> <span class="st">"% of tweets"</span>, <span class="at">color =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>answers <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">n_char =</span> <span class="fu">str_length</span>(text)) <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(n_char, <span class="fu">after_stat</span>(density), <span class="at">fill =</span> author)) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">100</span>, <span class="at">boundary =</span> <span class="dv">0</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">position =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">3000</span>)) <span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Answer length (characters)"</span>, <span class="at">y =</span> <span class="st">"Density"</span>, <span class="at">fill =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="text-analysis_files/figure-html/tweets-by-time-by-device-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+<p><img src="text-analysis_files/figure-html/answer-length-by-author-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>We notice a big peak for the Android in the early hours of the morning, between 6 and 8 AM. There seems to be a clear difference in these patterns. We will therefore assume that two different entities are using these two devices.</p>
-<p>We will now study how the text of the tweets differ when we compare Android to iPhone. To do this, we introduce the <strong>tidytext</strong> package.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>answers <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">n_char =</span> <span class="fu">str_length</span>(text)) <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(author) <span class="sc">|&gt;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">median =</span> <span class="fu">median</span>(n_char), <span class="at">sd =</span> <span class="fu">sd</span>(n_char))</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 x 3</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   author median    sd</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 ai       1062  440.</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 human     547  823.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The ChatGPT answers are both <strong>longer</strong> and much more <strong>uniform</strong> in length: they cluster around a thousand characters, while the human answers range from one-line replies to long essays. A model that always writes a tidy three-paragraph answer looks different from a crowd of people, some terse and some verbose. This is our first hint that authorship leaves a measurable trace; next we look for it in the words themselves.</p>
+</section>
 </section>
 <section id="text-as-data" class="level2" data-number="17.2">
 <h2 data-number="17.2" class="anchored" data-anchor-id="text-as-data"><span class="header-section-number">17.2</span> Text as data</h2>
-<p>The <strong>tidytext</strong> package helps us convert free form text into a tidy table. Having the data in this format greatly facilitates data visualization and the use of statistical techniques.</p>
-<p>The main function needed to achieve this is <code>unnest_tokens</code>. A <em>token</em> refers to a unit that we are considering to be a data point. The most common <em>token</em> will be words, but they can also be single characters, n-grams, sentences, lines, or a pattern defined by a regex. The function will take a vector of strings and extract the tokens so that each one gets a row in the new table. Here is a simple example:</p>
+<p>The <strong>tidytext</strong> package helps us convert free-form text into a tidy table. Having the data in this format greatly facilitates data visualization and the use of statistical techniques.</p>
+<p>The main function needed to achieve this is <code>unnest_tokens</code>. A <em>token</em> refers to a unit that we are considering to be a data point. The most common <em>token</em> will be words, but they can also be single characters, n-grams, sentences, lines, or a pattern defined by a regex. The function takes a vector of strings and extracts the tokens so that each one gets a row in the new table. Here is a simple example:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>poem <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Roses are red,"</span>, <span class="st">"Violets are blue,"</span>, </span>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>poem <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Roses are red,"</span>, <span class="st">"Violets are blue,"</span>,</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Sugar is sweet,"</span>, <span class="st">"And so are you."</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>example <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">line =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>),</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">text =</span> poem)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">text =</span> poem)</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>example</span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 4 x 2</span></span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    line text             </span></span>
@@ -472,152 +494,220 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5     2 are    </span></span>
 <span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # i 8 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now let’s look at Trump’s tweets. We will look at tweet number 3008 because it will later permit us to illustrate a couple of points:</p>
+<p>Now let’s look at one of the answers. We pick a ChatGPT answer that contains a line-break marker directly against a word, because it will let us illustrate a cleaning problem:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="dv">3008</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>campaign_tweets<span class="sc">$</span>text[i] <span class="sc">|&gt;</span> <span class="fu">str_wrap</span>(<span class="at">width =</span> <span class="dv">65</span>) <span class="sc">|&gt;</span> <span class="fu">cat</span>()</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Great to be back in Iowa! #TBT with @JerryJrFalwell joining me in</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Davenport- this past winter. #MAGA https://t.co/A5IF0QHnic</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>campaign_tweets[i,] <span class="sc">|&gt;</span> </span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text) <span class="sc">|&gt;</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(word) </span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] "great"          "to"             "be"             "back"          </span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [5] "in"             "iowa"           "tbt"            "with"          </span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [9] "jerryjrfalwell" "joining"        "me"             "in"            </span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [13] "davenport"      "this"           "past"           "winter"        </span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [17] "maga"           "https"          "t"              "co"            </span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [21] "a5if0qhnic"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="fu">which</span>(answers<span class="sc">$</span>author <span class="sc">==</span> <span class="st">"ai"</span> <span class="sc">&amp;</span> <span class="fu">str_detect</span>(answers<span class="sc">$</span>text, <span class="st">"</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\\\</span><span class="st">n[A-Z]"</span>))[<span class="dv">1</span>]</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>answers<span class="sc">$</span>text[i] <span class="sc">|&gt;</span> <span class="fu">str_wrap</span>(<span class="at">width =</span> <span class="dv">65</span>) <span class="sc">|&gt;</span> <span class="fu">cat</span>()</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; On a traditional stoplight, the colors are typically arranged</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; in the following order:\n\nRed: This indicates that vehicles</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; must stop and not proceed through the intersection.\nYellow or</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; amber: This indicates that the signal is about to turn red and</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; that vehicles should prepare to stop.\nGreen: This indicates that</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; vehicles may proceed through the intersection if it is safe to</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; do so.\nIn some countries, a fourth light, known as a "flashing</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; red" or "red arrow," may be added to indicate that vehicles</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; in a specific lane must stop and may not turn in the direction</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; indicated by the arrow.\n\nIt is important to note that the order</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; and meanings of the colors on a stoplight may vary in different</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; parts of the world. It is always important to familiarize</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; yourself with the local traffic signals and laws before driving</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; in a new area.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Note that the function tries to convert tokens into words. A minor adjustment is to remove the links to pictures:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>links_to_pics <span class="ot">&lt;-</span> <span class="st">"https://t.co/[A-Za-z</span><span class="sc">\\</span><span class="st">d]+|&amp;amp;"</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>campaign_tweets[i,] <span class="sc">|&gt;</span> </span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">text =</span> <span class="fu">str_remove_all</span>(text, links_to_pics))  <span class="sc">|&gt;</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text) <span class="sc">|&gt;</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(word)</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] "great"          "to"             "be"             "back"          </span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [5] "in"             "iowa"           "tbt"            "with"          </span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [9] "jerryjrfalwell" "joining"        "me"             "in"            </span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [13] "davenport"      "this"           "past"           "winter"        </span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [17] "maga"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>answers[i, ] <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text) <span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(word)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   [1] "on"           "a"            "traditional"  "stoplight"   </span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   [5] "the"          "colors"       "are"          "typically"   </span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   [9] "arranged"     "in"           "the"          "following"   </span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [13] "order"        "n"            "nred"         "this"        </span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [17] "indicates"    "that"         "vehicles"     "must"        </span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [21] "stop"         "and"          "not"          "proceed"     </span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [25] "through"      "the"          "intersection" "nyellow"     </span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [29] "or"           "amber"        "this"         "indicates"   </span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [33] "that"         "the"          "signal"       "is"          </span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [37] "about"        "to"           "turn"         "red"         </span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [41] "and"          "that"         "vehicles"     "should"      </span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [45] "prepare"      "to"           "stop"         "ngreen"      </span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [49] "this"         "indicates"    "that"         "vehicles"    </span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [53] "may"          "proceed"      "through"      "the"         </span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [57] "intersection" "if"           "it"           "is"          </span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [61] "safe"         "to"           "do"           "so"          </span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [65] "nin"          "some"         "countries"    "a"           </span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [69] "fourth"       "light"        "known"        "as"          </span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [73] "a"            "flashing"     "red"          "or"          </span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [77] "red"          "arrow"        "may"          "be"          </span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [81] "added"        "to"           "indicate"     "that"        </span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [85] "vehicles"     "in"           "a"            "specific"    </span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [89] "lane"         "must"         "stop"         "and"         </span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [93] "may"          "not"          "turn"         "in"          </span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [97] "the"          "direction"    "indicated"    "by"          </span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [101] "the"          "arrow"        "n"            "nit"         </span></span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [105] "is"           "important"    "to"           "note"        </span></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [109] "that"         "the"          "order"        "and"         </span></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [113] "meanings"     "of"           "the"          "colors"      </span></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [117] "on"           "a"            "stoplight"    "may"         </span></span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [121] "vary"         "in"           "different"    "parts"       </span></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [125] "of"           "the"          "world"        "it"          </span></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [129] "is"           "always"       "important"    "to"          </span></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [133] "familiarize"  "yourself"     "with"         "the"         </span></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [137] "local"        "traffic"      "signals"      "and"         </span></span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [141] "laws"         "before"       "driving"      "in"          </span></span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [145] "a"            "new"          "area"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now we are now ready to extract the words from all our tweets.</p>
+<p>Note the odd tokens beginning with <code>n</code>, such as <code>nthe</code> or <code>nin</code>. The models format their answers into paragraphs and lists using the line-break marker <code>\n</code>; when <code>unnest_tokens</code> strips the backslash it leaves the <code>n</code> stuck to the next word. (A related issue: the answers also contain the HTML entities <code>&amp;amp;</code>, <code>&amp;gt;</code> and <code>&amp;lt;</code>.) This is the analogue of stray links and picture URLs in social-media text, and we clean it the same way – with a regular expression that removes these markers before tokenizing:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>tweet_words <span class="ot">&lt;-</span> campaign_tweets <span class="sc">|&gt;</span> </span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">text =</span> <span class="fu">str_remove_all</span>(text, links_to_pics))  <span class="sc">|&gt;</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>clean_markup <span class="ot">&lt;-</span> <span class="st">"</span><span class="sc">\\\\</span><span class="st">[nrt]|&amp;amp;|&amp;gt;|&amp;lt;"</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>answers[i, ] <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">text =</span> <span class="fu">str_remove_all</span>(text, clean_markup)) <span class="sc">|&gt;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text) <span class="sc">|&gt;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(word)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   [1] "on"           "a"            "traditional"  "stoplight"   </span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   [5] "the"          "colors"       "are"          "typically"   </span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   [9] "arranged"     "in"           "the"          "following"   </span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [13] "order"        "red"          "this"         "indicates"   </span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [17] "that"         "vehicles"     "must"         "stop"        </span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [21] "and"          "not"          "proceed"      "through"     </span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [25] "the"          "intersection" "yellow"       "or"          </span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [29] "amber"        "this"         "indicates"    "that"        </span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [33] "the"          "signal"       "is"           "about"       </span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [37] "to"           "turn"         "red"          "and"         </span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [41] "that"         "vehicles"     "should"       "prepare"     </span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [45] "to"           "stop"         "green"        "this"        </span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [49] "indicates"    "that"         "vehicles"     "may"         </span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [53] "proceed"      "through"      "the"          "intersection"</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [57] "if"           "it"           "is"           "safe"        </span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [61] "to"           "do"           "so"           "in"          </span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [65] "some"         "countries"    "a"            "fourth"      </span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [69] "light"        "known"        "as"           "a"           </span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [73] "flashing"     "red"          "or"           "red"         </span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [77] "arrow"        "may"          "be"           "added"       </span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [81] "to"           "indicate"     "that"         "vehicles"    </span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [85] "in"           "a"            "specific"     "lane"        </span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [89] "must"         "stop"         "and"          "may"         </span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [93] "not"          "turn"         "in"           "the"         </span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [97] "direction"    "indicated"    "by"           "the"         </span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [101] "arrow"        "it"           "is"           "important"   </span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [105] "to"           "note"         "that"         "the"         </span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [109] "order"        "and"          "meanings"     "of"          </span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [113] "the"          "colors"       "on"           "a"           </span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [117] "stoplight"    "may"          "vary"         "in"          </span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [121] "different"    "parts"        "of"           "the"         </span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [125] "world"        "it"           "is"           "always"      </span></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [129] "important"    "to"           "familiarize"  "yourself"    </span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [133] "with"         "the"          "local"        "traffic"     </span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [137] "signals"      "and"          "laws"         "before"      </span></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [141] "driving"      "in"           "a"            "new"         </span></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [145] "area"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We are now ready to extract the words from all the answers.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>answer_words <span class="ot">&lt;-</span> answers <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">text =</span> <span class="fu">str_remove_all</span>(text, clean_markup)) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And we can now answer questions such as “what are the most commonly used words?”:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>tweet_words <span class="sc">|&gt;</span> </span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word) <span class="sc">|&gt;</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n))</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6,182 x 2</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   word      n</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;int&gt;</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 the    2336</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 to     1413</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 and    1246</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 a      1208</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 in     1190</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # i 6,177 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>answer_words <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word) <span class="sc">|&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n))</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 42,181 x 2</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   word       n</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;  &lt;int&gt;</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 the   153940</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 to     92026</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 a      86381</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 and    80764</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 of     75986</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # i 42,176 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>It is not surprising that these are the top words, which are not informative. The <em>tidytext</em> package has a database of these commonly used words, referred to as <em>stop words</em>, in text analysis:</p>
+<p>It is not surprising that these are the top words, which are not informative. The <strong>tidytext</strong> package has a database of these commonly used words, referred to as <em>stop words</em>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(stop_words)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 x 2</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   word  lexicon</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;  </span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 a     SMART  </span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 a's   SMART  </span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 able  SMART  </span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 about SMART  </span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 above SMART  </span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # i 1 more row</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(stop_words)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 x 2</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   word  lexicon</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;  </span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 a     SMART  </span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 a's   SMART  </span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 able  SMART  </span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 about SMART  </span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 above SMART  </span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # i 1 more row</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>If we filter out rows representing stop words with <code>filter(!word %in% stop_words$word)</code>:</p>
+<p>We remove the stop words, and we also drop tokens that are just numbers (using the regex <code>^\d+$</code>) and strip a leading <code>'</code> left over from quotations:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>tweet_words <span class="ot">&lt;-</span> campaign_tweets <span class="sc">|&gt;</span> </span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">text =</span> <span class="fu">str_remove_all</span>(text, links_to_pics))  <span class="sc">|&gt;</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text) <span class="sc">|&gt;</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>word <span class="sc">%in%</span> stop_words<span class="sc">$</span>word ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>answer_words <span class="ot">&lt;-</span> answer_words <span class="sc">|&gt;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>word <span class="sc">%in%</span> stop_words<span class="sc">$</span>word <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">str_detect</span>(word, <span class="st">"^</span><span class="sc">\\</span><span class="st">d+$"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^'"</span>, <span class="st">""</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>we end up with a much more informative set of top 10 tweeted words:</p>
+<p>This leaves a much more informative set of top words:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>tweet_words <span class="sc">|&gt;</span> </span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word) <span class="sc">|&gt;</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(n, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n))</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 10 x 2</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   word                      n</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                 &lt;int&gt;</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 trump2016               415</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 hillary                 407</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 people                  304</span></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 makeamericagreatagain   298</span></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 america                 255</span></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # i 5 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>answer_words <span class="sc">|&gt;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word) <span class="sc">|&gt;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(n, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n))</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 10 x 2</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   word          n</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;int&gt;</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 tax        6913</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 financial  6478</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 stock      6281</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 price      6053</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 credit     5483</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # i 5 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Some exploration of the resulting words (not shown here) reveals a couple of unwanted characteristics in our tokens. First, some of our tokens are just numbers (years, for example). We want to remove these and we can find them using the regex <code>^\d+$</code>. Second, some of our tokens come from a quote and they start with <code>'</code>. We want to remove the <code>'</code> when it is at the start of a word so we will just <code>str_replace</code>. We add these two lines to the code above to generate our final table:</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>tweet_words <span class="ot">&lt;-</span> campaign_tweets <span class="sc">|&gt;</span> </span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">text =</span> <span class="fu">str_remove_all</span>(text, links_to_pics))  <span class="sc">|&gt;</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text) <span class="sc">|&gt;</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>word <span class="sc">%in%</span> stop_words<span class="sc">$</span>word <span class="sc">&amp;</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>           <span class="sc">!</span><span class="fu">str_detect</span>(word, <span class="st">"^</span><span class="sc">\\</span><span class="st">d+$"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^'"</span>, <span class="st">""</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Now that we have all our words in a table, along with information about what device was used to compose the tweet they came from, we can start exploring which words are more common when comparing Android to iPhone.</p>
-<p>For each word, we want to know if it is more likely to come from an Android tweet or an iPhone tweet. We therefore compute, for each word, its frequency among words tweeted from Android and iPhone, respectively and then derive the ratio of these proportions (Android proportion divided by iPhone proportion). Because some words are infrequent, we apply the continuity correction described in <a href="../dataviz/dataviz-principles.html#sec-log-transform" class="quarto-xref"><span>Section 9.7</span></a>:</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>android_vs_iphone <span class="ot">&lt;-</span> tweet_words <span class="sc">|&gt;</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word, source) <span class="sc">|&gt;</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"source"</span>, <span class="at">values_from =</span> <span class="st">"n"</span>, <span class="at">values_fill =</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">p_a =</span> (Android <span class="sc">+</span> <span class="fl">0.5</span>)<span class="sc">/</span>(<span class="fu">sum</span>(Android) <span class="sc">+</span> <span class="fl">0.5</span>), </span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">p_i =</span> (iPhone <span class="sc">+</span> <span class="fl">0.5</span>)<span class="sc">/</span>(<span class="fu">sum</span>(iPhone) <span class="sc">+</span> <span class="fl">0.5</span>),  </span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">ratio =</span> p_a <span class="sc">/</span> p_i)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>For words appearing at least 100 times in total, here are the highest percent differences for Android</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>android_vs_iphone <span class="sc">|&gt;</span> <span class="fu">filter</span>(Android <span class="sc">+</span> iPhone <span class="sc">&gt;=</span> <span class="dv">100</span>) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(ratio))</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 30 x 6</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   word        Android iPhone     p_a     p_i ratio</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;         &lt;int&gt;  &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 bad             104     26 0.00660 0.00192  3.44</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 crooked         157     49 0.00995 0.00359  2.77</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 cnn             116     37 0.00736 0.00272  2.71</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 ted              86     28 0.00546 0.00207  2.64</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 interviewed      76     25 0.00483 0.00185  2.61</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # i 25 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>and the top for iPhone:</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>android_vs_iphone <span class="sc">|&gt;</span> <span class="fu">filter</span>(Android <span class="sc">+</span> iPhone <span class="sc">&gt;=</span> <span class="dv">100</span>) <span class="sc">|&gt;</span>  <span class="fu">arrange</span>(ratio)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 30 x 6</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   word                  Android iPhone       p_a     p_i   ratio</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;                   &lt;int&gt;  &lt;int&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 makeamericagreatagain       0    298 0.0000316 0.0216  0.00146</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 trump2016                   3    412 0.000221  0.0299  0.00739</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 join                        1    157 0.0000947 0.0114  0.00830</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 tomorrow                   25    101 0.00161   0.00736 0.219  </span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 vote                       46     67 0.00294   0.00489 0.600  </span></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # i 25 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>We already see somewhat of a pattern in the types of words that are being tweeted more from one device versus the other. However, we are not interested in specific words but rather in the tone. Vaziri’s assertion is that the Android tweets are more hyperbolic. So how can we check this with data? <em>Hyperbolic</em> is a hard sentiment to extract from words as it relies on interpreting phrases. However, words can be associated to more basic sentiment such as anger, fear, joy, and surprise. In the next section, we demonstrate basic sentiment analysis.</p>
 </section>
-<section id="sentiment-analysis" class="level2" data-number="17.3">
-<h2 data-number="17.3" class="anchored" data-anchor-id="sentiment-analysis"><span class="header-section-number">17.3</span> Sentiment analysis</h2>
-<p>In sentiment analysis, we assign a word to one or more “sentiments”. Although this approach will miss context-dependent sentiments, such as sarcasm, when performed on large numbers of words, summaries can provide insights.</p>
-<p>The first step in sentiment analysis is to assign a sentiment to each word. As we demonstrate, the <strong>tidytext</strong> package includes several maps or lexicons. The <strong>textdata</strong> package includes several of these lexicons.</p>
-<p>The <code>bing</code> lexicon divides words into <code>positive</code> and <code>negative</code> sentiments. We can see this using the <em>tidytext</em> function <code>get_sentiments</code>:</p>
+<section id="which-words-distinguish-the-authors" class="level2" data-number="17.3">
+<h2 data-number="17.3" class="anchored" data-anchor-id="which-words-distinguish-the-authors"><span class="header-section-number">17.3</span> Which words distinguish the authors?</h2>
+<p>For each word we want to know whether it is more likely to come from a human answer or a ChatGPT answer. We compute, for each word, its frequency among human words and among AI words, then take the ratio of these proportions (AI proportion divided by human proportion). Because some words are infrequent, we apply the continuity correction described in <a href="../dataviz/dataviz-principles.html#sec-log-transform" class="quarto-xref"><span>Section 9.7</span></a>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>human_vs_ai <span class="ot">&lt;-</span> answer_words <span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word, author) <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"author"</span>, <span class="at">values_from =</span> <span class="st">"n"</span>, <span class="at">values_fill =</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">p_ai =</span> (ai <span class="sc">+</span> <span class="fl">0.5</span>) <span class="sc">/</span> (<span class="fu">sum</span>(ai) <span class="sc">+</span> <span class="fl">0.5</span>),</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">p_human =</span> (human <span class="sc">+</span> <span class="fl">0.5</span>) <span class="sc">/</span> (<span class="fu">sum</span>(human) <span class="sc">+</span> <span class="fl">0.5</span>),</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">ratio =</span> p_ai <span class="sc">/</span> p_human)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For words appearing at least 80 times in total, here are the ones most over-represented in the ChatGPT answers:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>human_vs_ai <span class="sc">|&gt;</span> <span class="fu">filter</span>(ai <span class="sc">+</span> human <span class="sc">&gt;=</span> <span class="dv">80</span>) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(ratio))</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2,477 x 6</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   word             human    ai     p_ai    p_human ratio</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;            &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 personalized         1   108 0.000143 0.00000375  38.2</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 albums               1    87 0.000116 0.00000375  30.8</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 experiencing        16   729 0.000964 0.0000413   23.3</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 creditworthiness     2   104 0.000138 0.00000625  22.1</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 alleviate            4   130 0.000172 0.0000113   15.3</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # i 2,472 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>and the ones most over-represented in the human answers:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>human_vs_ai <span class="sc">|&gt;</span> <span class="fu">filter</span>(ai <span class="sc">+</span> human <span class="sc">&gt;=</span> <span class="dv">80</span>) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(ratio)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2,477 x 6</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   word         human    ai        p_ai  p_human   ratio</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;        &lt;int&gt; &lt;int&gt;       &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 displaystyle   210     0 0.000000660 0.000526 0.00125</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 pretty         207     0 0.000000660 0.000519 0.00127</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 basically      169     0 0.000000660 0.000424 0.00156</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 hcm            145     0 0.000000660 0.000364 0.00181</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 answered       296     2 0.00000330  0.000742 0.00445</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # i 2,472 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A pattern emerges. The AI answers lean on a cautious, service-desk vocabulary – <em>personalized</em>, <em>carefully</em>, <em>noting</em>, <em>alleviate</em>, <em>discomfort</em>, <em>experiencing</em>, <em>healthcare</em>. The human answers carry informal fillers (<em>pretty</em>, <em>basically</em>, <em>stuff</em>), first-person reasoning (<em>assuming</em>, <em>doubt</em>, <em>instance</em>), and artifacts of where the text came from: <code>http</code> links, the word <em>answered</em>, and <code>displaystyle</code> from LaTeX math in the Wikipedia-based answers. As in the original social-media case study, we are less interested in individual words than in the overall <em>tone</em>. For that we turn to sentiment analysis.</p>
+</section>
+<section id="sentiment-analysis" class="level2" data-number="17.4">
+<h2 data-number="17.4" class="anchored" data-anchor-id="sentiment-analysis"><span class="header-section-number">17.4</span> Sentiment analysis</h2>
+<p>In sentiment analysis we assign a word to one or more “sentiments”. This approach will miss context-dependent meaning, such as sarcasm, but applied to large numbers of words the summaries can be informative.</p>
+<p>The <strong>tidytext</strong> package gives access to several sentiment lexicons through the <strong>textdata</strong> package. The <code>bing</code> lexicon divides words into <code>positive</code> and <code>negative</code>:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_sentiments</span>(<span class="st">"bing"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The <code>AFINN</code> lexicon assigns a score between -5 and 5, with -5 the most negative and 5 the most positive. Note that this lexicon needs to be downloaded the first time you call the function <code>get_sentiment</code>:</p>
+<p>The <code>AFINN</code> lexicon assigns a score between -5 (most negative) and 5 (most positive). It has to be downloaded the first time you call the function:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_sentiments</span>(<span class="st">"afinn"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The <code>nrc</code> lexicon provide several different sentiments. Note that this also has to be downloaded the first time you use it.</p>
+<p>The <code>nrc</code> lexicon provides several finer-grained sentiments and also has to be downloaded the first time:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_sentiments</span>(<span class="st">"nrc"</span>) <span class="sc">|&gt;</span> <span class="fu">count</span>(sentiment)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 10 x 2</span></span>
@@ -630,103 +720,90 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 joy            687</span></span>
 <span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # i 5 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>For our analysis, we are interested in exploring the different sentiments of each tweet so we will use the <code>nrc</code> lexicon:</p>
+<p>For our analysis we use the <code>nrc</code> lexicon:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>nrc <span class="ot">&lt;-</span> <span class="fu">get_sentiments</span>(<span class="st">"nrc"</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(word, sentiment)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We can combine the words and sentiments using <code>inner_join</code>, which will only keep words associated with a sentiment. Here are 5 random words extracted from the tweets:</p>
+<p>We combine words and sentiments with a join. Because many words carry more than one sentiment, we pass <code>relationship = "many-to-many"</code>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>tweet_words <span class="sc">|&gt;</span> <span class="fu">inner_join</span>(nrc, <span class="at">by =</span> <span class="st">"word"</span>, <span class="at">relationship =</span> <span class="st">"many-to-many"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(source, word, sentiment) <span class="sc">|&gt;</span> </span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample_n</span>(<span class="dv">5</span>)</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 x 3</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   source  word         sentiment   </span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;        &lt;chr&gt;       </span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 iPhone  candidate    positive    </span></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 Android enthusiasm   anticipation</span></span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 iPhone  join         positive    </span></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 Android clue         anticipation</span></span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 iPhone  intelligence joy</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>answer_words <span class="sc">|&gt;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(nrc, <span class="at">by =</span> <span class="st">"word"</span>, <span class="at">relationship =</span> <span class="st">"many-to-many"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(author, word, sentiment) <span class="sc">|&gt;</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample_n</span>(<span class="dv">5</span>)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 x 3</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   author word         sentiment</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;        &lt;chr&gt;    </span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 ai     destroyed    sadness  </span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 human  intelligence trust    </span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 human  provide      trust    </span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 ai     money        joy      </span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 ai     ease         positive</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p><code>relationship = "many-to-many"</code> is added to address a warning that arises from <code>left_join</code> detecting an “unexpected many-to-many relationship”. However, this behavior is actually expected in this context because many words have multiple sentiments associated with them.</p>
-</div>
-</div>
-</div>
-<p>Now we are ready to perform a quantitative analysis comparing Android and iPhone by comparing the sentiments of the tweets posted from each device. Here we could perform a tweet-by-tweet analysis, assigning a sentiment to each tweet. However, this will be challenging since each tweet will have several sentiments attached to it, one for each word appearing in the lexicon. For illustrative purposes, we will perform a much simpler analysis: we will count and compare the frequencies of each sentiment appearing in each device.</p>
+<p>Now we compare the two authors by counting how often each sentiment appears in each group. For each sentiment we compute its proportion among all sentiment-tagged words for that author, and take the ratio (AI proportion divided by human proportion):</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>sentiment_counts <span class="ot">&lt;-</span> tweet_words <span class="sc">|&gt;</span></span>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>sentiment_counts <span class="ot">&lt;-</span> answer_words <span class="sc">|&gt;</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(nrc, <span class="at">by =</span> <span class="st">"word"</span>, <span class="at">relationship =</span> <span class="st">"many-to-many"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(source, sentiment) <span class="sc">|&gt;</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"source"</span>, <span class="at">values_from =</span> <span class="st">"n"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sentiment =</span> <span class="fu">replace_na</span>(sentiment, <span class="at">replace =</span> <span class="st">"none"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(author, sentiment) <span class="sc">|&gt;</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"author"</span>, <span class="at">values_from =</span> <span class="st">"n"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sentiment =</span> <span class="fu">replace_na</span>(sentiment, <span class="st">"none"</span>),</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">p_ai =</span> ai <span class="sc">/</span> <span class="fu">sum</span>(ai), <span class="at">p_human =</span> human <span class="sc">/</span> <span class="fu">sum</span>(human),</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">ratio =</span> p_ai <span class="sc">/</span> p_human) <span class="sc">|&gt;</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(ratio))</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>sentiment_counts</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 11 x 6</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   sentiment     ai human    p_ai p_human ratio</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;      &lt;int&gt; &lt;int&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 sadness    28288 13461 0.0294  0.0262   1.12</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 fear       30750 14765 0.0319  0.0287   1.11</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 positive  107725 52819 0.112   0.103    1.09</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 negative   56893 28429 0.0591  0.0553   1.07</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 disgust     8954  4575 0.00930 0.00890  1.04</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # i 6 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>For each sentiment, we calculate its proportion relative to the total responses for Android and iPhone, respectively, and derive the ratio of these proportions (Android proportion divided by iPhone proportion).</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>sentiment_counts <span class="ot">&lt;-</span> sentiment_counts <span class="sc">|&gt;</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">p_a =</span> Android<span class="sc">/</span><span class="fu">sum</span>(Android), <span class="at">p_i =</span> iPhone<span class="sc">/</span><span class="fu">sum</span>(iPhone), <span class="at">ratio =</span> p_a<span class="sc">/</span>p_i) <span class="sc">|&gt;</span> </span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(ratio))</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>sentiment_counts</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 11 x 6</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   sentiment Android iPhone    p_a    p_i ratio</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 disgust       641    314 0.0295 0.0178  1.65</span></span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 anger         965    527 0.0444 0.0299  1.48</span></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 negative     1665    931 0.0766 0.0529  1.45</span></span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 sadness       904    514 0.0416 0.0292  1.43</span></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 fear          802    486 0.0369 0.0276  1.34</span></span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # i 6 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>So we do see some differences and the order is interesting: the largest three sentiments are disgust, anger, and negative!</p>
-<p>If we are interested in exploring which specific words are driving these differences, we can refer back to our <code>android_vs_iphone</code> object. For each sentiment we show the 10 largest ratios, in either direction. We exclude words appearing less than 10 times total.</p>
+<p>The differences are smaller than in the word table – both authors are, after all, answering the same questions – but the direction is consistent. Human answers are relatively richer in <strong>surprise</strong>, <strong>joy</strong>, <strong>anger</strong>, and <strong>anticipation</strong>: the vocabulary of someone reacting to a question. The ChatGPT answers skew toward <strong>fear</strong> and <strong>sadness</strong> words (which include a lot of clinical and cautionary terms like <em>symptoms</em>, <em>risk</em>, <em>pain</em>) and, overall, read as more uniformly measured. An LLM tuned to be a calm, comprehensive assistant flattens the emotional range that a room full of people would show.</p>
+<p>To see which words drive these differences, we go back to the <code>human_vs_ai</code> object. For each sentiment we show the words with the largest ratios in either direction, excluding words appearing fewer than 10 times total:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="text-analysis_files/figure-html/percent-diff-by-word-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+<p><img src="text-analysis_files/figure-html/sentiment-words-by-author-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>This is just a simple example of the many analyses one can perform with tidytext. To learn more, we again recommend the Tidy Text Mining book<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
+<p>This is just a small example of what can be done with <strong>tidytext</strong>. To learn more we recommend the <em>Text Mining with R</em> book<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> by Julia Silge and David Robinson.</p>
 </section>
-<section id="exercises" class="level2" data-number="17.4">
-<h2 data-number="17.4" class="anchored" data-anchor-id="exercises"><span class="header-section-number">17.4</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="17.5">
+<h2 data-number="17.5" class="anchored" data-anchor-id="exercises"><span class="header-section-number">17.5</span> Exercises</h2>
 <p>Project Gutenberg is a digital archive of public domain books. The R package <strong>gutenbergr</strong> facilitates the importation of these texts into R.</p>
-<p>You can install and load by typing:</p>
+<p>You can install and load it by typing:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"gutenbergr"</span>)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gutenbergr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"gutenbergr"</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gutenbergr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You can see the books that are available like this:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>gutenberg_metadata</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>gutenberg_metadata</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>1. Use <code>str_detect</code> to find the ID of the novel <em>Pride and Prejudice</em>.</p>
 <p>2. We notice that there are several versions. The <code>gutenberg_works()</code> function filters this table to remove replicates and include only English language works. Read the help file and use this function to find the ID for <em>Pride and Prejudice</em>.</p>
-<p>3. Use the <code>gutenberg_download</code> function to download the text for Pride and Prejudice. Save it to an object called <code>book</code>.</p>
-<p>4. Use the <strong>tidytext</strong> package to create a tidy table with all the words in the text. Save the table in an object called <code>words</code></p>
+<p>3. Use the <code>gutenberg_download</code> function to download the text for <em>Pride and Prejudice</em>. Save it to an object called <code>book</code>.</p>
+<p>4. Use the <strong>tidytext</strong> package to create a tidy table with all the words in the text. Save the table in an object called <code>words</code>.</p>
 <p>5. We will later make a plot of sentiment versus location in the book. For this, it will be useful to add a column with the word number to the table.</p>
 <p>6. Remove the stop words and numbers from the <code>words</code> object. Hint: use the <code>anti_join</code>.</p>
 <p>7. Now use the <code>AFINN</code> lexicon to assign a sentiment value to each word.</p>
 <p>8. Make a plot of sentiment score versus location in the book and add a smoother.</p>
-<p>9. Assume there are 300 words per page. Convert the locations to pages and then compute the average sentiment in each page. Plot that average score by page. Add a smoother that appears to go through data.</p>
+<p>9. Assume there are 300 words per page. Convert the locations to pages and then compute the average sentiment in each page. Plot that average score by page. Add a smoother that appears to go through the data.</p>
 
 
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p><a href="https://twitter.com/tvaziri/status/762005541388378112/photo/1" class="uri">https://twitter.com/tvaziri/status/762005541388378112/photo/1</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p><a href="http://varianceexplained.org/r/trump-tweets/" class="uri">http://varianceexplained.org/r/trump-tweets/</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p><a href="https://www.tidytextmining.com/" class="uri">https://www.tidytextmining.com/</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p><a href="https://www.thetrumparchive.com/" class="uri">https://www.thetrumparchive.com/</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p><a href="https://www.tidytextmining.com/" class="uri">https://www.tidytextmining.com/</a><a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p><a href="https://huggingface.co/datasets/Hello-SimpleAI/HC3" class="uri">https://huggingface.co/datasets/Hello-SimpleAI/HC3</a>. Released under a CC BY-SA 4.0 license.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Guo et al.&nbsp;(2023), “How Close is ChatGPT to Human Experts? Comparison Corpus, Evaluation, and Detection”. <a href="https://arxiv.org/abs/2301.07597" class="uri">https://arxiv.org/abs/2301.07597</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>David Robinson’s analysis of the 2016 Trump twitter account: <a href="http://varianceexplained.org/r/trump-tweets/" class="uri">http://varianceexplained.org/r/trump-tweets/</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p><a href="https://www.tidytextmining.com/" class="uri">https://www.tidytextmining.com/</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

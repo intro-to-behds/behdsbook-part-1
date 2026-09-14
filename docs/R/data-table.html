@@ -327,6 +327,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Reproducible projects</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../productivity/ai-assisted-coding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">AI and responsible coding</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -384,44 +390,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>data.table</code> is a separate package that needs to be installed. Once installed, we then need to load it along with the other packages we will use:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(behdslabs)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We will provide example code showing the <strong>data.table</strong> approaches to <strong>dplyr</strong>’s <code>mutate</code>, <code>filter</code>, <code>select</code>, <code>group_by</code>, and <code>summarize</code> shown in <a href="tidyverse.html" class="quarto-xref"><span>Chapter 4</span></a>. As in that chapter, we will use the <code>murders</code> dataset:</p>
+<p>We will provide example code showing the <strong>data.table</strong> approaches to <strong>dplyr</strong>’s <code>mutate</code>, <code>filter</code>, <code>select</code>, <code>group_by</code>, and <code>summarize</code> shown in <a href="tidyverse.html" class="quarto-xref"><span>Chapter 4</span></a>. As in that chapter, we will use the <code>app_data_breaches</code> dataset:</p>
 <p>The first step when using <strong>data.table</strong> is to convert the data frame into a <code>data.table</code> object using the <code>as.data.table</code> function:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>murders_dt <span class="ot">&lt;-</span> <span class="fu">as.data.table</span>(murders)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>breaches_dt <span class="ot">&lt;-</span> <span class="fu">as.data.table</span>(app_data_breaches)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Without this initial step, most of the approaches shown below will not work.</p>
 <section id="column-wise-subsetting" class="level3" data-number="5.1.1">
 <h3 data-number="5.1.1" class="anchored" data-anchor-id="column-wise-subsetting"><span class="header-section-number">5.1.1</span> Column-wise subsetting</h3>
 <p>Selecting with <strong>data.table</strong> is done in a similar way to subsetting matrices. While with <strong>dplyr</strong> we write</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(murders, state, region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(app_data_breaches, state, region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>in <strong>data.table</strong> we use</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>murders_dt[, <span class="fu">c</span>(<span class="st">"state"</span>, <span class="st">"region"</span>)] </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>breaches_dt[, <span class="fu">c</span>(<span class="st">"state"</span>, <span class="st">"region"</span>)] </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can also use the <code>.()</code> <strong>data.table</strong> notation to alert R that variables inside the parenthesis are column names, not objects in the R environment. So the above can also be written like this:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>murders_dt[, .(state, region)] </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>breaches_dt[, .(state, region)] </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="adding-or-transforming-variables" class="level3" data-number="5.1.2">
 <h3 data-number="5.1.2" class="anchored" data-anchor-id="adding-or-transforming-variables"><span class="header-section-number">5.1.2</span> Adding or transforming variables</h3>
 <p>We learned to use the <strong>dplyr</strong> <code>mutate</code> function with this example:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>murders <span class="ot">&lt;-</span> <span class="fu">mutate</span>(murders, <span class="at">rate =</span> total <span class="sc">/</span> population <span class="sc">*</span> <span class="dv">100000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>app_data_breaches <span class="ot">&lt;-</span> <span class="fu">mutate</span>(app_data_breaches, <span class="at">rate =</span> incidents <span class="sc">/</span> population <span class="sc">*</span> <span class="dv">100000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>data.table</strong> uses an approach that avoids a new assignment (update by reference). This can help with large datasets that take up most of your computer’s memory. The <strong>data.table</strong> <code>:=</code> function permits us to do this:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>murders_dt[, rate <span class="sc">:</span><span class="er">=</span> total <span class="sc">/</span> population <span class="sc">*</span> <span class="dv">100000</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>breaches_dt[, rate <span class="sc">:</span><span class="er">=</span> incidents <span class="sc">/</span> population <span class="sc">*</span> <span class="dv">100000</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This adds a new column, <code>rate</code>, to the table. Notice that, as in <strong>dplyr</strong>, we used <code>total</code> and <code>population</code> without quotes.</p>
+<p>This adds a new column, <code>rate</code>, to the table. Notice that, as in <strong>dplyr</strong>, we used <code>incidents</code> and <code>population</code> without quotes.</p>
 <p>To define new multiple columns, we can use the <code>:=</code> function with multiple arguments:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>murders_dt[, <span class="st">":="</span>(<span class="at">rate =</span> total <span class="sc">/</span> population <span class="sc">*</span> <span class="dv">100000</span>, <span class="at">rank =</span> <span class="fu">rank</span>(population))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>breaches_dt[, <span class="st">":="</span>(<span class="at">rate =</span> incidents <span class="sc">/</span> population <span class="sc">*</span> <span class="dv">100000</span>, <span class="at">rank =</span> <span class="fu">rank</span>(population))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="reference-versus-copy" class="level3" data-number="5.1.3">
@@ -480,26 +486,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="5.1.4" class="anchored" data-anchor-id="row-wise-subsetting"><span class="header-section-number">5.1.4</span> Row-wise subsetting</h3>
 <p>With <strong>dplyr</strong>, we filtered like this:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(murders, rate <span class="sc">&lt;=</span> <span class="fl">0.7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(app_data_breaches, rate <span class="sc">&lt;=</span> <span class="fl">1.4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>With <strong>data.table</strong>, we again use an approach similar to subsetting matrices, except like <strong>dplyr</strong>, <strong>data.table</strong> knows that <code>rate</code> refers to a column name and not an object in the R environment:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>murders_dt[rate <span class="sc">&lt;=</span> <span class="fl">0.7</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>breaches_dt[rate <span class="sc">&lt;=</span> <span class="fl">1.4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Notice that we can combine the filter and select into one succinct command. Here are the state names and rates for those with rates below 0.7.</p>
+<p>Notice that we can combine the filter and select into one succinct command. Here are the state names and rates for those with rates below 1.4.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>murders_dt[rate <span class="sc">&lt;=</span> <span class="fl">0.7</span>, .(state, rate)]</span>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>breaches_dt[rate <span class="sc">&lt;=</span> <span class="fl">1.4</span>, .(state, rate)]</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;            state  rate</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           &lt;char&gt; &lt;num&gt;</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:        Hawaii 0.515</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2:          Iowa 0.689</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3: New Hampshire 0.380</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4:  North Dakota 0.595</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5:       Vermont 0.320</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:        Hawaii 1.029</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2:          Iowa 1.379</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3: New Hampshire 0.760</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4:  North Dakota 1.189</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5:       Vermont 0.639</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>which is more compact than the <strong>dplyr</strong> approach:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>murders <span class="sc">|&gt;</span> <span class="fu">filter</span>(rate <span class="sc">&lt;=</span> <span class="fl">0.7</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(state, rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>app_data_breaches <span class="sc">|&gt;</span> <span class="fu">filter</span>(rate <span class="sc">&lt;=</span> <span class="fl">1.4</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(state, rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
@@ -515,27 +521,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="summarizing-data" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="summarizing-data"><span class="header-section-number">5.2</span> Summarizing data</h2>
-<p>As an example, we will use the <code>heights</code> dataset:</p>
+<p>As an example, we will use the <code>reaction_times</code> dataset:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>heights_dt <span class="ot">&lt;-</span> <span class="fu">as.data.table</span>(heights)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>rt_dt <span class="ot">&lt;-</span> <span class="fu">as.data.table</span>(reaction_times)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In <strong>data.table</strong>, we can call functions inside <code>.()</code> and they will be applied to columns So the equivalent of:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> heights <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">avg =</span> <span class="fu">mean</span>(height), <span class="at">sd =</span> <span class="fu">sd</span>(height))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> reaction_times <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">avg =</span> <span class="fu">mean</span>(rt_ms), <span class="at">sd =</span> <span class="fu">sd</span>(rt_ms))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>in <strong>dplyr</strong> is the following in <strong>data.table</strong>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> heights_dt[, .(<span class="at">avg =</span> <span class="fu">mean</span>(height), <span class="at">sd =</span> <span class="fu">sd</span>(height))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> rt_dt[, .(<span class="at">avg =</span> <span class="fu">mean</span>(rt_ms), <span class="at">sd =</span> <span class="fu">sd</span>(rt_ms))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note that this permits a compact way of subsetting and then summarizing. Instead of:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> heights <span class="sc">|&gt;</span> </span>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> reaction_times <span class="sc">|&gt;</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sex <span class="sc">==</span> <span class="st">"Female"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">avg =</span> <span class="fu">mean</span>(height), <span class="at">sd =</span> <span class="fu">sd</span>(height))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">avg =</span> <span class="fu">mean</span>(rt_ms), <span class="at">sd =</span> <span class="fu">sd</span>(rt_ms))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>we can write:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> heights_dt[sex <span class="sc">==</span> <span class="st">"Female"</span>, .(<span class="at">avg =</span> <span class="fu">mean</span>(height), <span class="at">sd =</span> <span class="fu">sd</span>(height))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> rt_dt[sex <span class="sc">==</span> <span class="st">"Female"</span>, .(<span class="at">avg =</span> <span class="fu">mean</span>(rt_ms), <span class="at">sd =</span> <span class="fu">sd</span>(rt_ms))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="multiple-summaries" class="level3" data-number="5.2.1">
 <h3 data-number="5.2.1" class="anchored" data-anchor-id="multiple-summaries"><span class="header-section-number">5.2.1</span> Multiple summaries</h3>
@@ -548,34 +554,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>In <strong>data.table</strong> we place a function call within <code>.()</code> to obtain the three number summary:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>heights_dt[, .(<span class="fu">median_min_max</span>(height))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>rt_dt[, .(<span class="fu">median_min_max</span>(rt_ms))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="group-then-summarize" class="level3" data-number="5.2.2">
 <h3 data-number="5.2.2" class="anchored" data-anchor-id="group-then-summarize"><span class="header-section-number">5.2.2</span> Group then summarize</h3>
 <p>The <code>group_by</code> followed by <code>summarize</code> in <strong>dplyr</strong> is performed in one line in <strong>data.table</strong>. We simply add the <code>by</code> argument to split the data into groups based on the values in categorical variable:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>heights_dt[, .(<span class="at">avg =</span> <span class="fu">mean</span>(height), <span class="at">sd =</span> <span class="fu">sd</span>(height)), by <span class="ot">=</span> sex]</span>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>rt_dt[, .(<span class="at">avg =</span> <span class="fu">mean</span>(rt_ms), <span class="at">sd =</span> <span class="fu">sd</span>(rt_ms)), by <span class="ot">=</span> sex]</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       sex   avg    sd</span></span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;fctr&gt; &lt;num&gt; &lt;num&gt;</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:   Male  69.3  3.61</span></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2: Female  64.9  3.76</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:   Male   377  33.2</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2: Female   337  34.5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
 <section id="sorting" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="sorting"><span class="header-section-number">5.3</span> Sorting</h2>
-<p>We can order rows using the same approach we use for filter. Here are the states ordered by murder rate:</p>
+<p>We can order rows using the same approach we use for filter. Here are the states ordered by incident rate:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>murders_dt[<span class="fu">order</span>(population)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>breaches_dt[<span class="fu">order</span>(population)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To sort the table in descending order, we can order by the negative of <code>population</code> or use the <code>decreasing</code> argument:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>murders_dt[<span class="fu">order</span>(population, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)] </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>breaches_dt[<span class="fu">order</span>(population, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)] </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Similarly, we can perform nested ordering by including more than one variable in order:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>murders_dt[<span class="fu">order</span>(region, rate)] </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>breaches_dt[<span class="fu">order</span>(region, rate)] </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
@@ -590,44 +596,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="exercises" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="exercises"><span class="header-section-number">5.4</span> Exercises</h2>
-<p>1. Load the <strong>data.table</strong> package and the <code>murders</code> dataset and convert it to <code>data.table</code> object:</p>
+<p>1. Load the <strong>data.table</strong> package and the <code>app_data_breaches</code> dataset and convert it to <code>data.table</code> object:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>murders_dt <span class="ot">&lt;-</span> <span class="fu">as.data.table</span>(murders)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(behdslabs)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>breaches_dt <span class="ot">&lt;-</span> <span class="fu">as.data.table</span>(app_data_breaches)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Remember you can add columns like this:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>murders_dt[, population_in_millions <span class="sc">:</span><span class="er">=</span> population <span class="sc">/</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">6</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>breaches_dt[, population_in_millions <span class="sc">:</span><span class="er">=</span> population <span class="sc">/</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">6</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Add a <code>murders</code> column named <code>rate</code> with the per 100,000 murder rate as in the example code above.</p>
-<p>2. Add a column <code>rank</code> containing the rank, from highest to lowest murder rate.</p>
+<p>Add a <code>app_data_breaches</code> column named <code>rate</code> with the per 100,000 incident rate as in the example code above.</p>
+<p>2. Add a column <code>rank</code> containing the rank, from highest to lowest incident rate.</p>
 <p>3. If we want to only show the states and population sizes, we can use:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>murders_dt[, .(state, population)] </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>breaches_dt[, .(state, population)] </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Show the state names and abbreviations in <code>murders</code>.</p>
+<p>Show the state names and abbreviations in <code>app_data_breaches</code>.</p>
 <p>4. You can show just the New York row like this:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>murders_dt[state <span class="sc">==</span> <span class="st">"New York"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>breaches_dt[state <span class="sc">==</span> <span class="st">"New York"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You can use other logical vectors to filter rows.</p>
-<p>Show the top 5 states with the highest murder rates. From here on, do not change the <code>murders</code> dataset, just show the result. Remember that you can filter based on the <code>rank</code> column.</p>
+<p>Show the top 5 states with the highest incident rates. From here on, do not change the <code>app_data_breaches</code> dataset, just show the result. Remember that you can filter based on the <code>rank</code> column.</p>
 <p>5. We can remove rows using the <code>!=</code> operator. For example, to remove Florida, we would do this:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>no_florida <span class="ot">&lt;-</span> murders_dt[state <span class="sc">!=</span> <span class="st">"Florida"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>no_florida <span class="ot">&lt;-</span> breaches_dt[state <span class="sc">!=</span> <span class="st">"Florida"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Create a new data frame called <code>no_south</code> that removes states from the South region. How many states are in this category? You can use the function <code>nrow</code> for this.</p>
 <p>6. We can also use <code>%in%</code> to filter. You can therefore see the data from New York and Texas as follows:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>murders_dt[state <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"New York"</span>, <span class="st">"Texas"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>breaches_dt[state <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"New York"</span>, <span class="st">"Texas"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Create a new data frame called <code>murders_nw</code> with only the states from the Northeast and the West. How many states are in this category?</p>
-<p>7. Suppose you want to live in the Northeast or West <strong>and</strong> want the murder rate to be less than 1. We want to see the data for the states satisfying these options. Note that you can use logical operators with <code>filter</code>. Here is an example in which we filter to keep only small states in the Northeast region.</p>
+<p>Create a new data frame called <code>breaches_nw</code> with only the states from the Northeast and the West. How many states are in this category?</p>
+<p>7. Suppose you want to live in the Northeast or West <strong>and</strong> want the incident rate to be less than 2. We want to see the data for the states satisfying these options. Note that you can use logical operators with <code>filter</code>. Here is an example in which we filter to keep only small states in the Northeast region.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>murders_dt[population <span class="sc">&lt;</span> <span class="dv">5000000</span> <span class="sc">&amp;</span> region <span class="sc">==</span> <span class="st">"Northeast"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>breaches_dt[population <span class="sc">&lt;</span> <span class="dv">5000000</span> <span class="sc">&amp;</span> region <span class="sc">==</span> <span class="st">"Northeast"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Make sure <code>murders</code> has been defined with <code>rate</code> and <code>rank</code> and still has all states. Create a table called <code>my_states</code> that contains rows for states satisfying both the conditions: they are in the Northeast or West and the murder rate is less than 1. Show only the state name, the rate, and the rank.</p>
+<p>Make sure <code>app_data_breaches</code> has been defined with <code>rate</code> and <code>rank</code> and still has all states. Create a table called <code>my_states</code> that contains rows for states satisfying both the conditions: they are in the Northeast or West and the incident rate is less than 2. Show only the state name, the rate, and the rank.</p>
 <p>For exercises 8-12, we will be using the <strong>NHANES</strong> data.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(NHANES)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

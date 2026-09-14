@@ -641,7 +641,7 @@ dat |>
   ggplot(aes(revenue_per_user_day, 1 - app_uninstall_rate_per_1000/1000,
              col = region, size = active_user_base/10^6,
              pch =  `Emerging tech market`)) +
-  scale_x_continuous(trans = "log2", limits=c(0.25, 150)) +
+  scale_x_continuous(trans = "log2", limits=c(0.5, 300)) +
   scale_y_continuous(trans = "logit",limit=c(0.875, .9981),
                      breaks=c(.85,.90,.95,.99,.995,.998)) +
   geom_point(alpha = 0.5) +

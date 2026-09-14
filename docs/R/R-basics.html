@@ -358,6 +358,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Reproducible projects</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../productivity/ai-assisted-coding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">AI and responsible coding</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -370,7 +376,7 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#motivating-example-us-gun-murders" id="toc-motivating-example-us-gun-murders" class="nav-link active" data-scroll-target="#motivating-example-us-gun-murders"><span class="header-section-number">2.1</span> Motivating example: US Gun Murders</a></li>
+  <li><a href="#motivating-example-us-data-breaches" id="toc-motivating-example-us-data-breaches" class="nav-link active" data-scroll-target="#motivating-example-us-data-breaches"><span class="header-section-number">2.1</span> Motivating example: US data breaches</a></li>
   <li><a href="#the-very-basics" id="toc-the-very-basics" class="nav-link" data-scroll-target="#the-very-basics"><span class="header-section-number">2.2</span> The very basics</a>
   <ul class="collapse">
   <li><a href="#objects" id="toc-objects" class="nav-link" data-scroll-target="#objects"><span class="header-section-number">2.2.1</span> Objects</a></li>
@@ -455,39 +461,29 @@ window.Quarto = {
 </header>
 
 
-<section id="motivating-example-us-gun-murders" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="motivating-example-us-gun-murders"><span class="header-section-number">2.1</span> Motivating example: US Gun Murders</h2>
-<p>Imagine you live in Europe and are offered a job in a US company with many locations across all states. It is a great job, but news with headlines such as <strong>US Gun Homicide Rate Higher Than Other Developed Countries</strong><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> have you worried. Charts like this may concern you even more:</p>
+<section id="motivating-example-us-data-breaches" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="motivating-example-us-data-breaches"><span class="header-section-number">2.1</span> Motivating example: US data breaches</h2>
+<p>Imagine you live in Europe and are offered a job at a US company with locations across all states. It is a great job, but part of it involves handling sensitive customer data, and news with headlines such as <strong>US Reports Far More Data Breaches Than Other Developed Countries</strong><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> have you worried about how exposed you would be. A chart comparing reported rates across countries would concern you even more:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="R-basics_files/figure-html/murder-rate-example-1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+<p><img src="R-basics_files/figure-html/us-data-breaches-country-comparison-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Or even worse, this version from <a href="https://everytownresearch.org">everytown.org</a><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>:</p>
+<p>(These are illustrative figures, not an actual cross-country tally – as the footnote above already warns, reported-breach counts depend heavily on each country’s notification laws, so a chart like this mixes real variation with reporting-law artifacts.) But then you remember that the US is a large and diverse country with 50 very different states as well as the District of Columbia (DC), whose data-protection practices, breach-notification laws, and concentrations of data-heavy industry vary enormously. Once we adjust the reported incident counts for population, some states report many times the rate of others:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="R-basics_files/figure-html/murder-rate-example-2-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+<p><img src="R-basics_files/figure-html/us-data-breaches-by-state-map-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>But then you remember that the US is a large and diverse country with 50 very different states as well as the District of Columbia (DC).</p>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="R-basics_files/figure-html/us-murders-by-state-map-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>California, for example, has a larger population than Canada, and 20 US states have populations larger than that of Norway. In some respects, the variability across states in the US is akin to the variability across countries in Europe. Furthermore, although not included in the charts above, the murder rates in Lithuania, Ukraine, and Russia are higher than 4 per 100,000. So perhaps the news reports that worried you are too superficial. You have options of where to live and want to determine the safety of each particular state. We will gain some insights by examining data related to gun homicides in the US during 2010 using R.</p>
+<p>California, for example, has a larger population than Canada, and 20 US states have populations larger than that of Norway. In some respects, the variability across states in the US is akin to the variability across countries in Europe. So perhaps the news reports that worried you are too superficial. You have options of where to work and want to understand the reported data-breach exposure of each particular state. We will gain some insights by examining reported data-breach incidents across the US using R.</p>
 <p>Before we get started with our example, we need to cover logistics as well as some of the very basic building blocks that are required to gain more advanced R skills. Be aware that the usefulness of some of these building blocks may not be immediately obvious, but later in the book you will appreciate having mastered these skills.</p>
 </section>
 <section id="the-very-basics" class="level2" data-number="2.2">
@@ -633,7 +629,7 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>r_1 <span class="ot">&lt;-</span> (<span class="sc">-</span>coef_b <span class="sc">+</span> <span class="fu">sqrt</span>(coef_b<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> <span class="dv">4</span><span class="sc">*</span>coef_a<span class="sc">*</span>coef_c))<span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>coef_a)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>r_2 <span class="ot">&lt;-</span> (<span class="sc">-</span>coef_b <span class="sc">-</span> <span class="fu">sqrt</span>(coef_b<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> <span class="dv">4</span><span class="sc">*</span>coef_a<span class="sc">*</span>coef_c))<span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>coef_a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>For more advice, we highly recommend studying Hadley Wickham’s style guide<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<p>For more advice, we highly recommend studying Hadley Wickham’s style guide<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
 </section>
 <section id="saving-your-workspace" class="level3" data-number="2.2.6">
 <h3 data-number="2.2.6" class="anchored" data-anchor-id="saving-your-workspace"><span class="header-section-number">2.2.6</span> Saving your workspace</h3>
@@ -691,13 +687,13 @@ window.Quarto = {
 <section id="sec-data-frames" class="level3" data-number="2.3.1">
 <h3 data-number="2.3.1" class="anchored" data-anchor-id="sec-data-frames"><span class="header-section-number">2.3.1</span> Data frames</h3>
 <p>Up to now, the variables we have defined are just one number. This is not very useful for storing data. The most common way of storing a dataset in R is in a <em>data frame</em>. Conceptually, we can think of a data frame as a table with rows representing observations and the different variables reported for each observation defining the columns. Data frames are particularly useful for datasets because we can combine different data types into one object.</p>
-<p>A large proportion of data analysis challenges start with data stored in a data frame. For example, we stored the data for our motivating example in a data frame. You can access this dataset by loading the <strong>dslabs</strong> library which provides the <code>murders</code> dataset:</p>
+<p>A large proportion of data analysis challenges start with data stored in a data frame. For example, we stored the data for our motivating example in a data frame. You can access this dataset by loading the <strong>behdslabs</strong> library which provides the <code>app_data_breaches</code> dataset:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(behdslabs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To see that this is in fact a data frame, we type:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(murders)</span>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(app_data_breaches)</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "data.frame"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -705,25 +701,25 @@ window.Quarto = {
 <h3 data-number="2.3.2" class="anchored" data-anchor-id="examining-objects"><span class="header-section-number">2.3.2</span> Examining objects</h3>
 <p>The function <code>str</code> is useful for finding out more about the structure of an object:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(murders)</span>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(app_data_breaches)</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 'data.frame':    51 obs. of  5 variables:</span></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ state : chr "Alabama" "Alaska" "Arizona" "Arkansas" ...</span></span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ abb : chr "AL" "AK" "AZ" "AR" ...</span></span>
 <span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ region : Factor w/ 4 levels "Northeast","South",..: 2 4 4 2 4 4 1 2 2</span></span>
 <span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    2 ...</span></span>
 <span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ population: num 4779736 710231 6392017 2915918 37253956 ...</span></span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ total : num 135 19 232 93 1257 ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $ incidents : num 270 38 464 186 2514 ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This tells us much more about the object. We see that the table has 51 rows (50 states plus DC) and five variables. We can show the first six lines using the function <code>head</code>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(murders)</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        state abb region population total</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1    Alabama  AL  South    4779736   135</span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2     Alaska  AK   West     710231    19</span></span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3    Arizona  AZ   West    6392017   232</span></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4   Arkansas  AR  South    2915918    93</span></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 California  CA   West   37253956  1257</span></span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6   Colorado  CO   West    5029196    65</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(app_data_breaches)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        state abb region population incidents</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1    Alabama  AL  South    4779736       270</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2     Alaska  AK   West     710231        38</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3    Arizona  AZ   West    6392017       464</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4   Arkansas  AR  South    2915918       186</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 California  CA   West   37253956      2514</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6   Colorado  CO   West    5029196       130</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In this dataset, each state is considered an observation and five variables are reported for each state.</p>
 <p>Before we go any further in answering our original question about different states, let’s learn more about the components of this object.</p>
@@ -732,7 +728,7 @@ window.Quarto = {
 <h3 data-number="2.3.3" class="anchored" data-anchor-id="the-accessor"><span class="header-section-number">2.3.3</span> The accessor: <code>$</code></h3>
 <p>For our analysis, we will need to access the different variables represented by columns included in this data frame. To do this, we use the accessor operator <code>$</code> in the following way:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>population</span>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>app_data_breaches<span class="sc">$</span>population</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1]  4779736   710231  6392017  2915918 37253956  5029196  3574097</span></span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [8]   897934   601723 19687653  9920000  1360301  1567582 12830632</span></span>
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [15]  6483802  3046355  2853118  4339367  4533372  1328361  5773552</span></span>
@@ -742,28 +738,28 @@ window.Quarto = {
 <span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [43]  6346105 25145561  2763885   625741  8001024  6724540  1852994</span></span>
 <span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [50]  5686986   563626</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>But how did we know to use <code>population</code>? Previously, by applying the function <code>str</code> to the object <code>murders</code>, we revealed the names for each of the five variables stored in this table. We can quickly access the variable names using:</p>
+<p>But how did we know to use <code>population</code>? Previously, by applying the function <code>str</code> to the object <code>app_data_breaches</code>, we revealed the names for each of the five variables stored in this table. We can quickly access the variable names using:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(murders)</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "state"      "abb"        "region"     "population" "total"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(app_data_breaches)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "state"      "abb"        "region"     "population" "incidents"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>It is important to know that the order of the entries in <code>murders$population</code> preserves the order of the rows in our data table. This will later permit us to manipulate one variable based on the results of another. For example, we will be able to order the state names by the number of murders.</p>
+<p>It is important to know that the order of the entries in <code>app_data_breaches$population</code> preserves the order of the rows in our data table. This will later permit us to manipulate one variable based on the results of another. For example, we will be able to order the state names by the number of incidents.</p>
 <div class="callout callout-style-simple callout-tip">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>R comes with a very nice auto-complete functionality that saves us the trouble of typing out all the names. Try typing <code>murders$p</code> then hitting the <em>tab</em> key on your keyboard. This functionality and many other useful auto-complete features are available when working in RStudio.</p>
+<p>R comes with a very nice auto-complete functionality that saves us the trouble of typing out all the names. Try typing <code>app_data_breaches$p</code> then hitting the <em>tab</em> key on your keyboard. This functionality and many other useful auto-complete features are available when working in RStudio.</p>
 </div>
 </div>
 </div>
 </section>
 <section id="vectors" class="level3" data-number="2.3.4">
 <h3 data-number="2.3.4" class="anchored" data-anchor-id="vectors"><span class="header-section-number">2.3.4</span> Vectors</h3>
-<p>The object <code>murders$population</code> is not one number but several. We call these types of objects <em>vectors</em>. A single number is technically a vector of length 1, but in general we use the term vectors to refer to objects with several entries. The function <code>length</code> tells you how many entries are in the vector:</p>
+<p>The object <code>app_data_breaches$population</code> is not one number but several. We call these types of objects <em>vectors</em>. A single number is technically a vector of length 1, but in general we use the term vectors to refer to objects with several entries. The function <code>length</code> tells you how many entries are in the vector:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> murders<span class="sc">$</span>population</span>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> app_data_breaches<span class="sc">$</span>population</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(pop)</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 51</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -775,7 +771,7 @@ window.Quarto = {
 <p>In a numeric vector, every entry must be a number.</p>
 <p>To store character strings, vectors can also be of class <em>character</em>. For example, the state names are characters:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(murders<span class="sc">$</span>state)</span>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(app_data_breaches<span class="sc">$</span>state)</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "character"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>As with numeric vectors, all entries in a character vector need to be a character.</p>
@@ -807,27 +803,27 @@ window.Quarto = {
 </section>
 <section id="sec-factors" class="level3" data-number="2.3.5">
 <h3 data-number="2.3.5" class="anchored" data-anchor-id="sec-factors"><span class="header-section-number">2.3.5</span> Factors</h3>
-<p>In the <code>murders</code> dataset, we might expect the region to also be a character vector. However, it is not:</p>
+<p>In the <code>app_data_breaches</code> dataset, we might expect the region to also be a character vector. However, it is not:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(murders<span class="sc">$</span>region)</span>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(app_data_breaches<span class="sc">$</span>region)</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "factor"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>It is a <em>factor</em>. Factors are useful for storing categorical data. We can see that there are only 4 regions by using the <code>levels</code> function:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(murders<span class="sc">$</span>region)</span>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(app_data_breaches<span class="sc">$</span>region)</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "Northeast"     "South"         "North Central" "West"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In the background, R stores these <em>levels</em> as integers and keeps a map to keep track of the labels. This is more memory efficient than storing all the characters.</p>
-<p>Note that the levels have an order that is different from the order of appearance in the factor object. The default in R is for the levels to follow alphabetical order. However, often we want the levels to follow a different order. You can specify an order through the <code>levels</code> argument when creating the factor with the <code>factor</code> function. For example, in the murders dataset regions are ordered from east to west. The function <code>reorder</code> lets us change the order of the levels of a factor variable based on a summary computed on a numeric vector. We will demonstrate this with a simple example, and will see more advanced ones in the Data Visualization part of the book.</p>
-<p>Suppose we want the levels of region ordered by the total number of murders rather than alphabetically If there are values associated with each level, we can use the <code>reorder</code> function and specify a data summary to determine the order. The following code takes the sum of the total murders in each region, and reorders the factor following these sums.</p>
+<p>Note that the levels have an order that is different from the order of appearance in the factor object. The default in R is for the levels to follow alphabetical order. However, often we want the levels to follow a different order. You can specify an order through the <code>levels</code> argument when creating the factor with the <code>factor</code> function. For example, in the app_data_breaches dataset regions are ordered from east to west. The function <code>reorder</code> lets us change the order of the levels of a factor variable based on a summary computed on a numeric vector. We will demonstrate this with a simple example, and will see more advanced ones in the Data Visualization part of the book.</p>
+<p>Suppose we want the levels of region ordered by the total number of incidents rather than alphabetically If there are values associated with each level, we can use the <code>reorder</code> function and specify a data summary to determine the order. The following code takes the sum of the incidents in each region, and reorders the factor following these sums.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>region <span class="ot">&lt;-</span> murders<span class="sc">$</span>region</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>value <span class="ot">&lt;-</span> murders<span class="sc">$</span>total</span>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>region <span class="ot">&lt;-</span> app_data_breaches<span class="sc">$</span>region</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>value <span class="ot">&lt;-</span> app_data_breaches<span class="sc">$</span>incidents</span>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>region <span class="ot">&lt;-</span> <span class="fu">reorder</span>(region, value, <span class="at">FUN =</span> sum)</span>
 <span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(region)</span>
 <span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "Northeast"     "North Central" "West"          "South"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The new order is in agreement with the fact that the Northeast has the least murders and the South has the most.</p>
+<p>The new order is in agreement with the fact that the Northeast has the fewest incidents and the South has the most.</p>
 <div class="callout callout-style-simple callout-warning">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -954,12 +950,12 @@ window.Quarto = {
 </div>
 <p>You can also use single square brackets (<code>[</code>) to access rows and columns of a data frame:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>murders[<span class="dv">25</span>, <span class="dv">1</span>]</span>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>app_data_breaches[<span class="dv">25</span>, <span class="dv">1</span>]</span>
 <span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "Mississippi"</span></span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>murders[<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>, ]</span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     state abb region population total</span></span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  Alaska  AK   West     710231    19</span></span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 Arizona  AZ   West    6392017   232</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>app_data_breaches[<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>, ]</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     state abb region population incidents</span></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  Alaska  AK   West     710231        38</span></span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 Arizona  AZ   West    6392017       464</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
@@ -1148,19 +1144,19 @@ window.Quarto = {
 </section>
 <section id="sorting" class="level2" data-number="2.7">
 <h2 data-number="2.7" class="anchored" data-anchor-id="sorting"><span class="header-section-number">2.7</span> Sorting</h2>
-<p>Now that we have mastered some basic R knowledge, let’s try to gain some insights into the safety of different states in the context of gun murders.</p>
+<p>Now that we have mastered some basic R knowledge, let’s try to gain some insights into the reported data-breach exposure of different states.</p>
 <section id="sort" class="level3" data-number="2.7.1">
 <h3 data-number="2.7.1" class="anchored" data-anchor-id="sort"><span class="header-section-number">2.7.1</span> <code>sort</code></h3>
-<p>Say we want to rank the states from least to most gun murders. The function <code>sort</code> sorts a vector in increasing order. We can therefore see the largest number of gun murders by typing:</p>
+<p>Say we want to rank the states from fewest to most reported incidents. The function <code>sort</code> sorts a vector in increasing order. We can therefore see the largest number of reported incidents by typing:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
-<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(murders<span class="sc">$</span>total)</span>
-<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1]    2    4    5    5    7    8   11   12   12   16   19   21   22</span></span>
-<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [14]   27   32   36   38   53   63   65   67   84   93   93   97   97</span></span>
-<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [27]   99  111  116  118  120  135  142  207  219  232  246  250  286</span></span>
-<span id="cb77-6"><a href="#cb77-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [40]  293  310  321  351  364  376  413  457  517  669  805 1257</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(behdslabs)</span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(app_data_breaches<span class="sc">$</span>incidents)</span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1]    4    8   10   10   14   16   22   24   24   32   38   42   44</span></span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [14]   54   64   72   76  106  126  130  134  168  186  186  194  194</span></span>
+<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [27]  198  222  232  236  240  270  284  414  438  464  492  500  572</span></span>
+<span id="cb77-6"><a href="#cb77-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [40]  586  620  642  702  728  752  826  914 1034 1338 1610 2514</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>However, this does not give us information about which states have which murder totals. For example, we don’t know which state had 1257.</p>
+<p>However, this does not give us information about which states have which incident totals. For example, we don’t know which state had 2514.</p>
 </section>
 <section id="order" class="level3" data-number="2.7.2">
 <h3 data-number="2.7.2" class="anchored" data-anchor-id="order"><span class="header-section-number">2.7.2</span> <code>order</code></h3>
@@ -1184,40 +1180,40 @@ window.Quarto = {
 <span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 2 3 1 5 4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The second entry of <code>x</code> is the smallest, so <code>order(x)</code> starts with <code>2</code>. The next smallest is the third entry, so the second entry is <code>3</code> and so on.</p>
-<p>How does this help us order the states by murders? First, remember that the entries of vectors you access with <code>$</code> follow the same order as the rows in the table. For example, these two vectors containing state names and abbreviations, respectively, are matched by their order:</p>
+<p>How does this help us order the states by incidents? First, remember that the entries of vectors you access with <code>$</code> follow the same order as the rows in the table. For example, these two vectors containing state names and abbreviations, respectively, are matched by their order:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>state[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]</span>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>app_data_breaches<span class="sc">$</span>state[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]</span>
 <span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "Alabama"    "Alaska"     "Arizona"    "Arkansas"   "California"</span></span>
 <span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [6] "Colorado"</span></span>
-<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>abb[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]</span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>app_data_breaches<span class="sc">$</span>abb[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]</span>
 <span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "AL" "AK" "AZ" "AR" "CA" "CO"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This means we can order the state names by their total murders. We first obtain the index that orders the vectors according to murder totals and then index the state names vector:</p>
+<p>This means we can order the state names by their incident totals. We first obtain the index that orders the vectors according to incident totals and then index the state names vector:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> <span class="fu">order</span>(murders<span class="sc">$</span>total) </span>
-<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>abb[ind] </span>
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> <span class="fu">order</span>(app_data_breaches<span class="sc">$</span>incidents) </span>
+<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a>app_data_breaches<span class="sc">$</span>abb[ind] </span>
 <span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] "VT" "ND" "NH" "WY" "HI" "SD" "ME" "ID" "MT" "RI" "AK" "IA" "UT"</span></span>
 <span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [14] "WV" "NE" "OR" "DE" "MN" "KS" "CO" "NM" "NV" "AR" "WA" "CT" "WI"</span></span>
 <span id="cb82-5"><a href="#cb82-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [27] "DC" "OK" "KY" "MA" "MS" "AL" "IN" "SC" "TN" "AZ" "NJ" "VA" "NC"</span></span>
 <span id="cb82-6"><a href="#cb82-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [40] "MD" "OH" "MO" "LA" "IL" "GA" "MI" "PA" "NY" "FL" "TX" "CA"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>According to the above, California had the most murders.</p>
+<p>According to the above, California had the most incidents.</p>
 </section>
 <section id="max-and-which.max" class="level3" data-number="2.7.3">
 <h3 data-number="2.7.3" class="anchored" data-anchor-id="max-and-which.max"><span class="header-section-number">2.7.3</span> <code>max</code> and <code>which.max</code></h3>
 <p>If we are only interested in the entry with the largest value, we can use <code>max</code> for the value:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(murders<span class="sc">$</span>total)</span>
-<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 1257</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(app_data_breaches<span class="sc">$</span>incidents)</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 2514</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>and <code>which.max</code> for the index of the largest value:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>i_max <span class="ot">&lt;-</span> <span class="fu">which.max</span>(murders<span class="sc">$</span>total)</span>
-<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>state[i_max]</span>
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>i_max <span class="ot">&lt;-</span> <span class="fu">which.max</span>(app_data_breaches<span class="sc">$</span>incidents)</span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>app_data_breaches<span class="sc">$</span>state[i_max]</span>
 <span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "California"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>For the minimum, we can use <code>min</code> and <code>which.min</code> in the same way.</p>
-<p>Does this mean California is the most dangerous state? In an upcoming section, we argue that we should be considering rates instead of totals. Before doing that, we introduce one last order-related function: <code>rank</code>.</p>
+<p>Does this mean California has the worst data-breach record? In an upcoming section, we argue that we should be considering rates instead of totals. Before doing that, we introduce one last order-related function: <code>rank</code>.</p>
 </section>
 <section id="rank" class="level3" data-number="2.7.4">
 <h3 data-number="2.7.4" class="anchored" data-anchor-id="rank"><span class="header-section-number">2.7.4</span> <code>rank</code></h3>
@@ -1288,13 +1284,13 @@ window.Quarto = {
 </section>
 <section id="vector-arithmetics" class="level2" data-number="2.8">
 <h2 data-number="2.8" class="anchored" data-anchor-id="vector-arithmetics"><span class="header-section-number">2.8</span> Vector arithmetics</h2>
-<p>California had the most murders, but does this mean it is the most dangerous state? What if it just has many more people than any other state? We can quickly confirm that California indeed has the largest population:</p>
+<p>California had the most incidents, but does this mean it has the worst data-breach exposure? What if it just has many more people than any other state? We can quickly confirm that California indeed has the largest population:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span>
-<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>state[<span class="fu">which.max</span>(murders<span class="sc">$</span>population)]</span>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(behdslabs)</span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>app_data_breaches<span class="sc">$</span>state[<span class="fu">which.max</span>(app_data_breaches<span class="sc">$</span>population)]</span>
 <span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "California"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>with over 37 million inhabitants. It is therefore unfair to compare the totals if we are interested in learning how safe the state is. What we really should be computing is the murders per capita. The reports we describe in the motivating section used murders per 100,000 as the unit. To compute this quantity, the powerful vector arithmetic capabilities of R come in handy.</p>
+<p>with over 37 million inhabitants. It is therefore unfair to compare the totals if we are interested in learning how exposed the state is. What we really should be computing is the incidents per capita. The reports we describe in the motivating section used incidents per 100,000 as the unit. To compute this quantity, the powerful vector arithmetic capabilities of R come in handy.</p>
 <section id="rescaling-a-vector" class="level3" data-number="2.8.1">
 <h3 data-number="2.8.1" class="anchored" data-anchor-id="rescaling-a-vector"><span class="header-section-number">2.8.1</span> Rescaling a vector</h3>
 <p>In R, arithmetic operations on vectors occur <em>element-wise</em>. For a quick example, suppose we have height in inches:</p>
@@ -1338,13 +1334,13 @@ d + h
 \end{pmatrix}
 \]</span></p>
 <p>The same holds for other mathematical operations, such as <code>-</code>, <code>*</code> and <code>/</code>.</p>
-<p>This implies that to compute the murder rates we can simply type:</p>
+<p>This implies that to compute the incident rates we can simply type:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>murder_rate <span class="ot">&lt;-</span> murders<span class="sc">$</span>total <span class="sc">/</span> murders<span class="sc">$</span>population <span class="sc">*</span> <span class="dv">100000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>incident_rate <span class="ot">&lt;-</span> app_data_breaches<span class="sc">$</span>incidents <span class="sc">/</span> app_data_breaches<span class="sc">$</span>population <span class="sc">*</span> <span class="dv">100000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Once we do this, we notice that California is no longer near the top of the list. In fact, we can use what we have learned to order the states by murder rate:</p>
+<p>Once we do this, we notice that California is no longer near the top of the list. In fact, we can use what we have learned to order the states by incident rate:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>abb[<span class="fu">order</span>(murder_rate)]</span>
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>app_data_breaches<span class="sc">$</span>abb[<span class="fu">order</span>(incident_rate)]</span>
 <span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] "VT" "NH" "HI" "ND" "IA" "ID" "UT" "ME" "WY" "OR" "SD" "MN" "MT"</span></span>
 <span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [14] "CO" "WA" "WV" "RI" "WI" "NE" "MA" "IN" "KS" "NY" "KY" "AK" "OH"</span></span>
 <span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [27] "CT" "NJ" "AL" "IL" "OK" "NC" "NV" "VA" "AR" "TX" "NM" "CA" "FL"</span></span>
@@ -1377,27 +1373,27 @@ d + h
 </section>
 <section id="indexing" class="level2" data-number="2.9">
 <h2 data-number="2.9" class="anchored" data-anchor-id="indexing"><span class="header-section-number">2.9</span> Indexing</h2>
-<p>R provides a powerful and convenient way of indexing vectors. We can, for example, subset a vector based on properties of another vector. In this section, we continue working with our US murders example, which we can load like this:</p>
+<p>R provides a powerful and convenient way of indexing vectors. We can, for example, subset a vector based on properties of another vector. In this section, we continue working with our US data-breach example, which we can load like this:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(behdslabs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="subsetting-with-logicals" class="level3" data-number="2.9.1">
 <h3 data-number="2.9.1" class="anchored" data-anchor-id="subsetting-with-logicals"><span class="header-section-number">2.9.1</span> Subsetting with logicals</h3>
-<p>We have now calculated the murder rate using:</p>
+<p>We have now calculated the incident rate using:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>murder_rate <span class="ot">&lt;-</span> murders<span class="sc">$</span>total <span class="sc">/</span> murders<span class="sc">$</span>population <span class="sc">*</span> <span class="dv">100000</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a>incident_rate <span class="ot">&lt;-</span> app_data_breaches<span class="sc">$</span>incidents <span class="sc">/</span> app_data_breaches<span class="sc">$</span>population <span class="sc">*</span> <span class="dv">100000</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Imagine you are moving from Italy where, according to an ABC news report, the murder rate is only 0.71 per 100,000. You would prefer to move to a state with a similar murder rate. Another powerful feature of R is that we can use logicals to index vectors. If we compare a vector to a single number, it actually performs the test for each entry. The following is an example related to the question above:</p>
+<p>Imagine your current location has a low reported breach rate, around 1.42 per 100,000. You would prefer to move to a state with a similarly low rate. Another powerful feature of R is that we can use logicals to index vectors. If we compare a vector to a single number, it actually performs the test for each entry. The following is an example related to the question above:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> murder_rate <span class="sc">&lt;</span> <span class="fl">0.71</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> incident_rate <span class="sc">&lt;</span> <span class="fl">1.42</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If we instead want to know if a value is less or equal, we can use:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> murder_rate <span class="sc">&lt;=</span> <span class="fl">0.71</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> incident_rate <span class="sc">&lt;=</span> <span class="fl">1.42</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Note that we get back a logical vector with <code>TRUE</code> for each entry smaller than or equal to 0.71. To see which states these are, we can leverage the fact that vectors can be indexed with logicals.</p>
+<p>Note that we get back a logical vector with <code>TRUE</code> for each entry smaller than or equal to 1.42. To see which states these are, we can leverage the fact that vectors can be indexed with logicals.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>state[ind]</span>
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>app_data_breaches<span class="sc">$</span>state[ind]</span>
 <span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "Hawaii"        "Iowa"          "New Hampshire" "North Dakota" </span></span>
 <span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] "Vermont"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1409,7 +1405,7 @@ d + h
 </section>
 <section id="logical-operators" class="level3" data-number="2.9.2">
 <h3 data-number="2.9.2" class="anchored" data-anchor-id="logical-operators"><span class="header-section-number">2.9.2</span> Logical operators</h3>
-<p>Suppose we like the mountains and we want to move to a safe state in the western region of the country. We want the murder rate to be at most 1. In this case, we want two different things to be true. Here we can use the logical operator <em>and</em>, which in R is represented with <code>&amp;</code>. This operation results in <code>TRUE</code> only when both logicals are <code>TRUE</code>. To see this, consider this example:</p>
+<p>Suppose we like the mountains and we want to move to a state with a low incident rate in the western region of the country. We want the incident rate to be at most 2. In this case, we want two different things to be true. Here we can use the logical operator <em>and</em>, which in R is represented with <code>&amp;</code>. This operation results in <code>TRUE</code> only when both logicals are <code>TRUE</code>. To see this, consider this example:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="cn">TRUE</span> <span class="sc">&amp;</span> <span class="cn">TRUE</span></span>
 <span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
@@ -1420,52 +1416,52 @@ d + h
 </div>
 <p>For our example, we can form two logicals:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>west <span class="ot">&lt;-</span> murders<span class="sc">$</span>region <span class="sc">==</span> <span class="st">"West"</span></span>
-<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a>safe <span class="ot">&lt;-</span> murder_rate <span class="sc">&lt;=</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>west <span class="ot">&lt;-</span> app_data_breaches<span class="sc">$</span>region <span class="sc">==</span> <span class="st">"West"</span></span>
+<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a>safe <span class="ot">&lt;-</span> incident_rate <span class="sc">&lt;=</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>and we can use the <code>&amp;</code> to get a vector of logicals that tells us which states satisfy both conditions:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> safe <span class="sc">&amp;</span> west</span>
-<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>state[ind]</span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a>app_data_breaches<span class="sc">$</span>state[ind]</span>
 <span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "Hawaii"  "Idaho"   "Oregon"  "Utah"    "Wyoming"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="which" class="level3" data-number="2.9.3">
 <h3 data-number="2.9.3" class="anchored" data-anchor-id="which"><span class="header-section-number">2.9.3</span> <code>which</code></h3>
-<p>Suppose we want to look up California’s murder rate. For this type of operation, it is convenient to convert vectors of logicals into indexes instead of keeping long vectors of logicals. The function <code>which</code> tells us which entries of a logical vector are TRUE. So we can type:</p>
+<p>Suppose we want to look up California’s incident rate. For this type of operation, it is convenient to convert vectors of logicals into indexes instead of keeping long vectors of logicals. The function <code>which</code> tells us which entries of a logical vector are TRUE. So we can type:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> <span class="fu">which</span>(murders<span class="sc">$</span>state <span class="sc">==</span> <span class="st">"California"</span>)</span>
-<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a>murder_rate[ind]</span>
-<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 3.37</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> <span class="fu">which</span>(app_data_breaches<span class="sc">$</span>state <span class="sc">==</span> <span class="st">"California"</span>)</span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a>incident_rate[ind]</span>
+<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 6.75</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="match" class="level3" data-number="2.9.4">
 <h3 data-number="2.9.4" class="anchored" data-anchor-id="match"><span class="header-section-number">2.9.4</span> <code>match</code></h3>
-<p>If instead of just one state we want to find out the murder rates for several states, say New York, Florida, and Texas, we can use the function <code>match</code>. This function tells us which indexes of a second vector match each of the entries of a first vector:</p>
+<p>If instead of just one state we want to find out the incident rates for several states, say New York, Florida, and Texas, we can use the function <code>match</code>. This function tells us which indexes of a second vector match each of the entries of a first vector:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> <span class="fu">match</span>(<span class="fu">c</span>(<span class="st">"New York"</span>, <span class="st">"Florida"</span>, <span class="st">"Texas"</span>), murders<span class="sc">$</span>state)</span>
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> <span class="fu">match</span>(<span class="fu">c</span>(<span class="st">"New York"</span>, <span class="st">"Florida"</span>, <span class="st">"Texas"</span>), app_data_breaches<span class="sc">$</span>state)</span>
 <span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>ind</span>
 <span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 33 10 44</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now we can look at the murder rates:</p>
+<p>Now we can look at the incident rates:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a>murder_rate[ind]</span>
-<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 2.67 3.40 3.20</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a>incident_rate[ind]</span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 5.34 6.80 6.40</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="in" class="level3" data-number="2.9.5">
 <h3 data-number="2.9.5" class="anchored" data-anchor-id="in"><span class="header-section-number">2.9.5</span> <code>%in%</code></h3>
 <p>If rather than an index we want a logical that tells us whether or not each element of a first vector is in a second, we can use the function <code>%in%</code>. Let’s imagine you are not sure if Boston, Dakota, and Washington are states. You can find out like this:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="st">"Boston"</span>, <span class="st">"Dakota"</span>, <span class="st">"Washington"</span>) <span class="sc">%in%</span> murders<span class="sc">$</span>state</span>
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="st">"Boston"</span>, <span class="st">"Dakota"</span>, <span class="st">"Washington"</span>) <span class="sc">%in%</span> app_data_breaches<span class="sc">$</span>state</span>
 <span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] FALSE FALSE  TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note that we will be using <code>%in%</code> often throughout the book.</p>
 <p>There is a connection between <code>match</code> and <code>%in%</code> through <code>which</code>. To see this, notice that the following two lines produce the same index (although in different order):</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="fu">match</span>(<span class="fu">c</span>(<span class="st">"New York"</span>, <span class="st">"Florida"</span>, <span class="st">"Texas"</span>), murders<span class="sc">$</span>state)</span>
+<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="fu">match</span>(<span class="fu">c</span>(<span class="st">"New York"</span>, <span class="st">"Florida"</span>, <span class="st">"Texas"</span>), app_data_breaches<span class="sc">$</span>state)</span>
 <span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 33 10 44</span></span>
-<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(murders<span class="sc">$</span>state <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"New York"</span>, <span class="st">"Florida"</span>, <span class="st">"Texas"</span>))</span>
+<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(app_data_breaches<span class="sc">$</span>state <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"New York"</span>, <span class="st">"Florida"</span>, <span class="st">"Texas"</span>))</span>
 <span id="cb106-4"><a href="#cb106-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 10 33 44</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="callout callout-style-simple callout-note">
@@ -1485,10 +1481,10 @@ d + h
 <p>In <a href="../dataviz/ggplot2.html" class="quarto-xref"><span>Chapter 8</span></a> we describe an add-on package that provides a powerful approach to producing plots in R. We then have an entire part on Data Visualization in which we provide many examples. Here we briefly describe some of the functions that are available in a basic R installation.</p>
 <section id="plot" class="level3" data-number="2.10.1">
 <h3 data-number="2.10.1" class="anchored" data-anchor-id="plot"><span class="header-section-number">2.10.1</span> <code>plot</code></h3>
-<p>The <code>plot</code> function can be used to make scatterplots. Here is a plot of total murders versus population.</p>
+<p>The <code>plot</code> function can be used to make scatterplots. Here is a plot of total incidents versus population.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> murders<span class="sc">$</span>population <span class="sc">/</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">6</span></span>
-<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> murders<span class="sc">$</span>total</span>
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> app_data_breaches<span class="sc">$</span>population <span class="sc">/</span> <span class="dv">10</span><span class="sc">^</span><span class="dv">6</span></span>
+<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> app_data_breaches<span class="sc">$</span>incidents</span>
 <span id="cb107-3"><a href="#cb107-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center">
@@ -1502,15 +1498,15 @@ d + h
 </div>
 <p>For a quick plot that avoids accessing variables twice, we can use the <code>with</code> function:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(murders, <span class="fu">plot</span>(population, total))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(app_data_breaches, <span class="fu">plot</span>(population, incidents))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The function <code>with</code> lets us use the <code>murders</code> column names in the <code>plot</code> function. It also works with any data frames and any function.</p>
+<p>The function <code>with</code> lets us use the <code>app_data_breaches</code> column names in the <code>plot</code> function. It also works with any data frames and any function.</p>
 </section>
 <section id="hist" class="level3" data-number="2.10.2">
 <h3 data-number="2.10.2" class="anchored" data-anchor-id="hist"><span class="header-section-number">2.10.2</span> <code>hist</code></h3>
-<p>We will describe histograms as they relate to distributions in the Data Visualization part of the book. Here we will simply note that histograms are a powerful graphical summary of a list of numbers that gives you a general overview of the types of values you have. We can make a histogram of our murder rates by simply typing:</p>
+<p>We will describe histograms as they relate to distributions in the Data Visualization part of the book. Here we will simply note that histograms are a powerful graphical summary of a list of numbers that gives you a general overview of the types of values you have. We can make a histogram of our incident rates by simply typing:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">with</span>(murders, total <span class="sc">/</span> population <span class="sc">*</span> <span class="dv">100000</span>)</span>
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">with</span>(app_data_breaches, incidents <span class="sc">/</span> population <span class="sc">*</span> <span class="dv">100000</span>)</span>
 <span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center">
@@ -1522,9 +1518,9 @@ d + h
 </div>
 </div>
 </div>
-<p>We can see that there is a wide range of values with most of them between 2 and 3 and one very extreme case with a murder rate of more than 15:</p>
+<p>We can see that there is a wide range of values with most of them between 4 and 6 and one very extreme case with an incident rate of more than 30:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>state[<span class="fu">which.max</span>(x)]</span>
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>app_data_breaches<span class="sc">$</span>state[<span class="fu">which.max</span>(x)]</span>
 <span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "District of Columbia"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -1532,8 +1528,8 @@ d + h
 <h3 data-number="2.10.3" class="anchored" data-anchor-id="boxplot"><span class="header-section-number">2.10.3</span> <code>boxplot</code></h3>
 <p>Boxplots will also be described in the Data Visualization part of the book. They provide a more terse summary than histograms, but they are easier to stack with other boxplots. For example, here we can use them to compare the different regions:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>murders<span class="sc">$</span>rate <span class="ot">&lt;-</span> <span class="fu">with</span>(murders, total <span class="sc">/</span> population <span class="sc">*</span> <span class="dv">100000</span>)</span>
-<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(rate<span class="sc">~</span>region, <span class="at">data =</span> murders)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>app_data_breaches<span class="sc">$</span>rate <span class="ot">&lt;-</span> <span class="fu">with</span>(app_data_breaches, incidents <span class="sc">/</span> population <span class="sc">*</span> <span class="dv">100000</span>)</span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(rate<span class="sc">~</span>region, <span class="at">data =</span> app_data_breaches)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -1544,7 +1540,7 @@ d + h
 </div>
 </div>
 </div>
-<p>We can see that the South has higher murder rates than the other three regions.</p>
+<p>We can see that the South has higher incident rates than the other three regions.</p>
 </section>
 <section id="image" class="level3" data-number="2.10.4">
 <h3 data-number="2.10.4" class="anchored" data-anchor-id="image"><span class="header-section-number">2.10.4</span> <code>image</code></h3>
@@ -1599,11 +1595,11 @@ d + h
 <li><code>log(exp(x))</code></li>
 <li><code>exp(log(x, base = 2))</code></li>
 </ol>
-<p>6. Make sure the US murders dataset is loaded. Use the function <code>str</code> to examine the structure of the <code>murders</code> object. Which of the following best describes the variables represented in this data frame?</p>
+<p>6. Make sure the US data-breach dataset is loaded. Use the function <code>str</code> to examine the structure of the <code>app_data_breaches</code> object. Which of the following best describes the variables represented in this data frame?</p>
 <ol type="a">
 <li>The 51 states.</li>
-<li>The murder rates for all 50 states and DC.</li>
-<li>The state name, the abbreviation of the state name, the state’s region, and the state’s population and total number of murders for 2010.</li>
+<li>The incident rates for all 50 states and DC.</li>
+<li>The state name, the abbreviation of the state name, the state’s region, and the state’s population and number of reported data-breach incidents.</li>
 <li><code>str</code> shows no relevant information.</li>
 </ol>
 <p>7. What are the column names used by the data frame for these five variables?</p>
@@ -1611,7 +1607,7 @@ d + h
 <p>9. Now use the square brackets to extract the state abbreviations and assign them to the object <code>b</code>. Use the <code>identical</code> function to determine if <code>a</code> and <code>b</code> are the same.</p>
 <p>10. We saw that the <code>region</code> column stores a factor. You can corroborate this by typing:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(murders<span class="sc">$</span>region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(app_data_breaches<span class="sc">$</span>region)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>With one line of code, use the functions <code>levels</code> and <code>length</code> to determine the number of regions defined by this dataset.</p>
 <p>11. The function <code>table</code> takes a vector and returns the frequency of each element. You can quickly see how many states are in each region by applying this function. Use this function in one line of code to create a table of number of states per region.</p>
@@ -1631,10 +1627,10 @@ d + h
 <div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"1"</span>, <span class="st">"3"</span>, <span class="st">"5"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>and coerce it to get integers.</p>
-<p>24. For exercises 24-31 we will use the US murders dataset. Make sure you load it prior to starting. Use the <code>$</code> operator to access the population size data and store it as the object <code>pop</code>. Then use the <code>sort</code> function to redefine <code>pop</code> so that it is sorted. Finally, use the <code>[</code> operator to report the smallest population size.</p>
+<p>24. For exercises 24-31 we will use the US data-breach dataset. Make sure you load it prior to starting. Use the <code>$</code> operator to access the population size data and store it as the object <code>pop</code>. Then use the <code>sort</code> function to redefine <code>pop</code> so that it is sorted. Finally, use the <code>[</code> operator to report the smallest population size.</p>
 <p>25. Now instead of the smallest population size, find the index of the entry with the smallest population size. Hint: use <code>order</code> instead of <code>sort</code>.</p>
 <p>26. We can actually perform the same operation as in the previous exercise using the function <code>which.min</code>. Write one line of code that does this.</p>
-<p>27. Now we know how small the smallest state is and we know which row represents it. Which state is it? Define a variable <code>states</code> to be the state names from the <code>murders</code> data frame. Report the name of the state with the smallest population.</p>
+<p>27. Now we know how small the smallest state is and we know which row represents it. Which state is it? Define a variable <code>states</code> to be the state names from the <code>app_data_breaches</code> data frame. Report the name of the state with the smallest population.</p>
 <p>28. You can create a data frame using the <code>data.frame</code> function. Here is a quick example:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a>temp <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">35</span>, <span class="dv">88</span>, <span class="dv">42</span>, <span class="dv">84</span>, <span class="dv">81</span>, <span class="dv">30</span>)</span>
@@ -1644,17 +1640,17 @@ d + h
 </div>
 <p>Use the <code>rank</code> function to determine the population rank of each state from smallest population size to biggest. Save these ranks in an object called <code>ranks</code>, then create a data frame with the state name and its rank. Call the data frame <code>my_df</code>.</p>
 <p>29. Repeat the previous exercise, but this time order <code>my_df</code> so that the states are ordered from least populous to most populous. Hint: create an object <code>ind</code> that stores the indexes needed to order the population values. Then use the bracket operator <code>[</code> to re-order each column in the data frame.</p>
-<p>30. The <code>na_example</code> vector represents a series of counts. You can quickly examine the object using:</p>
+<p>30. The <code>daily_mood_ratings</code> vector represents a series of daily mood ratings on a 1–7 scale. You can quickly examine the object using:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(na_example)</span>
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(daily_mood_ratings)</span>
 <span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  int [1:1000] 2 1 3 2 1 3 1 4 3 2 ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>However, when we compute the average with the function <code>mean</code>, we obtain an <code>NA</code>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(na_example)</span>
+<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(daily_mood_ratings)</span>
 <span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The <code>is.na</code> function returns a logical vector that tells us which entries are <code>NA</code>. Assign this logical vector to an object called <code>ind</code> and determine how many <code>NA</code>s does <code>na_example</code> have.</p>
+<p>The <code>is.na</code> function returns a logical vector that tells us which entries are <code>NA</code>. Assign this logical vector to an object called <code>ind</code> and determine how many <code>NA</code>s does <code>daily_mood_ratings</code> have.</p>
 <p>31. Now compute the average again, but only for the entries that are not <code>NA</code>. Hint: remember the <code>!</code> operator, which turns <code>FALSE</code> into <code>TRUE</code> and vice versa.</p>
 <p>32. In exercises 28 we created the <code>temp</code> data frame:</p>
 <div class="cell" data-layout-align="center">
@@ -1665,24 +1661,24 @@ d + h
 </div>
 <p>Remake the data frame using the code above, but add a line that converts the temperature from Fahrenheit to Celsius. The conversion is <span class="math inline">\(C = \frac{5}{9} \times (F - 32)\)</span>.</p>
 <p>33. What is the following sum <span class="math inline">\(1+1/2^2 + 1/3^2 + \dots 1/100^2\)</span>? Hint: thanks to Euler, we know it should be close to <span class="math inline">\(\pi^2/6\)</span>.</p>
-<p>34. Compute the per 100,000 murder rate for each state and store it in the object <code>murder_rate</code>. Then compute the average murder rate for the US using the function <code>mean</code>. What is the average?</p>
+<p>34. Compute the per 100,000 incident rate for each state and store it in the object <code>incident_rate</code>. Then compute the average incident rate for the US using the function <code>mean</code>. What is the average?</p>
 <p>35.&nbsp;For remaining exercises 35-42, start by loading the library and data.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dslabs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(behdslabs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Compute the per 100,000 murder rate for each state and store it in an object called <code>murder_rate</code>. Then use logical operators to create a logical vector named <code>low</code> that tells us which entries of <code>murder_rate</code> are lower than 1.</p>
-<p>36. Now use the results from the previous exercise and the function <code>which</code> to determine the indices of <code>murder_rate</code> associated with values lower than 1.</p>
-<p>37. Use the results from the previous exercise to report the names of the states with murder rates lower than 1.</p>
-<p>38. Now extend the code from the exercise to report the states in the Northeast with murder rates lower than 1. Hint: use the previously defined logical vector <code>low</code> and the logical operator <code>&amp;</code>.</p>
-<p>39. In a previous exercise we computed the murder rate for each state and the average of these numbers. How many states are below the average?</p>
-<p>40. Use the match function to identify the states with abbreviations AK, MI, and IA. Hint: start by defining an index of the entries of <code>murders$abb</code> that match the three abbreviations, then use the <code>[</code> operator to extract the states.</p>
+<p>Compute the per 100,000 incident rate for each state and store it in an object called <code>incident_rate</code>. Then use logical operators to create a logical vector named <code>low</code> that tells us which entries of <code>incident_rate</code> are lower than 2.</p>
+<p>36. Now use the results from the previous exercise and the function <code>which</code> to determine the indices of <code>incident_rate</code> associated with values lower than 2.</p>
+<p>37. Use the results from the previous exercise to report the names of the states with incident rates lower than 2.</p>
+<p>38. Now extend the code from the exercise to report the states in the Northeast with incident rates lower than 2. Hint: use the previously defined logical vector <code>low</code> and the logical operator <code>&amp;</code>.</p>
+<p>39. In a previous exercise we computed the incident rate for each state and the average of these numbers. How many states are below the average?</p>
+<p>40. Use the match function to identify the states with abbreviations AK, MI, and IA. Hint: start by defining an index of the entries of <code>app_data_breaches$abb</code> that match the three abbreviations, then use the <code>[</code> operator to extract the states.</p>
 <p>41. Use the <code>%in%</code> operator to create a logical vector that answers the question: which of the following are actual abbreviations: MA, ME, MI, MO, MU?</p>
 <p>42. Extend the code you used in exercise 41 to report the one entry that is <strong>not</strong> an actual abbreviation. Hint: use the <code>!</code> operator, which turns <code>FALSE</code> into <code>TRUE</code> and vice versa, then <code>which</code> to obtain an index.</p>
-<p>43. We made a plot of total murders versus population and noted a strong relationship. Not surprisingly, states with larger populations had more murders.</p>
+<p>43. We made a plot of total incidents versus population and noted a strong relationship. Not surprisingly, states with larger populations had more incidents.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a>population_in_millions <span class="ot">&lt;-</span> murders<span class="sc">$</span>population<span class="sc">/</span><span class="dv">10</span><span class="sc">^</span><span class="dv">6</span></span>
-<span id="cb121-2"><a href="#cb121-2" aria-hidden="true" tabindex="-1"></a>total_gun_murders <span class="ot">&lt;-</span> murders<span class="sc">$</span>total</span>
-<span id="cb121-3"><a href="#cb121-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(population_in_millions, total_gun_murders)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a>population_in_millions <span class="ot">&lt;-</span> app_data_breaches<span class="sc">$</span>population<span class="sc">/</span><span class="dv">10</span><span class="sc">^</span><span class="dv">6</span></span>
+<span id="cb121-2"><a href="#cb121-2" aria-hidden="true" tabindex="-1"></a>total_incidents <span class="ot">&lt;-</span> app_data_breaches<span class="sc">$</span>incidents</span>
+<span id="cb121-3"><a href="#cb121-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(population_in_millions, total_incidents)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Keep in mind that many states have populations below 5 million and are bunched up. We may gain further insights from making this plot in the log scale. Transform the variables using the <code>log10</code> transformation and then plot them.</p>
 <p>44. Create a histogram of the state populations.</p>
@@ -1693,9 +1689,8 @@ d + h
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p><a href="http://abcnews.go.com/blogs/headlines/2012/12/us-gun-ownership-homicide-rate-higher-than-other-developed-countries/" class="uri">http://abcnews.go.com/blogs/headlines/2012/12/us-gun-ownership-homicide-rate-higher-than-other-developed-countries/</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p><a href="https://everytownresearch.org" class="uri">https://everytownresearch.org</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p><a href="http://adv-r.had.co.nz/Style.html" class="uri">http://adv-r.had.co.nz/Style.html</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>Reported-breach counts depend heavily on each country’s notification laws, so cross-country comparisons are difficult to interpret.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p><a href="http://adv-r.had.co.nz/Style.html" class="uri">http://adv-r.had.co.nz/Style.html</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

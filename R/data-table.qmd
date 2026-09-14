@@ -128,26 +128,26 @@ y
 With **dplyr**, we filtered like this:
 
 ```{r, eval=FALSE}
-filter(app_data_breaches, rate <= 0.7)
+filter(app_data_breaches, rate <= 1.4)
 ```
 
 With **data.table**, we again use an approach similar to subsetting matrices, except like **dplyr**, **data.table** knows that `rate` refers to a column name and not an object in the R environment:
 
 ```{r}
 #| eval: false
-breaches_dt[rate <= 0.7]
+breaches_dt[rate <= 1.4]
 ```
 
-Notice that we can combine the filter and select into one succinct command. Here are the state names and rates for those with rates below 0.7.
+Notice that we can combine the filter and select into one succinct command. Here are the state names and rates for those with rates below 1.4.
 
 ```{r}
-breaches_dt[rate <= 0.7, .(state, rate)]
+breaches_dt[rate <= 1.4, .(state, rate)]
 ```
 
 which is more compact than the **dplyr** approach:
 
 ```{r, eval=FALSE}
-app_data_breaches |> filter(rate <= 0.7) |> select(state, rate)
+app_data_breaches |> filter(rate <= 1.4) |> select(state, rate)
 ```
 
 :::{.callout-note}
@@ -295,13 +295,13 @@ breaches_dt[state %in% c("New York", "Texas")]
 
 Create a new data frame called `breaches_nw` with only the states from the Northeast and the West. How many states are in this category?
 
-7\. Suppose you want to live in the Northeast or West **and** want the incident rate to be less than 1. We want to see the data for the states satisfying these options. Note that you can use logical operators with `filter`. Here is an example in which we filter to keep only small states in the Northeast region.
+7\. Suppose you want to live in the Northeast or West **and** want the incident rate to be less than 2. We want to see the data for the states satisfying these options. Note that you can use logical operators with `filter`. Here is an example in which we filter to keep only small states in the Northeast region.
 
 ```{r, eval=FALSE}
 breaches_dt[population < 5000000 & region == "Northeast"]
 ```
 
-Make sure `app_data_breaches` has been defined with `rate` and `rank` and still has all states. Create a table called `my_states` that contains rows for states satisfying both the conditions: they are in the Northeast or West and the incident rate is less than 1. Show only the state name, the rate, and the rank.
+Make sure `app_data_breaches` has been defined with `rate` and `rank` and still has all states. Create a table called `my_states` that contains rows for states satisfying both the conditions: they are in the Northeast or West and the incident rate is less than 2. Show only the state name, the rate, and the rank.
 
 For exercises 8-12, we will be using the **NHANES** data.
 

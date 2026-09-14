@@ -1,0 +1,16 @@
+\AddToShipoutPictureBG*{\put(0,0){\makebox[\paperwidth][c]{\includegraphics[height=\paperheight,keepaspectratio]{cover.png}}}}
+\thispagestyle{empty}
+\null
+\clearpage
+
+$if(has-frontmatter)$
+\frontmatter
+$endif$
+$if(title)$
+\maketitle
+$if(abstract)$
+\begin{abstract}
+$abstract$
+\end{abstract}
+$endif$
+$endif$

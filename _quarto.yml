@@ -76,10 +76,12 @@ format:
     code-link: true
     author-meta: "Rafael A. Irizarry (original); adapted by Giorgio Arcara for Behavioural Data Science"
     callout-appearance: simple
-  pdf: 
+  pdf:
     documentclass: krantz
     classoption: [krantz2,10pt,twoside,onecolumn,final,openright]
     include-in-header: preamble.tex
+    template-partials:
+      - before-body.tex
     header-includes: |
      \usepackage{amssymb}
      \usepackage{amsmath}
@@ -87,6 +89,7 @@ format:
      \usepackage{subfigure}
      \usepackage{makeidx}
      \usepackage{multicol}
+     \usepackage{eso-pic}
     keep-tex: true
     
 

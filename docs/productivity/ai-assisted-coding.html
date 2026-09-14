@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.31">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Rafael A. Irizarry (original); adapted by Giorgio Arcara for Behavioural Data Science">
+
+<title>21&nbsp; AI and responsible coding – Introduction to Behavioural Data Science</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../productivity/reproducible-projects.html" rel="prev">
+<link href="../cover.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-314d552717907458410b1a40a915f399.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../productivity/intro-productivity.html">Productivity Tools</a></li><li class="breadcrumb-item"><a href="../productivity/ai-assisted-coding.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">AI and responsible coding</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Introduction to Behavioural Data Science</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/intro-to-behds/behdsbook-part-1" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="../Introduction-to-Behavioural-Data-Science.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../R/intro-to-R.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">R</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../R/getting-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting started</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../R/R-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../R/programming-basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Programming basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../R/tidyverse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The tidyverse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../R/data-table.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">data.table</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../R/importing-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Importing data</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../dataviz/intro-dataviz.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Visualization</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dataviz/distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Visualizing data distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dataviz/ggplot2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">ggplot2</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dataviz/dataviz-principles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Data visualization principles</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../dataviz/dataviz-in-practice.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Data visualization in practice</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../wrangling/intro-to-wrangling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Wrangling</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../wrangling/reshaping-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Reshaping data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../wrangling/joining-tables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Joining tables</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../wrangling/dates-and-times.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Parsing dates and times</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../wrangling/locales.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Locales</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../wrangling/web-scraping.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Extracting data from the web</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../wrangling/string-processing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">String processing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../wrangling/text-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Text analysis</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../productivity/intro-productivity.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Productivity Tools</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../productivity/unix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Organizing with Unix</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../productivity/git.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Git and GitHub</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../productivity/reproducible-projects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Reproducible projects</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../productivity/ai-assisted-coding.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">AI and responsible coding</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-current-situation" id="toc-the-current-situation" class="nav-link active" data-scroll-target="#the-current-situation"><span class="header-section-number">21.1</span> The current situation</a></li>
+  <li><a href="#advantages-of-ai-assisted-coding" id="toc-advantages-of-ai-assisted-coding" class="nav-link" data-scroll-target="#advantages-of-ai-assisted-coding"><span class="header-section-number">21.2</span> Advantages of AI-assisted coding</a>
+  <ul class="collapse">
+  <li><a href="#you-no-longer-lose-time-on-trivial-obstacles" id="toc-you-no-longer-lose-time-on-trivial-obstacles" class="nav-link" data-scroll-target="#you-no-longer-lose-time-on-trivial-obstacles"><span class="header-section-number">21.2.1</span> You no longer lose time on trivial obstacles</a></li>
+  <li><a href="#llms-can-make-any-step-transparent" id="toc-llms-can-make-any-step-transparent" class="nav-link" data-scroll-target="#llms-can-make-any-step-transparent"><span class="header-section-number">21.2.2</span> LLMs can make any step transparent</a></li>
+  <li><a href="#llms-can-help-you-code-better-not-just-code" id="toc-llms-can-help-you-code-better-not-just-code" class="nav-link" data-scroll-target="#llms-can-help-you-code-better-not-just-code"><span class="header-section-number">21.2.3</span> LLMs can help you code <em>better</em>, not just code</a></li>
+  <li><a href="#llms-can-help-you-check-your-code-for-errors" id="toc-llms-can-help-you-check-your-code-for-errors" class="nav-link" data-scroll-target="#llms-can-help-you-check-your-code-for-errors"><span class="header-section-number">21.2.4</span> LLMs can help you check your code for errors</a></li>
+  </ul></li>
+  <li><a href="#disadvantages-of-ai-assisted-coding" id="toc-disadvantages-of-ai-assisted-coding" class="nav-link" data-scroll-target="#disadvantages-of-ai-assisted-coding"><span class="header-section-number">21.3</span> Disadvantages of AI-assisted coding</a>
+  <ul class="collapse">
+  <li><a href="#the-dark-side-of-llms-you-may-be-tempted-to-delegate-everything" id="toc-the-dark-side-of-llms-you-may-be-tempted-to-delegate-everything" class="nav-link" data-scroll-target="#the-dark-side-of-llms-you-may-be-tempted-to-delegate-everything"><span class="header-section-number">21.3.1</span> The dark side of LLMs: you may be tempted to delegate everything</a></li>
+  <li><a href="#you-may-not-know-what-your-code-is-doing" id="toc-you-may-not-know-what-your-code-is-doing" class="nav-link" data-scroll-target="#you-may-not-know-what-your-code-is-doing"><span class="header-section-number">21.3.2</span> You may not know what your code is doing</a></li>
+  <li><a href="#you-may-never-actually-learn-to-code-or-to-analyse-data" id="toc-you-may-never-actually-learn-to-code-or-to-analyse-data" class="nav-link" data-scroll-target="#you-may-never-actually-learn-to-code-or-to-analyse-data"><span class="header-section-number">21.3.3</span> You may never actually learn to code or to analyse data</a></li>
+  </ul></li>
+  <li><a href="#how-to-integrate-ai-assisted-coding-into-your-learning-and-practice" id="toc-how-to-integrate-ai-assisted-coding-into-your-learning-and-practice" class="nav-link" data-scroll-target="#how-to-integrate-ai-assisted-coding-into-your-learning-and-practice"><span class="header-section-number">21.4</span> How to integrate AI-assisted coding into your learning (and practice)</a>
+  <ul class="collapse">
+  <li><a href="#bad-consequences-of-delegating-all-coding-to-ai" id="toc-bad-consequences-of-delegating-all-coding-to-ai" class="nav-link" data-scroll-target="#bad-consequences-of-delegating-all-coding-to-ai"><span class="header-section-number">21.4.1</span> Bad consequences of delegating all coding to AI</a></li>
+  </ul></li>
+  <li><a href="#how-to-responsibly-integrate-ai-into-doing-data-science" id="toc-how-to-responsibly-integrate-ai-into-doing-data-science" class="nav-link" data-scroll-target="#how-to-responsibly-integrate-ai-into-doing-data-science"><span class="header-section-number">21.5</span> How to responsibly integrate AI into doing data science</a>
+  <ul class="collapse">
+  <li><a href="#ai-assisted-coding-for-learning-data-science" id="toc-ai-assisted-coding-for-learning-data-science" class="nav-link" data-scroll-target="#ai-assisted-coding-for-learning-data-science"><span class="header-section-number">21.5.1</span> AI-assisted coding for learning data science</a></li>
+  <li><a href="#ai-assisted-coding-for-doing-data-science" id="toc-ai-assisted-coding-for-doing-data-science" class="nav-link" data-scroll-target="#ai-assisted-coding-for-doing-data-science"><span class="header-section-number">21.5.2</span> AI-assisted coding for doing data science</a></li>
+  </ul></li>
+  <li><a href="#disclaimers-on-the-use-of-ai" id="toc-disclaimers-on-the-use-of-ai" class="nav-link" data-scroll-target="#disclaimers-on-the-use-of-ai"><span class="header-section-number">21.6</span> Disclaimers on the use of AI</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading"><span class="header-section-number">21.7</span> Further reading</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/intro-to-behds/behdsbook-part-1/blob/main/productivity/ai-assisted-coding.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/intro-to-behds/behdsbook-part-1/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../productivity/intro-productivity.html">Productivity Tools</a></li><li class="breadcrumb-item"><a href="../productivity/ai-assisted-coding.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">AI and responsible coding</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-ai-responsible-coding" class="quarto-section-identifier"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">AI and responsible coding</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><em>by Giorgio Arcara</em></p>
+<section id="the-current-situation" class="level2" data-number="21.1">
+<h2 data-number="21.1" class="anchored" data-anchor-id="the-current-situation"><span class="header-section-number">21.1</span> The current situation</h2>
+<p>Since late 2022, when ChatGPT was first released to the public, the task of programming (or <em>coding</em>, as it is often called) has changed dramatically.</p>
+<p>Until a few years ago, writing code for the kind of analyses covered in this book required knowing a whole series of things: the basics of a programming language, the rationale behind each analysis, which arguments to set and why, how to structure the code, and — above all — how to cope when things did not work. A large share of a programmer’s time went into fighting <em>bugs</em> (code that does not behave as intended) and searching the web for solutions. People routinely pasted their error messages into Google and followed the results to sites such as <a href="https://stackoverflow.com">Stack Overflow</a> (for programming) or <a href="https://stats.stackexchange.com">Cross Validated</a> (for statistical questions), hoping to find an answer or a hint. These forums were an invaluable resource, kept alive by experienced programmers and data analysts who spent their own time, for free, answering questions and posting solutions.</p>
+<p>Things are now completely different because of the introduction of large language models (LLMs). LLMs are machine-learning models trained on very large amounts of text to predict the next chunk of text (a <em>token</em>) in a sequence; through this training they acquire a broad ability to generate and transform language, including computer code.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> At the time of writing, the models most used for coding are <a href="https://chat.openai.com">ChatGPT</a> (OpenAI), <a href="https://claude.ai">Claude</a> (Anthropic), and <a href="https://gemini.google.com">Gemini</a> (Google).</p>
+<p>It is worth stressing that LLMs also stand on the shoulders of giants: the sites mentioned above are part of the material they were trained on, so they learned what correct code looks like partly from those very communities.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>LLMs are particularly good at coding, and you can treat them as teaching assistants or even as a substitute for one. As already noted in the introduction, you can literally upload a dataset to an LLM and ask:</p>
+<p><em>“please run some detailed analysis and return some plots starting from this file”.</em></p>
+<p>The trivial obstacles and the long fights against bugs that used to dominate a programmer’s day are, for many tasks, a distant memory. LLMs are now very effective at assisting with an analysis, and often at drafting one from scratch. But here lies a slippery slope: it is easy to delegate every step to a tool that is much faster (and apparently also much better) at exactly the things this course is trying to teach you. Why spend hours on something an LLM can do in seconds?</p>
+<p>New terms have appeared to describe this shift, such as <em>vibe coding</em><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> and <em>AI-assisted coding</em>. Both refer to a way of working built around a continuous back-and-forth with an LLM. In the rest of this book (and in Part 2) I use the term <strong>AI-assisted coding</strong>, because its meaning is more transparent.</p>
+<p>Let me also state my position up front: I believe the overall effect of LLMs on coding is positive. They raise the bar for what counts as good code, a good analysis, and, above all, a good analyst.</p>
+<p>In the next sections I discuss some pros and cons of AI-assisted coding.</p>
+</section>
+<section id="advantages-of-ai-assisted-coding" class="level2" data-number="21.2">
+<h2 data-number="21.2" class="anchored" data-anchor-id="advantages-of-ai-assisted-coding"><span class="header-section-number">21.2</span> Advantages of AI-assisted coding</h2>
+<p>There are many advantages to coding with LLMs. Here are some of them.</p>
+<section id="you-no-longer-lose-time-on-trivial-obstacles" class="level3" data-number="21.2.1">
+<h3 data-number="21.2.1" class="anchored" data-anchor-id="you-no-longer-lose-time-on-trivial-obstacles"><span class="header-section-number">21.2.1</span> You no longer lose time on trivial obstacles</h3>
+<p>Coding used to be genuinely frustrating at times. Imagine you simply need to load a file into your favourite programming language — say, the data from a study on the usability of a smartwatch — and, for some reason, the import does not work. Especially for a beginner, this could turn into a seemingly endless task. Now, whenever you hit a problem like this, you can ask for hints and usually get several possible ways to solve it.</p>
+</section>
+<section id="llms-can-make-any-step-transparent" class="level3" data-number="21.2.2">
+<h3 data-number="21.2.2" class="anchored" data-anchor-id="llms-can-make-any-step-transparent"><span class="header-section-number">21.2.2</span> LLMs can make any step transparent</h3>
+<p>You can ask an LLM to explain any step you are performing and to clarify why the code is written the way it is. In the past, coding sometimes meant copy-pasting working code without really understanding how it worked. This is, in fact, what normally happens whenever you call a function from a package: you trust that someone else wrote and tested it correctly. With an LLM you can decompose unfamiliar code, rewrite it into a form that is clearer to you, or ask for a step-by-step explanation of someone else’s code. One caveat: an explanation is only useful if you can still check it. If you cannot judge whether the answer is correct, you have shifted the trust problem, not removed it.</p>
+</section>
+<section id="llms-can-help-you-code-better-not-just-code" class="level3" data-number="21.2.3">
+<h3 data-number="21.2.3" class="anchored" data-anchor-id="llms-can-help-you-code-better-not-just-code"><span class="header-section-number">21.2.3</span> LLMs can help you code <em>better</em>, not just code</h3>
+<p>There are many ways to write code for the same task. You can write it more clearly, follow established conventions, and avoid unnecessary repetition. LLMs make it easier to follow good practice. You can ask, for example:</p>
+<ul>
+<li><em>“Can you rewrite this so it is easier to read?”</em></li>
+<li><em>“Is there a way to make this code less repetitive?”</em></li>
+<li><em>“Does this follow the tidyverse style conventions?”</em></li>
+<li><em>“What input checks should I add so this fails loudly when the data is wrong?”</em></li>
+</ul>
+<p>For a book-length treatment of this idea aimed at researchers, see R. A. Poldrack’s <a href="https://bettercode-book.org/"><em>Better Code, Better Science</em></a>.</p>
+</section>
+<section id="llms-can-help-you-check-your-code-for-errors" class="level3" data-number="21.2.4">
+<h3 data-number="21.2.4" class="anchored" data-anchor-id="llms-can-help-you-check-your-code-for-errors"><span class="header-section-number">21.2.4</span> LLMs can help you check your code for errors</h3>
+<p>Whenever you write code, there is a real risk of mistakes. Here I want to focus on the most dangerous kind: <strong>silent errors</strong> — cases where the code runs without any error message but does not do what you intended.</p>
+<p>For example, suppose you want to keep only the tasks whose completion rate is above 20%, and you write the following:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     filter, lag</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(behdslabs)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>app_task_completion <span class="sc">|&gt;</span> <span class="fu">filter</span>(completion_rate <span class="sc">&gt;</span> <span class="fl">0.2</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    task  device completion_rate n_attempts</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     A  mobile              62       1650</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2     B  mobile              63       1120</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3     C  mobile              37        650</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4     D  mobile              33        834</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5     E  mobile              28        382</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6     F  mobile               6        746</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7     A desktop              82        216</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8     B desktop              68         50</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9     C desktop              34       1186</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10    D desktop              35        750</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11    E desktop              24        786</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12    F desktop               7        682</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The code runs, and it returns a table. So far, so good. But there is a subtle, vicious bug: <code>completion_rate</code> is recorded as a <em>percentage</em> (from 0 to 100), not as a <em>proportion</em> (from 0 to 1). Every row has a completion rate well above <code>0.2</code>, so the filter removes nothing, and the code silently fails to do what it was meant to do.</p>
+<p>LLMs can be very useful for this kind of <em>debugging</em> (finding mistakes in code), and you can spend the time you save building better checks around code that already “works”.</p>
+</section>
+</section>
+<section id="disadvantages-of-ai-assisted-coding" class="level2" data-number="21.3">
+<h2 data-number="21.3" class="anchored" data-anchor-id="disadvantages-of-ai-assisted-coding"><span class="header-section-number">21.3</span> Disadvantages of AI-assisted coding</h2>
+<p>Of course, there are also disadvantages.</p>
+<section id="the-dark-side-of-llms-you-may-be-tempted-to-delegate-everything" class="level3" data-number="21.3.1">
+<h3 data-number="21.3.1" class="anchored" data-anchor-id="the-dark-side-of-llms-you-may-be-tempted-to-delegate-everything"><span class="header-section-number">21.3.1</span> The dark side of LLMs: you may be tempted to delegate everything</h3>
+<p>This is the central danger; the others are really facets of it. You never actually learn how to build an analysis; you only learn to recognise code that looks plausible. This is especially harmful for beginners, who do not build the underlying skill in the first place.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/others/darkside.png" class="img-fluid figure-img" style="width:60.0%"></p>
+<figcaption>Image generated with GPT Astra on 07/09/2026.</figcaption>
+</figure>
+</div>
+</section>
+<section id="you-may-not-know-what-your-code-is-doing" class="level3" data-number="21.3.2">
+<h3 data-number="21.3.2" class="anchored" data-anchor-id="you-may-not-know-what-your-code-is-doing"><span class="header-section-number">21.3.2</span> You may not know what your code is doing</h3>
+<p>This is dangerous for several reasons. If you cannot follow your own analysis, you cannot vouch for it — and you are responsible for it. For an exam this is a form of cheating; in a job it is worse.</p>
+</section>
+<section id="you-may-never-actually-learn-to-code-or-to-analyse-data" class="level3" data-number="21.3.3">
+<h3 data-number="21.3.3" class="anchored" data-anchor-id="you-may-never-actually-learn-to-code-or-to-analyse-data"><span class="header-section-number">21.3.3</span> You may never actually learn to code or to analyse data</h3>
+<p>The more you delegate, the less you learn. Making mistakes and working through them is part of how knowledge becomes solid. The struggle is, sometimes, the point: it is what makes the knowledge stick.</p>
+</section>
+</section>
+<section id="how-to-integrate-ai-assisted-coding-into-your-learning-and-practice" class="level2" data-number="21.4">
+<h2 data-number="21.4" class="anchored" data-anchor-id="how-to-integrate-ai-assisted-coding-into-your-learning-and-practice"><span class="header-section-number">21.4</span> How to integrate AI-assisted coding into your learning (and practice)</h2>
+<p>AI-assisted coding can make you a better coder. If you are using this book to prepare for an exam or to learn, it can also accelerate your progress. The key is to use it to <em>support</em> your learning, not to work <em>in place of</em> your learning.</p>
+<section id="bad-consequences-of-delegating-all-coding-to-ai" class="level3" data-number="21.4.1">
+<h3 data-number="21.4.1" class="anchored" data-anchor-id="bad-consequences-of-delegating-all-coding-to-ai"><span class="header-section-number">21.4.1</span> Bad consequences of delegating all coding to AI</h3>
+<ul>
+<li><p><em>The longer the code or the analysis plan, the more it can drift from your original intent.</em> Producing code for a simple analysis is easy for an LLM. But as the task grows more complex, the model is more likely to do something that departs slightly from what you had in mind. This is not really a flaw of the LLM; it is usually a gap <em>in your original plan</em>. A good programmer is more like an architect: someone who knows exactly what they are building and why, with full control over every part of the plan.</p></li>
+<li><p><em>Without knowing what you are doing, you may miss important details.</em> For any data science problem there are, in practice, countless ways to proceed. Each choice has implications, subtle trade-offs, and pros and cons, and it is essentially impossible to explore them all. There is even a strand of the methodological literature devoted to this issue, known as <a href="https://doi.org/10.1177/1745691616658637">multiverse analysis</a>.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p></li>
+</ul>
+</section>
+</section>
+<section id="how-to-responsibly-integrate-ai-into-doing-data-science" class="level2" data-number="21.5">
+<h2 data-number="21.5" class="anchored" data-anchor-id="how-to-responsibly-integrate-ai-into-doing-data-science"><span class="header-section-number">21.5</span> How to responsibly integrate AI into doing data science</h2>
+<p>In the following lines I sketch some good habits for using AI in data science. For simplicity I distinguish two settings: AI-assisted coding for <em>learning</em> data science, and AI-assisted coding for <em>doing</em> data science — for example, in a research project or on the job.</p>
+<p>Two general suggestions apply to both settings.</p>
+<p>First, whenever you ask an LLM something that is not self-verifying — for example, which analyses could be run on a dataset — always <strong>ask for references</strong>, and check them. You should never take an LLM’s answer on trust.</p>
+<p>Second, and just as important:</p>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><strong>Always check the code an LLM writes for you.</strong> If you do not understand it, break it down and work through it line by line. It is entirely possible that the code does not do exactly what you intended, and you are the one responsible for the analysis — not the model.</p>
+</div>
+</div>
+</div>
+<section id="ai-assisted-coding-for-learning-data-science" class="level3" data-number="21.5.1">
+<h3 data-number="21.5.1" class="anchored" data-anchor-id="ai-assisted-coding-for-learning-data-science"><span class="header-section-number">21.5.1</span> AI-assisted coding for learning data science</h3>
+<p>Here are a few suggestions on how to use AI-assisted coding to learn data science, and in particular to follow this course.</p>
+<ol type="1">
+<li><p><em>Use AI as an assistant or a teacher, not as a substitute.</em> Learning means acquiring a new ability. Prompting a model and copy-pasting its answer is not learning. Try to work from scratch and write your own code. At first it will be slow and frustrating, but that is part of the process. Push yourself to do the exercises and to rely on AI as little as possible. But do not refuse to use it when you are completely stuck.</p></li>
+<li><p><em>Use AI to explain code.</em> AI is an excellent tool for explaining code. If some code in the book leaves you wondering why it is written in a particular way, ask for a clarification.</p></li>
+<li><p><em>Use AI to test yourself.</em> AI can also generate exercises and tests, either from scratch or as a follow-up to a question like the ones in point 2. You can ask it to build exercises or a step-by-step path to learn how to use something.</p></li>
+</ol>
+</section>
+<section id="ai-assisted-coding-for-doing-data-science" class="level3" data-number="21.5.2">
+<h3 data-number="21.5.2" class="anchored" data-anchor-id="ai-assisted-coding-for-doing-data-science"><span class="header-section-number">21.5.2</span> AI-assisted coding for doing data science</h3>
+<p>Doing data science is something you may well do in the future, and there too LLMs can help. Before getting to the habits, a few words on what coding for an analysis actually involves.</p>
+<section id="coding-for-a-data-science-project-in-essence" class="level4" data-number="21.5.2.1">
+<h4 data-number="21.5.2.1" class="anchored" data-anchor-id="coding-for-a-data-science-project-in-essence"><span class="header-section-number">21.5.2.1</span> Coding for a data science project, in essence</h4>
+<p>Coding for an analysis can be thought of as three main steps: <strong>PLAN</strong>, <strong>IMPLEMENT</strong>, and <strong>REVISE &amp; CHECK</strong>.</p>
+<p>Traditionally, implementation was the longest step and the one that absorbed most of the time. Writing the code to run an innovative or cutting-edge analysis, and producing polished plots, was something only a few people could do. Now it is within reach of anyone after a few well-written prompts. In practice, the planning and implementation steps used to blur together, because detours were forced whenever some code did not work or a solution could not be found in reasonable time.</p>
+<p>AI-assisted coding changes this picture. Implementation is now easy — things that once took weeks are done in seconds. That frees time to be a better analyst by investing more in the other two steps: planning, and revising and checking the code and the results (<a href="#fig-ai-three-steps" class="quarto-xref">Figure&nbsp;<span>21.1</span></a>).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-ai-three-steps" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ai-three-steps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="ai-assisted-coding_files/figure-html/fig-ai-three-steps-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ai-three-steps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;21.1: Coding for an analysis has three steps, running from the start to the end of a project. Before LLMs, implementation absorbed most of the time; with AI assistance it is quick, which frees time for planning and for revising and checking.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<ol type="1">
+<li><p><em>Plan the code first, then use LLMs to help implement it.</em> Once you know enough about how to write code for a given analysis, you can speed up implementation by asking an LLM to draft the code for an analysis you have planned in detail. You can plan before even opening your computer — often it is better done on paper. You spend more time planning and thinking, and less time implementing. This normally leads to clearer ideas and better code.</p></li>
+<li><p><em>Use LLMs to improve your code.</em> As noted among the advantages above, you can keep refining your code and spotting bugs by asking an LLM for tests. Testing was rarely done in traditional analysis workflows; now it is easy to build into almost any task. Remember to check the code after it is implemented.</p></li>
+<li><p><em>Use LLMs to broaden your knowledge.</em> A few well-chosen questions can challenge your habits and make you a better coder and analyst: <em>“Can you suggest alternative approaches to analyse these data with this aim, with references?”</em> or <em>“What are the weak points of my analytical approach?”</em></p></li>
+</ol>
+</section>
+<section id="example-prompts-for-drafting-code" class="level4" data-number="21.5.2.2">
+<h4 data-number="21.5.2.2" class="anchored" data-anchor-id="example-prompts-for-drafting-code"><span class="header-section-number">21.5.2.2</span> Example prompts for drafting code</h4>
+<p>The way you phrase a drafting prompt makes a large difference to how well the result matches what you actually need.</p>
+<p>Example of a <strong>bad</strong> prompt for drafting:</p>
+<blockquote class="blockquote">
+<p>“Here I’m uploading the dataset, please make some analysis on UX and plots.”</p>
+</blockquote>
+<p>Example of a <strong>good</strong> prompt for drafting:</p>
+<blockquote class="blockquote">
+<p>“Please help me draft the code that performs the following steps: 1) import the data; 2) compute descriptives, including mean, median, etc.; 3) fit a regression with x as the predictor(s) and y as the dependent variable, and run diagnostics using the <code>performance</code> package.”</p>
+</blockquote>
+<p>Notice that the good prompt is almost entirely about <strong>design</strong>, and only marginally about implementation: it specifies which steps to take and in which order, not the code itself. This is exactly the PLAN step from <a href="#fig-ai-three-steps" class="quarto-xref">Figure&nbsp;<span>21.1</span></a> written out as a prompt — and planning is the part an LLM cannot do for you.</p>
+<div class="callout callout-style-simple callout-important">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><strong>Especially at the beginning of your learning, do not rely too heavily on drafting code with an LLM.</strong> Try writing the plan, and as much of the code as you can, on your own first. Use drafting to save time on tasks you already understand, not to skip understanding them in the first place.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="example-prompts-for-verifying-and-checking-code" class="level4" data-number="21.5.2.3">
+<h4 data-number="21.5.2.3" class="anchored" data-anchor-id="example-prompts-for-verifying-and-checking-code"><span class="header-section-number">21.5.2.3</span> Example prompts for verifying and checking code</h4>
+<p>Prompts for fixing or checking code deserve the same care — and here the temptation to under-specify is even stronger.</p>
+<p>Example of a <strong>bad</strong> prompt for verifying/checking:</p>
+<blockquote class="blockquote">
+<p>“The code is not working, fix it.”</p>
+</blockquote>
+<p>Example of a <strong>good</strong> prompt for verifying/checking, after spending some time checking the code on your own — and not asking for help immediately:</p>
+<blockquote class="blockquote">
+<p>“Without giving me the right solution, and considering I’m a beginner, can you help me find where the mistake is in this code? Please don’t give me the solution directly, help me learn.”</p>
+</blockquote>
+<p>This style of prompt keeps the debugging struggle in your hands rather than the model’s. As noted above, the struggle is often what makes the underlying skill stick; a prompt like this lets the LLM guide you toward the mistake without doing the learning for you.</p>
+</section>
+</section>
+</section>
+<section id="disclaimers-on-the-use-of-ai" class="level2" data-number="21.6">
+<h2 data-number="21.6" class="anchored" data-anchor-id="disclaimers-on-the-use-of-ai"><span class="header-section-number">21.6</span> Disclaimers on the use of AI</h2>
+<p>Many academic and professional contexts now require you to disclose, explicitly, whether and how you used AI tools in a piece of work. This is good practice to adopt in this course too, even when it is not formally required: it costs little, and it makes your work easier to evaluate fairly.</p>
+<p>A disclaimer should typically state, briefly: (1) which AI tool(s) you used, (2) for which specific parts of the work (e.g.&nbsp;drafting code, checking for errors, writing text), and (3) that you reviewed the result and take responsibility for it. This mirrors standards already adopted in scholarly publishing:</p>
+<ul>
+<li><strong>APA Style</strong> — <a href="https://apastyle.apa.org/blog/how-to-cite-chatgpt">How to cite ChatGPT</a>: describe, in the relevant section of your work, how a generative AI tool was used, together with the prompts you gave it and the AI-generated text you relied on.</li>
+<li><strong>COPE (Committee on Publication Ethics)</strong> — <a href="https://publicationethics.org/guidance/cope-position/authorship-and-ai-tools">Authorship and AI tools</a>: AI tools cannot be listed as authors; authors must transparently disclose which tool was used and how, and remain fully responsible for all content, including any parts produced with AI assistance.</li>
+<li><strong>ICMJE</strong> — <a href="https://www.icmje.org/recommendations/browse/artificial-intelligence/ai-use-by-authors.html">AI use by authors</a>: authors must disclose the use of AI-assisted technologies and describe how they were used; AI output must be verified, not treated as a primary source.</li>
+</ul>
+<p>For coursework, unless your instructor gives more specific instructions, a short note such as <em>“I used [tool] to help draft the regression code in Section X and to check it for errors; I reviewed the final code and take responsibility for it.”</em> is normally sufficient. When in doubt, check your course’s or institution’s own AI policy first, since it may be more specific.</p>
+</section>
+<section id="further-reading" class="level2" data-number="21.7">
+<h2 data-number="21.7" class="anchored" data-anchor-id="further-reading"><span class="header-section-number">21.7</span> Further reading</h2>
+<p>For a practical checklist of good practices for using AI in data analysis, see the <a href="https://sancamilloirccs-ondalab.github.io/files/documents/Good_Practices_AI_Coding.pdf">ONDA Lab guide to AI-assisted coding</a>.</p>
+
+
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>For an accessible, practice-oriented introduction aimed at scientists, see R. A. Poldrack, <a href="https://bettercode-book.org/"><em>Better Code, Better Science</em></a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Code-generation abilities were demonstrated early on models trained on large public code corpora; see M. Chen et al.&nbsp;(2021), <em>Evaluating Large Language Models Trained on Code</em>, <a href="https://arxiv.org/abs/2107.03374" class="uri">https://arxiv.org/abs/2107.03374</a>. Since these tools became widely available, several analyses have reported a marked decline in traffic and in new questions on Stack Overflow.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>The expression <em>vibe coding</em> was popularised by Andrej Karpathy in early 2025 to describe leaning fully into the model’s suggestions and paying little attention to the code itself. I avoid it here precisely because that attitude is the one this chapter warns against.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>S. Steegen, F. Tuerlinckx, A. Gelman &amp; W. Vanpaemel (2016), <em>Increasing Transparency Through a Multiverse Analysis</em>, <em>Perspectives on Psychological Science</em>, 11(5), 702–712.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/intro-to-behds\.github\.io\/behdsbook-part-1\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../productivity/reproducible-projects.html" class="pagination-link" aria-label="Reproducible projects">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Reproducible projects</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Introduction to Behavioural Data Science, adapted from Rafael A. Irizarry’s <a href="https://rafalab.dfci.harvard.edu/dsbook/">Introduction to Data Science</a></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/intro-to-behds/behdsbook-part-1/blob/main/productivity/ai-assisted-coding.qmd" class="toc-action"><i class="bi bi-github"></i>View source</a></li><li><a href="https://github.com/intro-to-behds/behdsbook-part-1/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
