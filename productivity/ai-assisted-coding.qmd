@@ -100,6 +100,10 @@ AI-assisted coding can make you a better coder. If you are using this book to pr
 
 [^ai-multiverse]: S. Steegen, F. Tuerlinckx, A. Gelman & W. Vanpaemel (2016), _Increasing Transparency Through a Multiverse Analysis_, *Perspectives on Psychological Science*, 11(5), 702–712.
 
+<!-- TODO: evaluate citing this video as an additional bullet/footnote here —
+     Bjarne Stroustrup interview (creator of C++), https://www.youtube.com/watch?v=U46fJ2bJ-co
+     — check whether he criticizes AI-generated code, as a bonus reason to learn to code properly. -->
+
 ## How to responsibly integrate AI into doing data science
 
 In the following lines I sketch some good habits for using AI in data science. For simplicity I distinguish two settings: AI-assisted coding for _learning_ data science, and AI-assisted coding for _doing_ data science — for example, in a research project or on the job.
