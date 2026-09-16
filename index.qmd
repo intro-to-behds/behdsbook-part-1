@@ -26,9 +26,13 @@ The website for the original book are the following:
 
 # Disclaimers
 
+::: {.callout-warning}
+## Please read before using this material
+
 In this version of the book, all examples and datasets are adaptations of the datasets in the original book, re-themed to fit a behavioural-science context. The numerical values derive from real datasets, but their behavioural framing is fictional: **these should not be interpreted or cited as genuine behavioural data**.
 
 The English translation and adaptation were produced with the assistance of _Claude Code (Sonnet 4.6)_. The model was used for programming, language revision, and to help "reflavour" the examples; LLM were not used to generate new ideas or to decide the content.
+:::
 
 # Preface to the Original Edition {.unnumbered}
 
