@@ -65,7 +65,7 @@ The trade-off is repo size — `_freeze/` and `docs/` add up over time (currentl
 A few things are excluded from git on purpose (see `.gitignore`):
 - Standard local/editor cruft (`.Rproj.user`, `.Rhistory`, `.DS_Store`, `.quarto/`, etc.).
 - `*_files/` directories and `*_cache` — intermediate knitr working directories, distinct from the curated `_freeze/` cache described above.
-- `*.tex` / `*.pdf` — generated LaTeX/PDF build byproducts, **except** the hand-written source partials `preamble.tex`, `before-body.tex`, and `cover-page.tex`'s successor, which are real source files Quarto's PDF template needs (they're explicitly un-ignored).
+- `*.tex` / `*.pdf` — generated LaTeX/PDF build byproducts, **except** the hand-written source partials `preamble.tex`, `before-body.tex`, and `cover-page.tex`'s successor, which are real source files Quarto's PDF template needs (they're explicitly un-ignored). The rendered book PDF `docs/Introduction-to-Behavioural-Data-Science.pdf` is also un-ignored, because the site's "Download PDF" link points to it and GitHub Pages can only serve what is committed.
 - `wrangling/*.jsonl` — see next section.
 
 ## 7. Do the `wrangling/*.jsonl` files need to be stored anywhere else?
