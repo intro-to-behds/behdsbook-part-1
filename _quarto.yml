@@ -21,9 +21,15 @@ book:
   repo-url: https://github.com/intro-to-behds/behdsbook-part-1
   repo-branch: main
   repo-actions: [source, issue]
-  downloads: [pdf]
+  # No `downloads: [pdf]`: Quarto would link to a relative ./*.pdf, which is not
+  # committed (see .gitignore). The PDF is published as the `book-pdf` release
+  # asset instead, and linked as a sidebar tool below.
   sidebar:
     collapse-level: 1
+    tools:
+      - icon: file-pdf
+        href: https://github.com/intro-to-behds/behdsbook-part-1/releases/download/book-pdf/Introduction-to-Behavioural-Data-Science.pdf
+        text: Download PDF
 
   chapters:
     - index.qmd
