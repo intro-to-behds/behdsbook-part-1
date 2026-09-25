@@ -15,13 +15,13 @@ The Quarto files used to generate this adaptation are available on [GitHub](http
 
 [^index-8]: <https://github.com/intro-to-behds/behdsbook-part-1>
 
-The website for the original book are the following:
+The websites for the two parts of the book are the following:
 
-- Part 1 **Data Wrangling and Visualization with R** part is [here](https://intro-to-behds.github.io/behdsbook-part-1/)[^index-1].
-- Part 2 **Statistics and Prediction Algorithms Through Case Studies** part is [here](https://intro-to-behds.github.io/behdsbook-part-2/)[^index-2].
+- Part 1 **Data Wrangling and Visualization with R** part is [here](https://intro-to-behds.github.io/behdsbook-part-1/)[^index-orig-1].
+- Part 2 **Statistics and Prediction Algorithms Through Case Studies** part is [here](https://intro-to-behds.github.io/behdsbook-part-2/)[^index-orig-2].
 
-[^index-1]: <http://rafalab.dfci.harvard.edu/dsbook-part-1/>
-[^index-2]: <http://rafalab.dfci.harvard.edu/dsbook-part-2/>
+[^index-orig-1]: The link to the original version by Irizarry is the following one: <http://rafalab.dfci.harvard.edu/dsbook-part-1/>
+[^index-orig-2]: The link to the original version by Irizarry is the following one: <http://rafalab.dfci.harvard.edu/dsbook-part-2/>
 
 
 # Disclaimers
