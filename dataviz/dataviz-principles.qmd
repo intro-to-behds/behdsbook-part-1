@@ -265,42 +265,42 @@ The first orders the regions alphabetically, while the second orders them by the
 
 We have focused on displaying single quantities across categories. We now shift our attention to displaying data, with a focus on comparing groups. 
 
-To motivate the principle, "show the data", we go back to our example of describing reaction times to ET, an extraterrestrial. This time let's assume ET is interested in the difference in reaction times between males and females. A commonly seen plot used for comparisons between groups, popularized by software such as Microsoft Excel, is the dynamite plot, which shows the average and standard errors (standard errors are defined in a later chapter, but do not confuse them with the standard deviation of the data). The plot looks like this:
+To motivate the principle, "show the data", we go back to our example of describing UX questionnaire scores to ET, an extraterrestrial. This time let's assume ET is interested in the difference in scores between desktop and mobile users. A commonly seen plot used for comparisons between groups, popularized by software such as Microsoft Excel, is the dynamite plot, which shows the average and standard errors (standard errors are defined in a later chapter, but do not confuse them with the standard deviation of the data). The plot looks like this:
 
 ```{r show-data-1, echo=FALSE, fig.height=6}
-p1 <- reaction_times |>
-  group_by(sex) |>
-  summarize(average = mean(rt_ms), se=sd(rt_ms)/sqrt(n())) |>
-  ggplot(aes(sex, average)) +
+p1 <- ux_scores |>
+  group_by(device) |>
+  summarize(average = mean(ux_score), se=sd(ux_score)/sqrt(n())) |>
+  ggplot(aes(device, average)) +
   theme_excel() +
   geom_errorbar(aes(ymin = average - 2*se, ymax = average+2*se), width = 0.25) +
   geom_col(width=0.5, fill = "blue", color = "black") +
-  ylab("Reaction time in milliseconds")
+  ylab("UX score")
 p1
 ```
 
-The average of each group is represented by the top of each bar and the antennae extend out from the average to the average plus two standard errors. If all ET receives is this plot, they will have little information on what to expect if they test a group of human males and females. The bars go to 0: does this mean some people respond in essentially no time at all? Are all males slower than the fastest females? Is there a range of reaction times? ET can't answer these questions since we have provided almost no information on the reaction-time distribution.
+The average of each group is represented by the top of each bar and the antennae extend out from the average to the average plus two standard errors. If all ET receives is this plot, they will have little information on what to expect if they survey a group of desktop and mobile users. The bars go to 0: does this mean some users score 0? Do all desktop users score higher than the lowest-scoring mobile users? Is there a range of scores? ET can't answer these questions since we have provided almost no information on the distribution of the scores.
 
 This brings us the "show the data" principle. This simple __ggplot2__ code already generates a more informative plot than the barplot by simply showing all the data points:
 
 ```{r show-data-2}
 #| echo: false
-reaction_times |>
-  ggplot(aes(sex, rt_ms)) +
+ux_scores |>
+  ggplot(aes(device, ux_score)) +
   geom_point()
 ```
 
-For example, this plot gives us an idea of the range of the data. However, this plot has limitations as well, since we can't really see all the `r sum(reaction_times$sex=="Female")` and `r sum(reaction_times$sex=="Male")` points plotted for females and males, respectively, and many points are plotted on top of each other. As we have previously described, visualizing the distribution is much more informative. But before doing this, we point out two ways we can improve a plot showing all the points.
+For example, this plot gives us an idea of the range of the data. However, this plot has limitations as well, since we can't really see all the `r sum(ux_scores$device=="desktop")` and `r sum(ux_scores$device=="mobile")` points plotted for desktop and mobile users, respectively, and many points are plotted on top of each other. As we have previously described, visualizing the distribution is much more informative. But before doing this, we point out two ways we can improve a plot showing all the points.
 
-The first is to add _jitter_, which adds a small random shift to each point. In this case, adding horizontal jitter does not alter the interpretation, since the reaction-time values do not change, but we minimize the number of points that fall on top of each other and, therefore, get a better visual sense of how the data is distributed. A second improvement comes from using _alpha blending_: making the points somewhat transparent. The more points fall on top of each other, the darker the plot, which also helps us get a sense of how the points are distributed. Here is the same plot with jitter and alpha blending:
+The first is to add _jitter_, which adds a small random shift to each point. In this case, adding horizontal jitter does not alter the interpretation, since the score values do not change, but we minimize the number of points that fall on top of each other and, therefore, get a better visual sense of how the data is distributed. A second improvement comes from using _alpha blending_: making the points somewhat transparent. The more points fall on top of each other, the darker the plot, which also helps us get a sense of how the points are distributed. Here is the same plot with jitter and alpha blending:
 
 ```{r show-points-with-jitter}
-reaction_times |>
-  ggplot(aes(sex, rt_ms)) +
+ux_scores |>
+  ggplot(aes(device, ux_score)) +
   geom_jitter(width = 0.05, alpha = 0.2)
 ```
 
-Now we start getting a sense that, on average, males respond more slowly than females. We also note faint horizontal bands of points, a sign that the original timing measurements were recorded at a limited resolution.
+Now we start getting a sense that, on average, desktop users score higher than mobile users. We also note dark horizontal bands of points, a sign that many users share exactly the same score.
 
 ## Ease comparisons
 
@@ -309,43 +309,43 @@ Now we start getting a sense that, on average, males respond more slowly than fe
 Since there are so many points, it is more effective to show distributions rather than individual points. We therefore show histograms for each group:
 
 ```{r common-axes-histograms-wrong, echo=FALSE}
-reaction_times |>
-  ggplot(aes(x = rt_ms, y = after_stat(density))) +
-  geom_histogram(binwidth = 10, color = "black") +
-  facet_grid(.~sex, scales = "free_x")
+ux_scores |>
+  ggplot(aes(x = ux_score, y = after_stat(density))) +
+  geom_histogram(binwidth = 3, boundary = 0, color = "black") +
+  facet_grid(.~device, scales = "free_x")
 ```
 
-However, from this plot it is not immediately obvious that males are, on average, slower than females. We have to look carefully to notice that the x-axis has a higher range of values in the male histogram. An important principle here is to **keep the axes the same** when comparing data across two plots. Below we see how the comparison becomes a little easier:
+However, from this plot it is not immediately obvious that desktop users, on average, score higher than mobile users. We have to look carefully to notice that the x-axis has a different range of values in the two histograms. An important principle here is to **keep the axes the same** when comparing data across two plots. Below we see how the comparison becomes a little easier:
 
 ```{r common-axes-histograms-right, echo=FALSE}
-reaction_times |>
-  ggplot(aes(rt_ms, y = after_stat(density))) +
-  geom_histogram(binwidth = 10, color = "black") +
-  facet_grid(.~sex)
+ux_scores |>
+  ggplot(aes(ux_score, y = after_stat(density))) +
+  geom_histogram(binwidth = 3, boundary = 0, color = "black") +
+  facet_grid(.~device)
 ```
 
 ### Aligning plots for comparisons
 
-In these histograms, the visual cue related to decreases or increases in reaction time are shifts to the left or right, respectively: horizontal changes. Aligning the plots vertically helps us see this change when the axes are fixed:
+In these histograms, the visual cue related to decreases or increases in score are shifts to the left or right, respectively: horizontal changes. Aligning the plots vertically helps us see this change when the axes are fixed:
 
 ```{r common-axes-histograms-right-2, echo = FALSE}
-p2 <- reaction_times |>
-  ggplot(aes(rt_ms, after_stat(density))) +
-  geom_histogram(binwidth = 10, color = "black") +
-  facet_grid(sex~.)
+p2 <- ux_scores |>
+  ggplot(aes(ux_score, after_stat(density))) +
+  geom_histogram(binwidth = 3, boundary = 0, color = "black") +
+  facet_grid(device~.)
 p2
 ```
 
-This plot makes it much easier to notice that men are, on average, slower to respond.
+This plot makes it much easier to notice that desktop users, on average, score higher.
 
-If we want the more compact summary provided by boxplots, we then align them horizontally since, by default, boxplots move up and down with changes in reaction time. Following our _show the data_ principle, we then overlay all the data points:
+If we want the more compact summary provided by boxplots, we then align them horizontally since, by default, boxplots move up and down with changes in score. Following our _show the data_ principle, we then overlay all the data points:
 
 ```{r boxplot-with-points-with-jitter, echo=FALSE}
-p3 <- reaction_times |>
-  ggplot(aes(sex, rt_ms)) +
+p3 <- ux_scores |>
+  ggplot(aes(device, ux_score)) +
   geom_boxplot(coef = 3) +
   geom_jitter(width = 0.1, alpha = 0.2) +
-  ylab("Reaction time in milliseconds")
+  ylab("UX score")
 p3
 ```
 

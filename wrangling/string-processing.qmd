@@ -17,7 +17,7 @@ section on this topic. Here we use a series of case studies that help us
 demonstrate how string processing is a necessary step for many data
 wrangling challenges. Specifically, we describe the process of
 converting the original, *raw* data from which we extracted
-the `app_data_breaches`, `reaction_times`, and `research_funding_rates` examples into the
+the `app_data_breaches`, `ux_scores`, and `research_funding_rates` examples into the
 data frames we have studied in this book.
 
 By going over these case studies, we will cover some of the most common
