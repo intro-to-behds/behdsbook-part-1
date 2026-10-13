@@ -633,15 +633,15 @@ window.Quarto = {
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">average =</span> <span class="fu">mean</span>(rt_ms), <span class="at">standard_deviation =</span> <span class="fu">sd</span>(rt_ms))</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>s</span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   average standard_deviation</span></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     337               34.5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     330               68.5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This takes our original data frame as input, filters it to keep only females, and then produces a new summarized table with just the average and the standard deviation of reaction times. We get to choose the names of the columns of the resulting table. For example, above we decided to use <code>average</code> and <code>standard_deviation</code>, but we could have used other names just the same.</p>
 <p>Because the resulting table stored in <code>s</code> is a data frame, we can access the components with the accessor <code>$</code>:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>s<span class="sc">$</span>average</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 337</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 330</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>s<span class="sc">$</span>standard_deviation</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 34.5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 68.5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>As with most other <strong>dplyr</strong> functions, <code>summarize</code> is aware of the variable names and we can use them directly. So when inside the call to the <code>summarize</code> function we write <code>mean(rt_ms)</code>, the function is accessing the column with the name “rt_ms” and then computing the average of the resulting numeric vector. We can compute any other summary that operates on vectors and returns a single value.</p>
 <p>For another example of how we can use the <code>summarize</code> function, let’s compute the average incident rate for the United States. Remember our data table includes reported incidents and population size for each state and we have already used <strong>dplyr</strong> to add a incident rate column:</p>
@@ -671,15 +671,15 @@ window.Quarto = {
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>reaction_times <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">median =</span> <span class="fu">median</span>(rt_ms), <span class="at">min =</span> <span class="fu">min</span>(rt_ms), <span class="at">max =</span> <span class="fu">max</span>(rt_ms))</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   median min max</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1    370 200 500</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1    303 205 648</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>But we can obtain these three values with just one line using the <code>quantile</code> function. For any value <code>p</code> between 0 and 1, <code>quantile(x, p)</code> returns the value for which proportion <code>p</code> of the data in <code>x</code> are at or below. Since the minimum is the value below which 0% of the data falls, the median the value below which 50% falls, and the maximum the value below which 100% falls, we can obtain all three with <code>quantile(x, c(0.5, 0, 1))</code>. However, to leverage this functionality, we can’t use <code>summarize</code> because it expects one value per row. Instead we have to use the <code>reframe</code> function:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>reaction_times <span class="sc">|&gt;</span> <span class="fu">reframe</span>(<span class="at">quantiles =</span> <span class="fu">quantile</span>(rt_ms, <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">0</span>, <span class="dv">1</span>)))</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   quantiles</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       370</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       200</span></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3       500</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       303</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       205</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3       648</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If we want a column per summary, as the <code>summarize</code> call above, we have to define a function that returns a data frame like this:</p>
 <div class="cell" data-layout-align="center">
@@ -692,7 +692,7 @@ window.Quarto = {
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>reaction_times <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="fu">median_min_max</span>(rt_ms))</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   median min max</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1    370 200 500</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1    303 205 648</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="sec-group-by" class="level3" data-number="4.4.3">
@@ -701,27 +701,27 @@ window.Quarto = {
 <p>If we type this:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>reaction_times <span class="sc">|&gt;</span> <span class="fu">group_by</span>(sex)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1,050 x 2</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1,050 × 2</span></span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # Groups:   sex [2]</span></span>
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   sex   rt_ms</span></span>
 <span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;fct&gt; &lt;dbl&gt;</span></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 Male   430.</span></span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 Male   384.</span></span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 Male   365.</span></span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 Male   420.</span></span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 Male   301.</span></span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # i 1,045 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 Male   280.</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 Male   273.</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 Male   259.</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 Male   295.</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 Male   249 </span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 1,045 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The result does not look very different from <code>reaction_times</code>, except we see <code>Groups: sex [2]</code> when we print the object. Although not immediately obvious from its appearance, this is now a special data frame called a <em>grouped data frame</em>, and <strong>dplyr</strong> functions, in particular <code>summarize</code>, will behave differently when acting on this object. Conceptually, you can think of this table as many tables, with the same columns but not necessarily the same number of rows, stacked together in one object. When we summarize the data after grouping, this is what happens:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>reaction_times <span class="sc">|&gt;</span> </span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sex) <span class="sc">|&gt;</span></span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">average =</span> <span class="fu">mean</span>(rt_ms), <span class="at">standard_deviation =</span> <span class="fu">sd</span>(rt_ms))</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 x 3</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 3</span></span>
 <span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   sex    average standard_deviation</span></span>
 <span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;fct&gt;    &lt;dbl&gt;              &lt;dbl&gt;</span></span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 Female    337.               34.5</span></span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 Male      377.               33.2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 Female    330.               68.5</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 Male      316.               65.4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The <code>summarize</code> function applies the summarization to each group separately.</p>
 <p>For another example, let’s compute the median, minimum, and maximum incident rate in the four regions of the country using the <code>median_min_max</code> defined above:</p>
@@ -729,7 +729,7 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>app_data_breaches <span class="sc">|&gt;</span> </span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(region) <span class="sc">|&gt;</span></span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="fu">median_min_max</span>(rate))</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 4 x 4</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 4 × 4</span></span>
 <span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   region        median   min   max</span></span>
 <span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;fct&gt;          &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
 <span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 Northeast       3.60 0.639  7.20</span></span>
@@ -826,7 +826,7 @@ window.Quarto = {
 <p>To work with the tidyverse, data must be stored in data frames. We introduced the data frame in <a href="R-basics.html#sec-data-frames" class="quarto-xref"><span>Section 2.3.1</span></a> and have been using the <code>app_data_breaches</code> data frame throughout the book. In <a href="#sec-group-by" class="quarto-xref"><span>Section 4.4.3</span></a> we introduced the <code>group_by</code> function, which permits stratifying data before computing summary statistics. But where is the group information stored in the data frame?</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>app_data_breaches <span class="sc">|&gt;</span> <span class="fu">group_by</span>(region)</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 51 x 6</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 51 × 6</span></span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # Groups:   region [4]</span></span>
 <span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   state      abb   region population incidents  rate</span></span>
 <span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;      &lt;chr&gt; &lt;fct&gt;       &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;</span></span>
@@ -835,7 +835,7 @@ window.Quarto = {
 <span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 Arizona    AZ    West      6392017       464  7.26</span></span>
 <span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 Arkansas   AR    South     2915918       186  6.38</span></span>
 <span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 California CA    West     37253956      2514  6.75</span></span>
-<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # i 46 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 46 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Notice that there are no columns with this information. But, if you look closely at the output above, you see the line <code>A tibble</code> followed by dimensions. We can learn the class of the returned object using:</p>
 <div class="cell" data-layout-align="center">
@@ -880,7 +880,7 @@ window.Quarto = {
 <p>While data frame columns need to be vectors of numbers, strings, or logical values, tibbles can have more complex objects, such as lists or functions. Also, we can create tibbles with functions:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">id =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">func =</span> <span class="fu">c</span>(mean, median, sd))</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 x 2</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 2</span></span>
 <span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      id func  </span></span>
 <span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;dbl&gt; &lt;list&gt;</span></span>
 <span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     1 &lt;fn&gt;  </span></span>
@@ -980,7 +980,7 @@ window.Quarto = {
 <span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"Other"</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">|&gt;</span></span>
 <span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">rate =</span> <span class="fu">sum</span>(incidents)<span class="sc">/</span><span class="fu">sum</span>(population)<span class="sc">*</span><span class="dv">10</span><span class="sc">^</span><span class="dv">5</span>) </span>
-<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 4 x 2</span></span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 4 × 2</span></span>
 <span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   group        rate</span></span>
 <span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;       &lt;dbl&gt;</span></span>
 <span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 New England  3.45</span></span>

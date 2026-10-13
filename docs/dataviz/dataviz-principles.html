@@ -630,7 +630,7 @@ window.Quarto = {
 <section id="show-the-data" class="level2" data-number="9.5">
 <h2 data-number="9.5" class="anchored" data-anchor-id="show-the-data"><span class="header-section-number">9.5</span> Show the data</h2>
 <p>We have focused on displaying single quantities across categories. We now shift our attention to displaying data, with a focus on comparing groups.</p>
-<p>To motivate the principle, “show the data”, we go back to our example of describing reaction times to ET, an extraterrestrial. This time let’s assume ET is interested in the difference in reaction times between males and females. A commonly seen plot used for comparisons between groups, popularized by software such as Microsoft Excel, is the dynamite plot, which shows the average and standard errors (standard errors are defined in a later chapter, but do not confuse them with the standard deviation of the data). The plot looks like this:</p>
+<p>To motivate the principle, “show the data”, we go back to our example of describing UX questionnaire scores to ET, an extraterrestrial. This time let’s assume ET is interested in the difference in scores between desktop and mobile users. A commonly seen plot used for comparisons between groups, popularized by software such as Microsoft Excel, is the dynamite plot, which shows the average and standard errors (standard errors are defined in a later chapter, but do not confuse them with the standard deviation of the data). The plot looks like this:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -640,7 +640,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>The average of each group is represented by the top of each bar and the antennae extend out from the average to the average plus two standard errors. If all ET receives is this plot, they will have little information on what to expect if they test a group of human males and females. The bars go to 0: does this mean some people respond in essentially no time at all? Are all males slower than the fastest females? Is there a range of reaction times? ET can’t answer these questions since we have provided almost no information on the reaction-time distribution.</p>
+<p>The average of each group is represented by the top of each bar and the antennae extend out from the average to the average plus two standard errors. If all ET receives is this plot, they will have little information on what to expect if they survey a group of desktop and mobile users. The bars go to 0: does this mean some users score 0? Do all desktop users score higher than the lowest-scoring mobile users? Is there a range of scores? ET can’t answer these questions since we have provided almost no information on the distribution of the scores.</p>
 <p>This brings us the “show the data” principle. This simple <strong>ggplot2</strong> code already generates a more informative plot than the barplot by simply showing all the data points:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -651,11 +651,11 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>For example, this plot gives us an idea of the range of the data. However, this plot has limitations as well, since we can’t really see all the 238 and 812 points plotted for females and males, respectively, and many points are plotted on top of each other. As we have previously described, visualizing the distribution is much more informative. But before doing this, we point out two ways we can improve a plot showing all the points.</p>
-<p>The first is to add <em>jitter</em>, which adds a small random shift to each point. In this case, adding horizontal jitter does not alter the interpretation, since the reaction-time values do not change, but we minimize the number of points that fall on top of each other and, therefore, get a better visual sense of how the data is distributed. A second improvement comes from using <em>alpha blending</em>: making the points somewhat transparent. The more points fall on top of each other, the darker the plot, which also helps us get a sense of how the points are distributed. Here is the same plot with jitter and alpha blending:</p>
+<p>For example, this plot gives us an idea of the range of the data. However, this plot has limitations as well, since we can’t really see all the 812 and 238 points plotted for desktop and mobile users, respectively, and many points are plotted on top of each other. As we have previously described, visualizing the distribution is much more informative. But before doing this, we point out two ways we can improve a plot showing all the points.</p>
+<p>The first is to add <em>jitter</em>, which adds a small random shift to each point. In this case, adding horizontal jitter does not alter the interpretation, since the score values do not change, but we minimize the number of points that fall on top of each other and, therefore, get a better visual sense of how the data is distributed. A second improvement comes from using <em>alpha blending</em>: making the points somewhat transparent. The more points fall on top of each other, the darker the plot, which also helps us get a sense of how the points are distributed. Here is the same plot with jitter and alpha blending:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>reaction_times <span class="sc">|&gt;</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(sex, rt_ms)) <span class="sc">+</span></span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>ux_scores <span class="sc">|&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(device, ux_score)) <span class="sc">+</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.05</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -665,7 +665,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>Now we start getting a sense that, on average, males respond more slowly than females. We also note faint horizontal bands of points, a sign that the original timing measurements were recorded at a limited resolution.</p>
+<p>Now we start getting a sense that, on average, desktop users score higher than mobile users. We also note dark horizontal bands of points, a sign that many users share exactly the same score.</p>
 </section>
 <section id="ease-comparisons" class="level2" data-number="9.6">
 <h2 data-number="9.6" class="anchored" data-anchor-id="ease-comparisons"><span class="header-section-number">9.6</span> Ease comparisons</h2>
@@ -681,7 +681,7 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>However, from this plot it is not immediately obvious that males are, on average, slower than females. We have to look carefully to notice that the x-axis has a higher range of values in the male histogram. An important principle here is to <strong>keep the axes the same</strong> when comparing data across two plots. Below we see how the comparison becomes a little easier:</p>
+<p>However, from this plot it is not immediately obvious that desktop users, on average, score higher than mobile users. We have to look carefully to notice that the x-axis has a different range of values in the two histograms. An important principle here is to <strong>keep the axes the same</strong> when comparing data across two plots. Below we see how the comparison becomes a little easier:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -694,7 +694,7 @@ window.Quarto = {
 </section>
 <section id="aligning-plots-for-comparisons" class="level3" data-number="9.6.2">
 <h3 data-number="9.6.2" class="anchored" data-anchor-id="aligning-plots-for-comparisons"><span class="header-section-number">9.6.2</span> Aligning plots for comparisons</h3>
-<p>In these histograms, the visual cue related to decreases or increases in reaction time are shifts to the left or right, respectively: horizontal changes. Aligning the plots vertically helps us see this change when the axes are fixed:</p>
+<p>In these histograms, the visual cue related to decreases or increases in score are shifts to the left or right, respectively: horizontal changes. Aligning the plots vertically helps us see this change when the axes are fixed:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -704,8 +704,8 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>This plot makes it much easier to notice that men are, on average, slower to respond.</p>
-<p>If we want the more compact summary provided by boxplots, we then align them horizontally since, by default, boxplots move up and down with changes in reaction time. Following our <em>show the data</em> principle, we then overlay all the data points:</p>
+<p>This plot makes it much easier to notice that desktop users, on average, score higher.</p>
+<p>If we want the more compact summary provided by boxplots, we then align them horizontally since, by default, boxplots move up and down with changes in score. Following our <em>show the data</em> principle, we then overlay all the data points:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
