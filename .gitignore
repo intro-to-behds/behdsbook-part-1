@@ -22,3 +22,6 @@ crc-stuff/
 irizarrycr9781032116556introductiontodatasciencep/
 **/*.quarto_ipynb
 wrangling/*.jsonl
+
+# stray upstream build output: the site is built into docs/
+/site_libs/
