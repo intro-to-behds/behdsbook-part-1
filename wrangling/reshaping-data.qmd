@@ -245,8 +245,13 @@ data.frame(ids = letters[1:3], x = 1:3, y = 4:6) |>
 
 Another common challenge is that spreadsheets include the column names as a first row. To quickly fix this we can `row_to_names`:
 
+For example, here is a small task export read without a header, so the column names end up in the first row:
+
 ```{r}
-x <- read.csv(file.path(path, "murders.csv"), header = FALSE) |> 
+x <- read.csv(text = "participant,age,condition,rt_ms
+P01,23,congruent,512
+P02,25,incongruent,618
+P03,22,congruent,489", header = FALSE) |>
   row_to_names(1)
 names(x)
 ```
