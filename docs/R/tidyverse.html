@@ -455,18 +455,18 @@ window.Quarto = {
 <p>To see how the same information can be provided in different formats, consider the following example:</p>
 <div class="cell" data-layout-align="center">
 <pre><code>#&gt;       country year avg_price_per_app_usd
-#&gt; 1     Germany 1960                  3.62
-#&gt; 2 South Korea 1960                  9.24
-#&gt; 3     Germany 1961                  3.66
-#&gt; 4 South Korea 1961                  8.98
-#&gt; 5     Germany 1962                  3.71
-#&gt; 6 South Korea 1962                  8.69</code></pre>
+#&gt; 1     Germany 2008                  2.06
+#&gt; 2 South Korea 2008                  1.84
+#&gt; 3     Germany 2009                  2.07
+#&gt; 4 South Korea 2009                  1.88
+#&gt; 5     Germany 2010                  2.08
+#&gt; 6 South Korea 2010                  1.91</code></pre>
 </div>
 <p>This tidy dataset provides average app prices for two countries across the years. This is a tidy dataset because each row represents one observation with the three variables being country, year, and average app price. However, this dataset originally came in another format and was reshaped for the <strong>behdslabs</strong> package. Originally, the data was in the following format:</p>
 <div class="cell" data-layout-align="center">
-<pre><code>#&gt;       country 1960 1961 1962
-#&gt; 1     Germany 2.41 2.44 2.47
-#&gt; 2 South Korea 6.16 5.99 5.79</code></pre>
+<pre><code>#&gt;       country 2008 2009 2010
+#&gt; 1     Germany 1.37 1.38 1.39
+#&gt; 2 South Korea 1.23 1.25 1.27</code></pre>
 </div>
 <p>The same information is provided, but there are two important differences in the format: 1) each row includes several observations and 2) one of the variables, year, is stored in the header. For the tidyverse packages to be optimally used, data need to be reshaped into <em>tidy</em> format, which you will learn to do in the Data Wrangling part of the book. Until then, we will use example datasets that are already in tidy format.</p>
 <p>Although not immediately obvious, as you go through the book you will start to appreciate the advantages of working in a framework in which functions use tidy formats for both inputs and outputs. You will see how this permits the data analyst to focus on more important aspects of the analysis rather than the format of the data.</p>
