@@ -16,13 +16,13 @@ wide_data <- read_csv(filename)
 
 One of the most used functions in the **tidyr** package is `pivot_longer`, which is useful for converting wide data into tidy data.
 
-As with most tidyverse functions, the `pivot_longer` function's first argument is the data frame that will be converted. Here we want to reshape the `wide_data` dataset so that each row represents an app-price observation, which implies we need three columns to store the year, country, and the observed value. In its current form, data from different years are in different columns with the year values stored in the column names. Through the `names_to` and `values_to` argument we will tell `pivot_longer` the column names we want to assign to the columns containing the current column names and observations, respectively. The default names are `name` and `value`, which are often usable choices. In this case a better choice for these two arguments would be `year` and `app_price`. Note that nowhere in the data file does it tell us this is app-price data. Instead, we deciphered this from the file name. Through `cols`, the second argument, we specify the columns containing observed values; these are the columns that will be *pivoted*. The default is to pivot all columns so, in most cases, we have to specify the columns. In our example we want columns `1960`, `1961` up to `2015`.
+As with most tidyverse functions, the `pivot_longer` function's first argument is the data frame that will be converted. Here we want to reshape the `wide_data` dataset so that each row represents an app-price observation, which implies we need three columns to store the year, country, and the observed value. In its current form, data from different years are in different columns with the year values stored in the column names. Through the `names_to` and `values_to` argument we will tell `pivot_longer` the column names we want to assign to the columns containing the current column names and observations, respectively. The default names are `name` and `value`, which are often usable choices. In this case a better choice for these two arguments would be `year` and `app_price`. Note that nowhere in the data file does it tell us this is app-price data. Instead, we deciphered this from the file name. Through `cols`, the second argument, we specify the columns containing observed values; these are the columns that will be *pivoted*. The default is to pivot all columns so, in most cases, we have to specify the columns. In our example we want columns `2008`, `2009` up to `2015`.
 
 The code to pivot the app-price data therefore looks like this:
 
 ```{r}
 new_tidy_data <- wide_data |>
-  pivot_longer(`1960`:`2015`, names_to = "year", values_to = "app_price")
+  pivot_longer(`2008`:`2015`, names_to = "year", values_to = "app_price")
 ```
 
 We can see that the data have been converted to tidy format with columns `year` and `app_price`
@@ -42,7 +42,8 @@ The `new_tidy_data` object looks like the original `tidy_data` we defined this w
 
 ```{r}
 tidy_data <- global_tech_adoption |>
-  filter(country %in% c("South Korea", "Germany") & !is.na(avg_price_per_app_usd)) |>
+  filter(country %in% c("South Korea", "Germany") & year >= 2008 & 
+           !is.na(avg_price_per_app_usd)) |>
   select(country, year, app_price = avg_price_per_app_usd)
 ```
 
@@ -69,7 +70,7 @@ As we will see in later examples, it is sometimes useful for data wrangling purp
 ```{r}
 new_wide_data <- new_tidy_data |> 
   pivot_wider(names_from = year, values_from = app_price)
-select(new_wide_data, country, `1960`:`1967`)
+select(new_wide_data, country, `2008`:`2012`)
 ```
 
 Similar to `pivot_wider`, `names_from` and `values_from` default to `name` and `value`.

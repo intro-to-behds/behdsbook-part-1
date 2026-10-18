@@ -25,7 +25,8 @@ To see how the same information can be provided in different formats, consider t
 
 ```{r, echo=FALSE}
 tidy_data <- global_tech_adoption |> 
-  filter(country %in% c("South Korea", "Germany") & !is.na(avg_price_per_app_usd)) |>
+  filter(country %in% c("South Korea", "Germany") & year >= 2008 & 
+           !is.na(avg_price_per_app_usd)) |>
   select(country, year, avg_price_per_app_usd)
 head(tidy_data, 6)
 ```
@@ -37,7 +38,7 @@ This tidy dataset provides average app prices for two countries across the years
 path <- system.file("extdata", package = "behdslabs")
 filename <- file.path(path, "app-price-two-countries-example.csv")
 wide_data <- read_csv(filename)
-select(wide_data, country, `1960`:`1962`) |> as.data.frame()
+select(wide_data, country, `2008`:`2010`) |> as.data.frame()
 ```
 
 The same information is provided, but there are two important differences in the format: 1) each row includes several observations and 2) one of the variables, year, is stored in the header. For the tidyverse packages to be optimally used, data need to be reshaped into _tidy_ format, which you will learn to do in the Data Wrangling part of the book. Until then, we will use example datasets that are already in tidy format.
