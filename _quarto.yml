@@ -69,6 +69,12 @@ book:
         - productivity/reproducible-projects.qmd
         - productivity/ai-assisted-coding.qmd
 
+    - part: basic-stats/intro-basic-stats.qmd
+      chapters:
+        - basic-stats/central-tendency-dispersion.qmd
+        - basic-stats/correlation.qmd
+        - basic-stats/comparing-two-groups.qmd
+
     # - part: productivity/installations.qmd
     #   chapters:
     #     - productivity/installing-r-and-rstudio.qmd

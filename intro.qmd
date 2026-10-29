@@ -1,6 +1,6 @@
 # Introduction {.unnumbered}
 
-The demand for skilled data science practitioners in industry, academia, and government is rapidly growing. This book introduces skills that can help you tackle real-world data analysis challenges. These include R programming, data wrangling with **dplyr**, data visualization with **ggplot2**, file organization with UNIX/Linux shell, version control with Git and GitHub, and reproducible document preparation with Quarto and **knitr**. The book is divided into four parts: **R**, **Data Visualization**, **Data Wrangling**, and **Productivity Tools**. Each part has several chapters meant to be presented as one lecture and includes dozens of exercises distributed across chapters.
+The demand for skilled data science practitioners in industry, academia, and government is rapidly growing. This book introduces skills that can help you tackle real-world data analysis challenges. These include R programming, data wrangling with **dplyr**, data visualization with **ggplot2**, file organization with UNIX/Linux shell, version control with Git and GitHub, and reproducible document preparation with Quarto and **knitr**. The book is divided into five parts: **R**, **Data Visualization**, **Data Wrangling**, **Productivity Tools**, and **Basic Statistics**. Each part has several chapters meant to be presented as one lecture and includes dozens of exercises distributed across chapters.
 
 ## Case studies {.unnumbered}
 
@@ -26,7 +26,9 @@ The growing availability of informative datasets and software tools has led to i
 
 The third part uses several examples to familiarize the reader with **data wrangling**. Among the specific skills we learn are web scraping, using regular expressions, and joining and reshaping data tables. We do this using **tidyverse** tools.
 
-In the final part, we provide a brief introduction to the **productivity tools** we use on a day-to-day basis in data science projects. These are RStudio, UNIX/Linux shell, Git and GitHub, Quarto, and **knitr**.
+In the fourth part, we provide a brief introduction to the **productivity tools** we use on a day-to-day basis in data science projects. These are RStudio, UNIX/Linux shell, Git and GitHub, Quarto, and **knitr**.
+
+The final part, added for the Behavioural Data Science course, is a short refresher of **basic statistics**: measures of central tendency and dispersion, correlation, and the t-test and Wilcoxon test for comparing two groups. It is meant to be read when these concepts come up, and points to free books for a fuller treatment.
 
 ## Learning data science in the era of AI {.unnumbered}
 

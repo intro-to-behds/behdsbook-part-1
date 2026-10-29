@@ -19,6 +19,10 @@ under which this adaptation is distributed.
 - `dataviz/distributions.qmd` and `dataviz/dataviz-principles.qmd`: the distribution case study now uses the `ux_scores` dataset (`behdslabs` ≥ 0.12.0), UX questionnaire scores of desktop and mobile users, instead of `reaction_times`, whose values are now a realistic, right-skewed simulation. `wrangling/string-processing.qmd` names `ux_scores` among the datasets extracted from raw data. `R/tidyverse.qmd`, `R/data-table.qmd` and `dataviz/ggplot2.qmd` keep `reaction_times`, which they use only to show code mechanics.
 
 ### Added
+- `basic-stats/`: new part "Basic Statistics" (refresher, read-only), added as the last part of the book so that no existing chapter is renumbered. Part intro `basic-stats/intro-basic-stats.qmd`, pointing to free books (Navarro, Poldrack, Lakens). Original material, drafts written with Claude on 2026-10-29, not yet reviewed (each chapter carries a Draft callout).
+- `basic-stats/central-tendency-dispersion.qmd`: new chapter "Central Tendency and Dispersion" (mean, median, mode; range, variance, SD, IQR, MAD; standard units; SD vs SE), on `reaction_times` and `ux_scores`.
+- `basic-stats/correlation.qmd`: new chapter "Correlation" (Pearson as the average product of z-scores, misleading cases, Spearman, `cor.test()`, correlation as an effect size), on `app_engagement_experiment`.
+- `basic-stats/comparing-two-groups.qmd`: chapter "Comparing Two Groups: the t-test and the Wilcoxon Test", moved from Part 2 (`inference/comparing-two-groups.qmd`, draft of 2026-10-14) so that Part 2 keeps Irizarry's structure. Cross-references to Part 2 became links to its published pages; a further-reading section was added.
 - `productivity/ai-assisted-coding.qmd`: new chapter "AI and responsible coding" (by Giorgio Arcara), added as the last chapter of the Productivity part.
 
 ### Replaced

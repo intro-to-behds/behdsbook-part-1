@@ -1,0 +1,153 @@
+# Central Tendency and Dispersion {#sec-central-dispersion}
+
+:::{.callout-warning}
+## Draft
+This chapter is a **draft**, written with an AI assistant (Claude) on 29 October 2026, and not yet reviewed by the instructor. It may be substantially rewritten or removed.
+:::
+
+When we describe a list of numbers, such as the reaction times of a group of participants, two questions come first: what is a typical value, and how much do the values differ from each other? Measures of *central tendency* answer the first question; measures of *dispersion* answer the second. In @sec-dataviz-distributions we saw that a plot of the distribution is usually the best way to answer both. In this chapter, we review the numbers we use to summarize them, and when each one is appropriate.
+
+We use two datasets from `behdslabs`: the simple reaction times in `reaction_times`, which are skewed to the right, and the UX questionnaire scores in `ux_scores`, which are roughly symmetric.
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(behdslabs)
+rt <- reaction_times$rt_ms
+ux <- ux_scores$ux_score
+```
+
+## Central tendency: mean, median and mode
+
+The *mean* (or *average*) is the sum of the values divided by their number. If our list has $n$ values $x_1, \dots, x_n$, the mean is
+
+$$
+\bar{x} = \frac{1}{n} \sum_{i=1}^n x_i
+$$
+
+The *median* is the value in the middle: half of the values are below it, half above. To find it, we sort the values and take the middle one (or the average of the two middle ones when $n$ is even). In R:
+
+```{r}
+mean(rt)
+median(rt)
+```
+
+The mean reaction time is larger than the median. This happens because the distribution has a long right tail: a few slow responses pull the mean up, while the median only depends on the order of the values. For the roughly symmetric UX scores, the two are almost the same:
+
+```{r}
+mean(ux)
+median(ux)
+```
+
+The *mode* is the most frequent value. It is useful for categorical variables, such as the device a participant used, and for discrete variables with few values, such as the answers to a single Likert item. For continuous measures, such as reaction times, every value is usually unique, so the mode is rarely used.
+
+### Robustness
+
+To see why the difference between mean and median matters, take 20 reaction times and suppose that one participant had a lapse of attention, recorded as 5,000 ms:
+
+```{r}
+set.seed(2026)
+rt_20 <- sample(rt, 20)
+rt_lapse <- c(rt_20[-1], 5000)
+c(mean = mean(rt_20), median = median(rt_20))
+c(mean = mean(rt_lapse), median = median(rt_lapse))
+```
+
+A single value moved the mean by `r round(mean(rt_lapse) - mean(rt_20))` ms, while the median changed by only `r round(abs(median(rt_lapse) - median(rt_20)), 1)` ms. We say that the median is *robust*: it is not strongly affected by a few extreme values. This is why the median is often preferred for reaction times.
+
+## Dispersion: how much the values differ
+
+### Range
+
+The simplest measure of dispersion is the *range*, the distance between the smallest and the largest value:
+
+```{r}
+range(rt)
+```
+
+The range depends only on the two most extreme values, so a single lapse changes it completely. It is useful to check for impossible values, not to describe the spread.
+
+### Variance and standard deviation {#sec-standard-deviation}
+
+The *variance* is the average squared distance from the mean, and the *standard deviation* (SD) is its square root:
+
+$$
+s^2 = \frac{1}{n-1} \sum_{i=1}^n (x_i - \bar{x})^2, \qquad s = \sqrt{s^2}
+$$
+
+The squares make all distances positive; the square root brings the result back to the units of the data. You can read the SD as a *typical distance from the mean*: for the UX scores it is about `r round(sd(ux))` points, for the reaction times about `r round(sd(rt))` ms.
+
+```{r}
+var(ux)
+sd(ux)
+sd(rt)
+```
+
+The formula divides by $n - 1$ rather than $n$. This small correction makes the sample variance a better estimate of the variance in the population the sample comes from; with large samples, the difference does not matter. The R functions `var()` and `sd()` use $n - 1$.
+
+When a distribution is approximately normal, the mean and the SD describe it well. About 68% of the values are within one SD of the mean and about 95% within two SDs (see @sec-dataviz-normal-distribution). We can check this for the UX scores:
+
+```{r}
+mean(abs(ux - mean(ux)) < sd(ux))
+mean(abs(ux - mean(ux)) < 2 * sd(ux))
+```
+
+Like the mean, the SD is not robust: the lapse we added above inflates it a lot.
+
+```{r}
+c(sd(rt_20), sd(rt_lapse))
+```
+
+### Quartiles and the interquartile range
+
+The *quartiles* split the sorted values into four parts with the same number of values: the first quartile (Q1) has 25% of the values below it, the second is the median, and the third (Q3) has 75% below it. The *interquartile range* (IQR) is the distance Q3 − Q1, the range of the middle half of the data. These are the numbers drawn by a boxplot (@sec-boxplots).
+
+```{r}
+quantile(rt, c(0.25, 0.5, 0.75))
+IQR(rt)
+c(IQR(rt_20), IQR(rt_lapse))
+```
+
+Like the median, the IQR is robust: the lapse barely changes it. A related robust measure is the *median absolute deviation* (MAD), the median distance from the median. R's `mad()` multiplies it by 1.4826, so that it is comparable to the SD when the data are normal.
+
+## Standard units {#sec-standard-units}
+
+To compare values measured on different scales, we often express them in *standard units*: how many SDs a value is above or below the mean,
+
+$$
+z_i = \frac{x_i - \bar{x}}{s}
+$$
+
+These are also called *z-scores*. For example, how far above the average is a UX score of 80?
+
+```{r}
+(80 - mean(ux)) / sd(ux)
+```
+
+About `r round((80 - mean(ux)) / sd(ux), 1)` SDs. Standard units have mean 0 and SD 1, whatever the original units. In R, `scale()` computes them for a whole vector. We use standard units again to define the correlation coefficient (@sec-correlation).
+
+## Which summary for which data?
+
+| Shape of the data | Centre | Spread |
+|---|---|---|
+| Roughly symmetric, no extreme values | mean | standard deviation |
+| Skewed, or with outliers (e.g. reaction times) | median | IQR (or MAD) |
+| Categorical, or few discrete values | mode, proportions | — |
+
+Whatever the summary, plot the data first: two numbers cannot show a bimodal distribution or an impossible value. Summaries are most often computed by group, with the `dplyr` functions of @sec-tidyverse:
+
+```{r}
+reaction_times |>
+  group_by(sex) |>
+  summarize(n = n(), mean = mean(rt_ms), sd = sd(rt_ms),
+            median = median(rt_ms), iqr = IQR(rt_ms))
+```
+
+## From the standard deviation to the standard error
+
+The SD describes how much *individual* values differ from each other. A different question is how much the *mean* of a sample would change if we collected another sample of the same size. The answer is the *standard error* (SE) of the mean, $s / \sqrt{n}$: it shrinks as the sample grows, while the SD does not. The SE is the basis of confidence intervals and statistical tests, and is explained in Part 2 of this book, in the chapters on [random variables](https://intro-to-behds.github.io/behdsbook-part-2/prob/random-variables.html) and on [sampling models and the Central Limit Theorem](https://intro-to-behds.github.io/behdsbook-part-2/prob/sampling-models-and-clt.html).
+
+## Further reading
+
+- D. Navarro, *Learning Statistics with R*, [Chapter 5, *Descriptive statistics*](https://learningstatisticswithr.com/05-descriptives.html): central tendency, variability, skew, standard scores, with R code.
+- R. A. Poldrack, *Statistical Thinking for the 21st Century*, [*Summarizing data*](https://statsthinking21.github.io/statsthinking21-core-site/summarizing-data.html) and [*Fitting models to data*](https://statsthinking21.github.io/statsthinking21-core-site/fitting-models.html) (the mean and the median as models, variance and SD).
+- Part 2 of this book, [*Numerical Summaries*](https://intro-to-behds.github.io/behdsbook-part-2/summaries/numerical-summaries.html), for a longer treatment of the same ideas.
