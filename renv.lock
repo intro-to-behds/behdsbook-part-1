@@ -468,8 +468,8 @@
     },
     "behdslabs": {
       "Package": "behdslabs",
-      "Version": "0.9.0",
-      "Source": "Local",
+      "Version": "0.12.1",
+      "Source": "GitHub",
       "Title": "Data Science Labs",
       "Description": "Datasets and functions that can be used for data analysis practice, homework and projects in data science courses and workshops. Forked as behdslabs for the Behavioural Data Science course (PS3140, Cognitive Science for Human-Centric Technologies, UniPD), with a set of datasets relabeled with a digital-technology / wearable / neurophysiological theme. NOTE: these relabeled datasets are not real behavioural, usage, or physiological data -- they are the original dslabs datasets (Irizarry & Gill), renamed and in some cases linearly rescaled for narrative fit. A synthetic or real, ethically-sourced replacement is planned for a future release.",
       "Author": "Rafael A. Irizarry, Amy Gill",
@@ -489,9 +489,14 @@
       "License": "Artistic-2.0",
       "Encoding": "UTF-8",
       "LazyData": "true",
+      "LazyDataCompression": "xz",
       "RoxygenNote": "7.3.3",
-      "RemoteType": "local",
-      "RemoteUrl": "/Users/giorgioarcara/Documents/Projects/2026 - Introduction to Behavioural Data Science/behdslabs"
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteUsername": "intro-to-behds",
+      "RemoteRepo": "behdslabs",
+      "RemoteRef": "206eae51f161b116b5fd570279b891c4c9e1bdfd",
+      "RemoteSha": "206eae51f161b116b5fd570279b891c4c9e1bdfd"
     },
     "bit": {
       "Package": "bit",
