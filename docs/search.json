@@ -54,7 +54,7 @@
     "href": "intro.html#what-does-this-book-cover",
     "title": "Introduction",
     "section": "What does this book cover?",
-    "text": "What does this book cover?\nWe start by going over the basics of R, the tidyverse, and the data.table package. You learn R throughout the book, but in the first part we go over the building blocks needed to keep learning.\nThe growing availability of informative datasets and software tools has led to increased reliance on data visualizations in many fields. In the second part we demonstrate how to use ggplot2 to generate graphs and describe important data visualization principles.\nThe third part uses several examples to familiarize the reader with data wrangling. Among the specific skills we learn are web scraping, using regular expressions, and joining and reshaping data tables. We do this using tidyverse tools.\nIn the fourth part, we provide a brief introduction to the productivity tools we use on a day-to-day basis in data science projects. These are RStudio, UNIX/Linux shell, Git and GitHub, Quarto, and knitr.\nThe final part, added for the Behavioural Data Science course, is a short refresher of basic statistics: measures of central tendency and dispersion, correlation, and the t-test and Wilcoxon test for comparing two groups. It is meant to be read when these concepts come up, and points to free books for a fuller treatment.",
+    "text": "What does this book cover?\nWe start by going over the basics of R, the tidyverse, and the data.table package. You learn R throughout the book, but in the first part we go over the building blocks needed to keep learning.\nThe growing availability of informative datasets and software tools has led to increased reliance on data visualizations in many fields. In the second part we demonstrate how to use ggplot2 to generate graphs and describe important data visualization principles.\nThe third part uses several examples to familiarize the reader with data wrangling. Among the specific skills we learn are web scraping, using regular expressions, and joining and reshaping data tables. We do this using tidyverse tools.\nIn the fourth part, we provide a brief introduction to the productivity tools we use on a day-to-day basis in data science projects. These are RStudio, UNIX/Linux shell, Git and GitHub, Quarto, and knitr.\nThe final part, added for the Behavioural Data Science course, is a short refresher of basic statistics: measures of central tendency and dispersion, correlation, the t-test and Wilcoxon test for comparing two groups, ANOVA, multiple comparisons, and the chi-square test. It is meant to be read when these concepts come up, and points to free books for a fuller treatment.",
     "crumbs": [
       "Introduction"
     ]
@@ -2200,7 +2200,7 @@
     "href": "basic-stats/intro-basic-stats.html",
     "title": "Basic Statistics",
     "section": "",
-    "text": "This part of the book is a short refresher of the basic statistics you have probably met in earlier courses: how to summarize the centre and the spread of a list of numbers, how to describe the association between two variables with a correlation, and how to compare two groups with the t-test and the Wilcoxon test. It is meant to be read, not studied as a new topic: the course refers to these chapters whenever a concept such as the standard deviation or the correlation coefficient is used, so that you can check its definition quickly. The chapters use the same behdslabs datasets as the rest of the book. The ideas behind statistical inference, such as standard errors, confidence intervals and p-values, are explained in Part 2 of this book. If you want a fuller treatment, several excellent books are freely available online: Danielle Navarro’s Learning Statistics with R, written for psychology students; Russell Poldrack’s Statistical Thinking for the 21st Century; and Daniël Lakens’ Improving Your Statistical Inferences, which focuses on p-values, effect sizes and confidence intervals. Each chapter ends with pointers to the relevant sections.\nThis part is original material written for this book; it is not part of Irizarry’s Introduction to Data Science.",
+    "text": "This part of the book is a short refresher of the basic statistics you have probably met in earlier courses: how to summarize the centre and the spread of a list of numbers, how to describe the association between two variables with a correlation, how to compare two groups with the t-test and the Wilcoxon test, how to compare more than two groups with an ANOVA, how to deal with multiple comparisons, and how to test the association between two categorical variables with the chi-square test. It is meant to be read, not studied as a new topic: the course refers to these chapters whenever a concept such as the standard deviation or the correlation coefficient is used, so that you can check its definition quickly. The chapters use the same behdslabs datasets as the rest of the book. The ideas behind statistical inference, such as standard errors, confidence intervals and p-values, are explained in Part 2 of this book. If you want a fuller treatment, several excellent books are freely available online: Danielle Navarro’s Learning Statistics with R, written for psychology students; Russell Poldrack’s Statistical Thinking for the 21st Century; and Daniël Lakens’ Improving Your Statistical Inferences, which focuses on p-values, effect sizes and confidence intervals. Each chapter ends with pointers to the relevant sections.\nThis part is original material written for this book; it is not part of Irizarry’s Introduction to Data Science.",
     "crumbs": [
       "Basic Statistics"
     ]
@@ -2467,6 +2467,303 @@
     "crumbs": [
       "Basic Statistics",
       "<span class='chapter-number'>24</span>  <span class='chapter-title'>Comparing Two Groups: the t-test and the Wilcoxon Test</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/anova.html",
+    "href": "basic-stats/anova.html",
+    "title": "25  Comparing More Than Two Groups: ANOVA",
+    "section": "",
+    "text": "25.1 One factor, between subjects\nThe t-test (Chapter 24) compares two groups. Many experiments have more: three distractor conditions, four levels of task difficulty, or two factors crossed with each other, such as interface version and sex. We could run a t-test for every pair of groups, but with three groups that is already three tests, and the more tests we run, the more likely it is that at least one gives a small p-value by chance (Chapter 26). The analysis of variance (ANOVA) answers a first, global question with a single test: are there any differences among the group means?\nThis chapter is a practical refresher: how to run and read an ANOVA in R, without the formulas behind it. We use the afex package, which is widely used in psychology and handles between-subjects, within-subjects (repeated measures) and mixed designs with the same function, aov_ez(). Install it once with install.packages(\"afex\").\nSuppose we test 60 participants on an attention task. Each participant is assigned to one of three conditions: no distractor, an auditory distractor, or a visual distractor. We record the number of errors each participant makes. The data are simulated:\nset.seed(2026)\nn &lt;- 20\nattention &lt;- tibble(\n  id = factor(sprintf(\"P%02d\", 1:(3 * n))),\n  condition = factor(rep(c(\"none\", \"auditory\", \"visual\"), each = n),\n                     levels = c(\"none\", \"auditory\", \"visual\")),\n  errors = round(pmax(0, rnorm(3 * n, mean = rep(c(8, 10, 13), each = n), sd = 3)))\n)\nhead(attention)\n#&gt; # A tibble: 6 × 3\n#&gt;   id    condition errors\n#&gt;   &lt;fct&gt; &lt;fct&gt;      &lt;dbl&gt;\n#&gt; 1 P01   none          10\n#&gt; 2 P02   none           5\n#&gt; 3 P03   none           8\n#&gt; 4 P04   none           8\n#&gt; 5 P05   none           6\n#&gt; # ℹ 1 more row\nAs always, we look at the data first:\nattention |&gt;\n  ggplot(aes(condition, errors)) +\n  geom_boxplot(outlier.shape = NA) +\n  geom_jitter(width = 0.1, alpha = 0.5) +\n  labs(x = \"Distractor\", y = \"Errors\")\n\nattention |&gt;\n  group_by(condition) |&gt;\n  summarize(n = n(), mean = mean(errors), sd = sd(errors))\n#&gt; # A tibble: 3 × 4\n#&gt;   condition     n  mean    sd\n#&gt;   &lt;fct&gt;     &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;\n#&gt; 1 none         20  6.85  2.98\n#&gt; 2 auditory     20 10.9   2.75\n#&gt; 3 visual       20 12.0   2.44\nParticipants seem to make more errors with a distractor. The ANOVA asks whether differences among the three means this large could easily arise by chance if the conditions had no effect. The idea behind it, without the formulas: the test compares how much the group means differ from each other with how much participants differ within each group. If the means differ much more than we would expect from the variation within groups, the test gives a large F value and a small p-value.\naov_ez() needs the data in long format, with one row per observation, and three pieces of information: the column that identifies participants (id), the outcome (dv, the dependent variable), and the factor (between, because each participant is in only one condition):\nfit1 &lt;- aov_ez(id = \"id\", dv = \"errors\", data = attention, between = \"condition\")\n#&gt; Contrasts set to contr.sum for the following variables: condition\nfit1\n#&gt; Anova Table (Type 3 tests)\n#&gt; \n#&gt; Response: errors\n#&gt;      Effect    df  MSE         F  ges p.value\n#&gt; 1 condition 2, 57 7.46 20.00 *** .412   &lt;.001\n#&gt; ---\n#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '+' 0.1 ' ' 1\nafex first tells us that it set “sum contrasts” for the factor. This is a technical setting that makes the results of designs with more than one factor easier to interpret; you can ignore the message. The table has one row per effect:\nThe p-value is very small, so we conclude that the number of errors differs among the conditions. But the ANOVA only tells us that there is a difference somewhere; it does not tell us which conditions differ from which.",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>25</span>  <span class='chapter-title'>Comparing More Than Two Groups: ANOVA</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/anova.html#one-factor-between-subjects",
+    "href": "basic-stats/anova.html#one-factor-between-subjects",
+    "title": "25  Comparing More Than Two Groups: ANOVA",
+    "section": "",
+    "text": "df: the degrees of freedom, here 2 (three groups minus one) and 57 (participants minus groups). They are reported with the F value, as in F(2, 57) = 20.\nF: the test statistic. Values near 1 are what we expect with no effect.\nges: the generalized eta squared, an effect size. It is the share of the variation in the outcome that is related to the factor; here about 41%.\np.value: the probability of an F value at least this large if the three population means were equal.",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>25</span>  <span class='chapter-title'>Comparing More Than Two Groups: ANOVA</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/anova.html#post-hoc-comparisons",
+    "href": "basic-stats/anova.html#post-hoc-comparisons",
+    "title": "25  Comparing More Than Two Groups: ANOVA",
+    "section": "25.2 Post-hoc comparisons",
+    "text": "25.2 Post-hoc comparisons\nTo find out which groups differ, we compare all pairs of conditions after the ANOVA (post hoc, “after this”). With three groups there are three pairs, so we must correct the p-values for multiple comparisons. The base R function pairwise.t.test() does both:\n\npairwise.t.test(attention$errors, attention$condition, p.adjust.method = \"holm\")\n#&gt; \n#&gt;  Pairwise comparisons using t tests with pooled SD \n#&gt; \n#&gt; data:  attention$errors and attention$condition \n#&gt; \n#&gt;          none  auditory\n#&gt; auditory 4e-05 -       \n#&gt; visual   4e-07 0.2     \n#&gt; \n#&gt; P value adjustment method: holm\n\nEach cell is the corrected p-value for one pair. Both distractor conditions differ clearly from the no-distractor condition, while the auditory and visual conditions do not differ reliably from each other.\nHere we used Holm’s correction, the default of pairwise.t.test(). Several corrections exist: Bonferroni, Holm, the false discovery rate (FDR) correction of Benjamini and Hochberg, and that of Benjamini and Yekutieli are the most common, and you choose them with the p.adjust.method argument. They differ in what they protect against and in how much power they leave you; Chapter 26 explains when to use each. For more flexible comparisons after an afex model, the next step is the emmeans package (see its vignette Comparisons and contrasts).\n\n\n\n\n\n\nPlanned contrasts\n\n\n\nIf, before collecting the data, you had a specific hypothesis, for example “any distractor increases errors compared with no distractor”, you do not need to test every pair. Testing only the comparisons you planned (planned contrasts), ideally written down in a preregistration, means fewer tests and more power. See the open sources listed in Chapter 26.",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>25</span>  <span class='chapter-title'>Comparing More Than Two Groups: ANOVA</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/anova.html#two-factors-between-subjects",
+    "href": "basic-stats/anova.html#two-factors-between-subjects",
+    "title": "25  Comparing More Than Two Groups: ANOVA",
+    "section": "25.3 Two factors, between subjects",
+    "text": "25.3 Two factors, between subjects\nWith two factors, an ANOVA tells us about each factor and about their interaction: whether the effect of one factor depends on the level of the other. We use the app_engagement_experiment dataset, in which each of 780 users tried either the standard or a redesigned interface of an app, and we look at the engagement score by interface version and sex. Each row is a different user, so we create an id column from the row number:\n\napp &lt;- app_engagement_experiment |&gt;\n  mutate(id = factor(row_number()),\n         ui_version = fct_relevel(ui_version, \"standard\"))\n\nThe best way to understand an interaction is an interaction plot of the cell means:\n\napp |&gt;\n  group_by(ui_version, sex) |&gt;\n  summarize(mean = mean(engagement_score), .groups = \"drop\") |&gt;\n  ggplot(aes(ui_version, mean, color = sex, group = sex)) +\n  geom_point(size = 2) +\n  geom_line() +\n  labs(x = \"Interface version\", y = \"Mean engagement score\", color = \"Sex\")\n\n\n\n\n\n\n\n\nThe redesigned interface has higher engagement for both groups, and men have higher engagement with both versions. The lines are not parallel, though: the gain from the redesign is larger for men. Non-parallel lines are what an interaction looks like. Now the ANOVA, with both factors in between:\n\nfit2 &lt;- aov_ez(id = \"id\", dv = \"engagement_score\", data = app,\n               between = c(\"ui_version\", \"sex\"))\n#&gt; Contrasts set to contr.sum for the following variables: ui_version, sex\nfit2\n#&gt; Anova Table (Type 3 tests)\n#&gt; \n#&gt; Response: engagement_score\n#&gt;           Effect     df    MSE          F  ges p.value\n#&gt; 1     ui_version 1, 776 154.76 136.77 *** .150   &lt;.001\n#&gt; 2            sex 1, 776 154.76 395.62 *** .338   &lt;.001\n#&gt; 3 ui_version:sex 1, 776 154.76    8.92 ** .011    .003\n#&gt; ---\n#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '+' 0.1 ' ' 1\n\nThere are three tests: the main effect of interface version (averaging over sex), the main effect of sex (averaging over version), and the interaction ui_version:sex. All three are significant: the redesign increases engagement, men engage more, and the size of the redesign effect differs between men and women. When the interaction is significant, the main effects must be read with care: “the redesign works” is true here for both groups, but by different amounts. afex reports Type 3 tests by default, the convention in psychology for designs with more than one factor.\n\n\n\n\n\n\nThe ANOVA table is itself a set of tests\n\n\n\nA two-factor ANOVA gives three p-values; a three-factor ANOVA gives seven (three main effects, three two-way interactions, one three-way interaction). If you have no specific hypothesis for each of these effects, and you just look at which ones come out significant, you are running several tests, and the same multiple-comparison problem as with post-hoc tests applies. Cramer and colleagues1 showed that this hidden multiplicity is common in psychology papers, and recommended correcting the p-values of the ANOVA table too, not only those of the post-hoc tests. For example, with Holm’s correction:\n\np.adjust(fit2$anova_table[[\"Pr(&gt;F)\"]], method = \"holm\")\n#&gt; [1] 6.50e-29 5.57e-71 2.91e-03\n\nHere all three effects remain significant. If, instead, you predicted one specific effect in advance, that test is not part of an exploratory family and does not need this correction.",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>25</span>  <span class='chapter-title'>Comparing More Than Two Groups: ANOVA</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/anova.html#one-factor-within-subjects-repeated-measures",
+    "href": "basic-stats/anova.html#one-factor-within-subjects-repeated-measures",
+    "title": "25  Comparing More Than Two Groups: ANOVA",
+    "section": "25.4 One factor, within subjects (repeated measures)",
+    "text": "25.4 One factor, within subjects (repeated measures)\nIn many experiments, each participant is tested in all conditions. Extending the Stroop example of Chapter 24, suppose each of 20 participants responds to congruent trials (the word red printed in red), neutral trials (a row of Xs printed in red) and incongruent trials (the word red printed in green). We record each participant’s average reaction time per condition. The data are simulated: each participant has their own overall speed, and the conditions add different amounts of time.\n\nset.seed(10)\nn_part &lt;- 20\nspeed &lt;- rnorm(n_part, 500, 80)\nstroop3 &lt;- tibble(\n  participant = factor(rep(sprintf(\"P%02d\", 1:n_part), times = 3)),\n  condition = factor(rep(c(\"congruent\", \"neutral\", \"incongruent\"), each = n_part),\n                     levels = c(\"congruent\", \"neutral\", \"incongruent\")),\n  rt = round(rep(speed, 3) + rep(c(0, 10, 45), each = n_part) + rnorm(3 * n_part, 0, 25))\n)\nhead(stroop3)\n#&gt; # A tibble: 6 × 3\n#&gt;   participant condition    rt\n#&gt;   &lt;fct&gt;       &lt;fct&gt;     &lt;dbl&gt;\n#&gt; 1 P01         congruent   487\n#&gt; 2 P02         congruent   431\n#&gt; 3 P03         congruent   373\n#&gt; 4 P04         congruent   399\n#&gt; 5 P05         congruent   492\n#&gt; # ℹ 1 more row\n\nThe data are in long format: three rows per participant, one per condition. The only change in aov_ez() is that the factor goes in within, because it varies within each participant:\n\nfit3 &lt;- aov_ez(id = \"participant\", dv = \"rt\", data = stroop3, within = \"condition\")\nfit3\n#&gt; Anova Table (Type 3 tests)\n#&gt; \n#&gt; Response: rt\n#&gt;      Effect          df    MSE         F  ges p.value\n#&gt; 1 condition 1.78, 33.80 625.69 30.89 *** .113   &lt;.001\n#&gt; ---\n#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '+' 0.1 ' ' 1\n#&gt; \n#&gt; Sphericity correction method: GG\n\nThe degrees of freedom are not whole numbers. A repeated-measures ANOVA assumes sphericity: roughly, that the differences between each pair of conditions vary by similar amounts across participants. Because this assumption often fails, afex applies the Greenhouse–Geisser correction by default, which reduces the degrees of freedom and makes the test a little more cautious. You only need to report the corrected values.\nFor post-hoc comparisons, we use paired t-tests, because the same participants are in every condition. pairwise.t.test() pairs the observations by their order, so the data must be sorted in the same participant order within each condition, as they are here:\n\npairwise.t.test(stroop3$rt, stroop3$condition, paired = TRUE,\n                p.adjust.method = \"holm\")\n#&gt; \n#&gt;  Pairwise comparisons using paired t tests \n#&gt; \n#&gt; data:  stroop3$rt and stroop3$condition \n#&gt; \n#&gt;             congruent neutral\n#&gt; neutral     1e-04     -      \n#&gt; incongruent 4e-06     0.002  \n#&gt; \n#&gt; P value adjustment method: holm\n\nAll three conditions differ from each other. Repeated-measures ANOVA works on one value per participant and condition, usually an average over many trials. When you want to analyse the single trials, or when some participants miss some conditions, the modern tool is a mixed model, which we meet later in the course.",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>25</span>  <span class='chapter-title'>Comparing More Than Two Groups: ANOVA</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/anova.html#when-the-data-are-not-normal-the-kruskalwallis-test",
+    "href": "basic-stats/anova.html#when-the-data-are-not-normal-the-kruskalwallis-test",
+    "title": "25  Comparing More Than Two Groups: ANOVA",
+    "section": "25.5 When the data are not normal: the Kruskal–Wallis test",
+    "text": "25.5 When the data are not normal: the Kruskal–Wallis test\nLike the t-test, the ANOVA compares means and assumes that the outcome is roughly normal within each group. When the data are clearly skewed, contain outliers, or are ordinal, the Kruskal–Wallis test is the rank-based alternative, just as the Wilcoxon test is for two groups (Chapter 24):\n\nkruskal.test(errors ~ condition, data = attention)\n#&gt; \n#&gt;  Kruskal-Wallis rank sum test\n#&gt; \n#&gt; data:  errors by condition\n#&gt; Kruskal-Wallis chi-squared = 25, df = 2, p-value = 3e-06\n\nIt ranks all observations and asks whether the ranks differ among the groups. For within-subjects designs, the rank-based counterpart is the Friedman test, friedman.test().",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>25</span>  <span class='chapter-title'>Comparing More Than Two Groups: ANOVA</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/anova.html#which-anova",
+    "href": "basic-stats/anova.html#which-anova",
+    "title": "25  Comparing More Than Two Groups: ANOVA",
+    "section": "25.6 Which ANOVA?",
+    "text": "25.6 Which ANOVA?\n\n\n\n\n\n\n\n\nDesign\nExample\nIn aov_ez()\n\n\n\n\nEach participant in one condition (between subjects)\ndistractor type, interface version\nbetween = \"factor\"\n\n\nEach participant in all conditions (within subjects)\nStroop congruent / neutral / incongruent\nwithin = \"factor\"\n\n\nSome factors between, some within (mixed design)\ngroup (patients, controls) × condition\nbetween = \"group\", within = \"condition\"",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>25</span>  <span class='chapter-title'>Comparing More Than Two Groups: ANOVA</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/anova.html#further-reading",
+    "href": "basic-stats/anova.html#further-reading",
+    "title": "25  Comparing More Than Two Groups: ANOVA",
+    "section": "25.7 Further reading",
+    "text": "25.7 Further reading\n\nD. Navarro, Learning Statistics with R, Chapter 14, Comparing several means (one-way ANOVA), which explains how the F test works, and Chapter 16, Factorial ANOVA.\nR. A. Poldrack, Statistical Thinking for the 21st Century, Comparing means, including ANOVA as a linear model.\nThe afex vignette ANOVA and post-hoc contrasts: reanalysis of Singmann and Klauer (2011), a complete worked example with aov_ez() and emmeans.",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>25</span>  <span class='chapter-title'>Comparing More Than Two Groups: ANOVA</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/anova.html#exercises",
+    "href": "basic-stats/anova.html#exercises",
+    "title": "25  Comparing More Than Two Groups: ANOVA",
+    "section": "25.8 Exercises",
+    "text": "25.8 Exercises\n1. In app_engagement_experiment, users belong to one of five cohorts (cohort). Run a one-way between-subjects ANOVA of engagement_score by cohort with aov_ez() (create an id column first). Report the result as F(df1, df2) = …, p = …, and say in one sentence what it means.\n2. Run the post-hoc comparisons for exercise 1 with pairwise.t.test(), first with p.adjust.method = \"holm\" and then with \"bonferroni\". How many pairs are there? Do the two corrections lead to the same conclusions?\n3. Make a boxplot of error_rate_pct by cohort. Is the variable skewed? Compare the result of a one-way ANOVA with that of kruskal.test().",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>25</span>  <span class='chapter-title'>Comparing More Than Two Groups: ANOVA</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/anova.html#footnotes",
+    "href": "basic-stats/anova.html#footnotes",
+    "title": "25  Comparing More Than Two Groups: ANOVA",
+    "section": "",
+    "text": "A. O. J. Cramer, D. van Ravenzwaaij, D. Matzke, H. Steingroever, R. Wetzels, R. P. P. P. Grasman, L. J. Waldorp, and E.-J. Wagenmakers (2016), Hidden multiplicity in exploratory multiway ANOVA: Prevalence and remedies, Psychonomic Bulletin & Review, 23, 640–647, https://doi.org/10.3758/s13423-015-0913-5 (open access).↩︎",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>25</span>  <span class='chapter-title'>Comparing More Than Two Groups: ANOVA</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/multiple-comparisons.html",
+    "href": "basic-stats/multiple-comparisons.html",
+    "title": "26  Multiple Comparisons",
+    "section": "",
+    "text": "26.1 The problem\nA p-value below 0.05 is meant to be a rare event when there is no effect: it happens by chance only 5% of the time. But this holds for one test. When we run many tests, rare events become common: if we look at enough comparisons, some will be “significant” just by chance. This chapter explains the problem and the main corrections, without the mathematics behind them.\nLet’s simulate it. A study compares two groups of 20 participants on several outcome measures, and none of the measures truly differs between the groups. We run one t-test per measure and record whether at least one p-value is below 0.05. We repeat the whole study 1,000 times, for studies with 1, 5, 20 and 50 measures:\nset.seed(1)\nat_least_one &lt;- function(k, n = 20) {\n  p &lt;- replicate(k, t.test(rnorm(n), rnorm(n))$p.value)\n  any(p &lt; 0.05)\n}\nk &lt;- c(1, 5, 20, 50)\nprop &lt;- sapply(k, function(k) mean(replicate(1000, at_least_one(k))))\ndata.frame(tests = k, prop_at_least_one_significant = prop)\n#&gt;   tests prop_at_least_one_significant\n#&gt; 1     1                         0.057\n#&gt; 2     5                         0.228\n#&gt; 3    20                         0.625\n#&gt; 4    50                         0.926\nWith one test, about 5% of studies find a “significant” difference that does not exist, as expected. With 20 tests, most studies find at least one. Nothing is wrong with each single test: the problem is the number of chances we give ourselves.",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>26</span>  <span class='chapter-title'>Multiple Comparisons</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/multiple-comparisons.html#what-counts-as-a-family-of-tests",
+    "href": "basic-stats/multiple-comparisons.html#what-counts-as-a-family-of-tests",
+    "title": "26  Multiple Comparisons",
+    "section": "26.2 What counts as a family of tests?",
+    "text": "26.2 What counts as a family of tests?\nA correction is applied to a family of tests: the set of tests whose results are interpreted together. Common families in behavioural research are:\n\nall the pairwise comparisons after an ANOVA (post-hoc tests, Chapter 25);\nall the effects in the table of a multiway ANOVA: main effects and interactions. A three-factor ANOVA already has seven tests, and when none of them was predicted in advance, they form a family too1;\nthe same comparison on several outcome measures (accuracy, reaction time, confidence ratings, …);\nthe same analysis in several subgroups (men and women, age groups, …).",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>26</span>  <span class='chapter-title'>Multiple Comparisons</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/multiple-comparisons.html#two-things-a-correction-can-control",
+    "href": "basic-stats/multiple-comparisons.html#two-things-a-correction-can-control",
+    "title": "26  Multiple Comparisons",
+    "section": "26.3 Two things a correction can control",
+    "text": "26.3 Two things a correction can control\nCorrections differ in what they protect us from:\n\nThe family-wise error rate (FWER) is the probability of making at least one false positive in the whole family. Controlling it at 5% means that, in 95% of studies, not a single one of the significant results is a false positive. This is a strict guarantee, appropriate when every single claim matters, as in a confirmatory study.\nThe false discovery rate (FDR) is the expected proportion of false positives among the significant results. Controlling it at 5% means accepting that, on average, about 1 in 20 of our “discoveries” is false, in exchange for finding more of the real effects. This is a more lenient guarantee, appropriate when we test many hypotheses to find promising ones, as in an exploratory study.",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>26</span>  <span class='chapter-title'>Multiple Comparisons</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/multiple-comparisons.html#the-main-corrections",
+    "href": "basic-stats/multiple-comparisons.html#the-main-corrections",
+    "title": "26  Multiple Comparisons",
+    "section": "26.4 The main corrections",
+    "text": "26.4 The main corrections\nIn R, all these corrections are applied with p.adjust(), which takes a vector of p-values and returns adjusted p-values that you compare with the usual 0.05. Functions such as pairwise.t.test() accept the same method names in their p.adjust.method argument.\n\nBonferroni (\"bonferroni\"). Controls the FWER in the strong sense: whatever the number of true and false null hypotheses, and whatever the dependence between the tests. It is simple and safe, but very conservative: with many tests, it makes it hard to detect real effects, so it trades false positives for false negatives.\nHolm (\"holm\"). The same strong FWER control as Bonferroni, but always at least as powerful. There is no reason to prefer Bonferroni to Holm, and Holm is the default in pairwise.t.test() and p.adjust().\nBenjamini–Hochberg (\"BH\", also called \"fdr\"). Controls the FDR2. It is much more powerful than Bonferroni and Holm when there are many tests, which makes it a common choice for exploratory analyses with many comparisons. The price is that some of the significant results are expected to be false. It is guaranteed to work when the tests are independent or positively related to each other, which covers most practical cases.\nBenjamini–Yekutieli (\"BY\"). Also controls the FDR, but under any kind of dependence between the tests3. It is safer than Benjamini–Hochberg when the tests may be related in complex ways, but more conservative, sometimes nearly as strict as Bonferroni.\n\n\n\n\n\n\n\n\n\n\nMethod\nControls\nPros\nCons\n\n\n\n\nBonferroni\nFWER (strong)\nsimple; valid under any dependence\nvery conservative with many tests\n\n\nHolm\nFWER (strong)\nsame guarantee, more power than Bonferroni\nstill conservative with many tests\n\n\nBenjamini–Hochberg\nFDR\nmuch more power with many tests\nsome discoveries are expected to be false; assumes independent or positively related tests\n\n\nBenjamini–Yekutieli\nFDR\nvalid under any dependence\nmore conservative than Benjamini–Hochberg\n\n\n\nHere are eight p-values from one study, adjusted with the four methods:\n\np &lt;- c(0.001, 0.008, 0.012, 0.021, 0.035, 0.048, 0.19, 0.42)\ndata.frame(p,\n           bonferroni = p.adjust(p, method = \"bonferroni\"),\n           holm = p.adjust(p, method = \"holm\"),\n           BH = p.adjust(p, method = \"BH\"),\n           BY = p.adjust(p, method = \"BY\")) |&gt;\n  round(3)\n#&gt;       p bonferroni  holm    BH    BY\n#&gt; 1 0.001      0.008 0.008 0.008 0.022\n#&gt; 2 0.008      0.064 0.056 0.032 0.087\n#&gt; 3 0.012      0.096 0.072 0.032 0.087\n#&gt; 4 0.021      0.168 0.105 0.042 0.114\n#&gt; 5 0.035      0.280 0.140 0.056 0.152\n#&gt; 6 0.048      0.384 0.144 0.064 0.174\n#&gt; 7 0.190      1.000 0.380 0.217 0.590\n#&gt; 8 0.420      1.000 0.420 0.420 1.000\n\nSix of the original p-values are below 0.05. After correction, Bonferroni, Holm and Benjamini–Yekutieli keep only the first, while Benjamini–Hochberg keeps four. Which one is right depends on the question: if a single false claim would be costly, control the FWER (Holm); if you are screening many effects to follow up later, controlling the FDR (Benjamini–Hochberg) is reasonable. Whatever you choose, choose it before looking at the results, and report it.",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>26</span>  <span class='chapter-title'>Multiple Comparisons</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/multiple-comparisons.html#planned-contrasts",
+    "href": "basic-stats/multiple-comparisons.html#planned-contrasts",
+    "title": "26  Multiple Comparisons",
+    "section": "26.5 Planned contrasts",
+    "text": "26.5 Planned contrasts\nCorrections are needed when we look at many comparisons without having said in advance which ones matter. A better strategy, when theory allows it, is to decide before collecting the data which few comparisons answer the research question, write them down (ideally in a preregistration), and test only those. These planned contrasts keep the family small, so the tests keep their power. For example, in the attention experiment of Chapter 25, the hypothesis “any distractor increases errors” can be tested with one contrast (no distractor vs the average of the two distractor conditions) instead of three post-hoc tests.\nGood open sources on planned contrasts:\n\nD. J. Schad, S. Vasishth, S. Hohenstein, and R. Kliegl (2020), How to capitalize on a priori contrasts in linear (mixed) models: A tutorial, Journal of Memory and Language, 110, 104038, https://doi.org/10.1016/j.jml.2019.104038; freely available on arXiv.\nThe emmeans vignette Comparisons and contrasts, which works directly with models fitted with afex.\nD. Navarro, Learning Statistics with R, Chapter 16, sections 16.7 Different ways to specify contrasts and 16.9 The method of planned comparisons.",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>26</span>  <span class='chapter-title'>Multiple Comparisons</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/multiple-comparisons.html#further-reading",
+    "href": "basic-stats/multiple-comparisons.html#further-reading",
+    "title": "26  Multiple Comparisons",
+    "section": "26.6 Further reading",
+    "text": "26.6 Further reading\n\nD. Lakens, Improving Your Statistical Inferences, Chapter 2, Error control, on error rates and multiple comparisons.\nD. Navarro, Learning Statistics with R, Chapter 14, section 14.5 Multiple comparisons and post hoc tests.\nA. O. J. Cramer et al. (2016), cited above, on the hidden multiplicity of multiway ANOVA.",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>26</span>  <span class='chapter-title'>Multiple Comparisons</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/multiple-comparisons.html#exercises",
+    "href": "basic-stats/multiple-comparisons.html#exercises",
+    "title": "26  Multiple Comparisons",
+    "section": "26.7 Exercises",
+    "text": "26.7 Exercises\n1. Adjust the p-values c(0.004, 0.011, 0.019, 0.03, 0.044) with the four methods of this chapter. Which results remain significant with each method? Explain the differences in one or two sentences.\n2. Change the simulation of this chapter to studies with 2 and 10 tests. Then repeat the 20-test simulation applying p.adjust(p, method = \"holm\") inside at_least_one() before checking for p &lt; 0.05. What proportion of studies now has at least one false positive?",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>26</span>  <span class='chapter-title'>Multiple Comparisons</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/multiple-comparisons.html#footnotes",
+    "href": "basic-stats/multiple-comparisons.html#footnotes",
+    "title": "26  Multiple Comparisons",
+    "section": "",
+    "text": "A. O. J. Cramer, D. van Ravenzwaaij, D. Matzke, H. Steingroever, R. Wetzels, R. P. P. P. Grasman, L. J. Waldorp, and E.-J. Wagenmakers (2016), Hidden multiplicity in exploratory multiway ANOVA: Prevalence and remedies, Psychonomic Bulletin & Review, 23, 640–647, https://doi.org/10.3758/s13423-015-0913-5 (open access).↩︎\nY. Benjamini and Y. Hochberg (1995), Controlling the false discovery rate: A practical and powerful approach to multiple testing, Journal of the Royal Statistical Society, Series B, 57, 289–300, https://doi.org/10.1111/j.2517-6161.1995.tb02031.x.↩︎\nY. Benjamini and D. Yekutieli (2001), The control of the false discovery rate in multiple testing under dependency, The Annals of Statistics, 29, 1165–1188, https://doi.org/10.1214/aos/1013699998.↩︎",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>26</span>  <span class='chapter-title'>Multiple Comparisons</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/chi-square.html",
+    "href": "basic-stats/chi-square.html",
+    "title": "27  Two Categorical Variables: the Chi-square Test",
+    "section": "",
+    "text": "27.1 Contingency tables\nSo far, our outcomes were numbers: reaction times, scores, error counts. Many behavioural outcomes are categories instead: whether a participant detected a target or not, which of two interfaces they preferred, whether an application was funded. When both variables are categorical, means make no sense: we count how many observations fall in each combination of categories, and we ask whether the two variables are associated. The usual tool is the chi-square test (χ², from the Greek letter chi).\nSuppose 150 participants take part in a visual detection study. Each participant sees a single display, in one of three versions (a static, a flashing or a moving target), and gives a single answer: they either detected the target or not. The data are simulated:\ndetection &lt;- tibble(\n  display = factor(rep(c(\"static\", \"flashing\", \"moving\"), each = 50),\n                   levels = c(\"static\", \"flashing\", \"moving\")),\n  detected = c(rep(c(\"yes\", \"no\"), c(27, 23)),\n               rep(c(\"yes\", \"no\"), c(35, 15)),\n               rep(c(\"yes\", \"no\"), c(43, 7)))\n)\nA table of counts for two categorical variables is called a contingency table:\ntab &lt;- table(detection$display, detection$detected)\ntab\n#&gt;           \n#&gt;            no yes\n#&gt;   static   23  27\n#&gt;   flashing 15  35\n#&gt;   moving    7  43\nBecause the groups can have different sizes, we compare proportions within each row. prop.table(tab, 1) divides each row by its total:\nprop.table(tab, 1) |&gt; round(2)\n#&gt;           \n#&gt;              no  yes\n#&gt;   static   0.46 0.54\n#&gt;   flashing 0.30 0.70\n#&gt;   moving   0.14 0.86\nA stacked bar plot of the same proportions:\ndetection |&gt;\n  ggplot(aes(display, fill = detected)) +\n  geom_bar(position = \"fill\") +\n  labs(x = \"Display\", y = \"Proportion of participants\", fill = \"Detected\")\nThe moving target was detected most often, the static one least often. Could differences this large arise by chance if the display had no effect on detection?",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>27</span>  <span class='chapter-title'>Two Categorical Variables: the Chi-square Test</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/chi-square.html#expected-counts-and-the-test",
+    "href": "basic-stats/chi-square.html#expected-counts-and-the-test",
+    "title": "27  Two Categorical Variables: the Chi-square Test",
+    "section": "27.2 Expected counts and the test",
+    "text": "27.2 Expected counts and the test\nThe chi-square test starts from what the table would look like if the two variables were independent. Overall, 105 of the 150 participants detected the target, about 70%. If the display made no difference, we would expect about 70% of each group of 50 to detect it. These are the expected counts, which R computes for us:\n\nchisq.test(tab)$expected\n#&gt;           \n#&gt;            no yes\n#&gt;   static   15  35\n#&gt;   flashing 15  35\n#&gt;   moving   15  35\n\nThe test compares the observed counts with the expected ones. For each cell it takes the squared difference between observed and expected, divided by the expected count, and adds them up:\n\\[\n\\chi^2 = \\sum \\frac{(\\text{observed} - \\text{expected})^2}{\\text{expected}}\n\\]\nThe larger the differences, the larger χ², and the smaller the p-value:\n\nchisq.test(tab)\n#&gt; \n#&gt;  Pearson's Chi-squared test\n#&gt; \n#&gt; data:  tab\n#&gt; X-squared = 12, df = 2, p-value = 0.002\n\nThe degrees of freedom are (rows − 1) × (columns − 1) = 2. The p-value is small: detection depends on the display. Like the ANOVA (Chapter 25), the test only says that there is an association somewhere in the table; to see where, look at the proportions, or compare pairs of displays, correcting for multiple comparisons (Chapter 26).",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>27</span>  <span class='chapter-title'>Two Categorical Variables: the Chi-square Test</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/chi-square.html#two-by-two-tables",
+    "href": "basic-stats/chi-square.html#two-by-two-tables",
+    "title": "27  Two Categorical Variables: the Chi-square Test",
+    "section": "27.3 Two-by-two tables",
+    "text": "27.3 Two-by-two tables\nThe simplest contingency table has two rows and two columns. The tech_grant_funding_gender_gap dataset in behdslabs records, for several technology domains, how many grant applications were submitted and funded, separately for men and women. Summing over domains, we can build a two-by-two table of funded and not-funded applications by gender:\n\ntotals &lt;- tech_grant_funding_gender_gap |&gt;\n  summarize(across(c(applications_men, applications_women,\n                     awards_men, awards_women), sum))\n\ngrants &lt;- matrix(c(totals$awards_men, totals$applications_men - totals$awards_men,\n                   totals$awards_women, totals$applications_women - totals$awards_women),\n                 nrow = 2, byrow = TRUE,\n                 dimnames = list(gender = c(\"men\", \"women\"), funded = c(\"yes\", \"no\")))\ngrants\n#&gt;        funded\n#&gt; gender  yes   no\n#&gt;   men   580 2690\n#&gt;   women 354 2022\nprop.table(grants, 1) |&gt; round(3)\n#&gt;        funded\n#&gt; gender    yes    no\n#&gt;   men   0.177 0.823\n#&gt;   women 0.149 0.851\n\nAbout 17.7% of applications by men were funded, against 14.9% by women. Is this difference larger than chance?\n\nchisq.test(grants)\n#&gt; \n#&gt;  Pearson's Chi-squared test with Yates' continuity correction\n#&gt; \n#&gt; data:  grants\n#&gt; X-squared = 8, df = 1, p-value = 0.005\n\nThe output mentions Yates’ continuity correction: for two-by-two tables, chisq.test() applies by default a small correction that makes the test slightly more conservative. With large counts, as here, it makes little difference. The difference in success rates is statistically significant. Whether it reflects a bias is a different question: for example, men and women may apply in different proportions to domains with different success rates, which is worth checking before drawing conclusions (see exercise 1).",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>27</span>  <span class='chapter-title'>Two Categorical Variables: the Chi-square Test</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/chi-square.html#assumptions",
+    "href": "basic-stats/chi-square.html#assumptions",
+    "title": "27  Two Categorical Variables: the Chi-square Test",
+    "section": "27.4 Assumptions",
+    "text": "27.4 Assumptions\nTwo conditions matter in practice.\nEach observation is counted once, and observations are independent. Every participant must appear in only one cell of the table. If each participant contributes many trials, for example 100 detection trials each, the trials of the same person are not independent, and a chi-square test on the trial counts gives p-values that are far too small. Summarize per participant first (for example, each participant’s proportion of detected targets, compared with an ANOVA), or use models designed for repeated observations, which we meet later in the course.\nThe expected counts are not too small. The chi-square test is an approximation that works well when every expected count is at least about 5. With small samples, use Fisher’s exact test, fisher.test(), which does not rely on this approximation. Suppose a small pilot study with 12 participants:\n\npilot &lt;- matrix(c(2, 4,\n                  6, 0),\n                nrow = 2, byrow = TRUE,\n                dimnames = list(display = c(\"static\", \"moving\"), detected = c(\"yes\", \"no\")))\npilot\n#&gt;         detected\n#&gt; display  yes no\n#&gt;   static   2  4\n#&gt;   moving   6  0\nchisq.test(pilot)$expected\n#&gt; Warning in chisq.test(pilot): Chi-squared approximation may be\n#&gt; incorrect\n#&gt;         detected\n#&gt; display  yes no\n#&gt;   static   4  2\n#&gt;   moving   4  2\nfisher.test(pilot)\n#&gt; \n#&gt;  Fisher's Exact Test for Count Data\n#&gt; \n#&gt; data:  pilot\n#&gt; p-value = 0.06\n#&gt; alternative hypothesis: true odds ratio is not equal to 1\n#&gt; 95 percent confidence interval:\n#&gt;  0.0 1.1\n#&gt; sample estimates:\n#&gt; odds ratio \n#&gt;          0\n\nAll expected counts are below 5, and chisq.test() would warn that the approximation may be incorrect; Fisher’s test is the right choice here.",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>27</span>  <span class='chapter-title'>Two Categorical Variables: the Chi-square Test</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/chi-square.html#effect-size-cramérs-v",
+    "href": "basic-stats/chi-square.html#effect-size-cramérs-v",
+    "title": "27  Two Categorical Variables: the Chi-square Test",
+    "section": "27.5 Effect size: Cramér’s V",
+    "text": "27.5 Effect size: Cramér’s V\nAs with other tests, a p-value does not tell us how strong an association is, and with very large samples even tiny differences become significant. A common effect size for contingency tables is Cramér’s V, which goes from 0 (no association) to 1 (perfect association). It is computed from χ², the total number of observations \\(N\\), and the smaller of the number of rows and columns:\n\nchi2 &lt;- chisq.test(tab)$statistic\nN &lt;- sum(tab)\nk &lt;- min(dim(tab))\nsqrt(chi2 / (N * (k - 1)))\n#&gt; X-squared \n#&gt;     0.285\n\nRules of thumb call about 0.1 a small, 0.3 a medium and 0.5 a large association, for tables with two columns; like all such rules, they are conventions, not laws.",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>27</span>  <span class='chapter-title'>Two Categorical Variables: the Chi-square Test</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/chi-square.html#goodness-of-fit",
+    "href": "basic-stats/chi-square.html#goodness-of-fit",
+    "title": "27  Two Categorical Variables: the Chi-square Test",
+    "section": "27.6 Goodness of fit",
+    "text": "27.6 Goodness of fit\nThe chi-square test can also compare the counts of a single categorical variable with the proportions we expect. For example, in a four-choice task, are participants’ answers spread equally over the four response keys, or do they prefer some keys?\n\nkeys &lt;- c(A = 40, B = 20, C = 22, D = 38)\nchisq.test(keys, p = rep(1/4, 4))\n#&gt; \n#&gt;  Chi-squared test for given probabilities\n#&gt; \n#&gt; data:  keys\n#&gt; X-squared = 11, df = 3, p-value = 0.01\n\nThe argument p gives the expected proportions, here one quarter for each key. A small p-value suggests a response bias.",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>27</span>  <span class='chapter-title'>Two Categorical Variables: the Chi-square Test</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/chi-square.html#from-tests-to-models",
+    "href": "basic-stats/chi-square.html#from-tests-to-models",
+    "title": "27  Two Categorical Variables: the Chi-square Test",
+    "section": "27.7 From tests to models",
+    "text": "27.7 From tests to models\nThe chi-square test answers one question: are two categorical variables associated? When we want to estimate how much the probability of an outcome changes with several predictors at once, for example the probability of detecting a target depending on the display and on the participant’s age, the tool is logistic regression, which we meet at the end of the course.",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>27</span>  <span class='chapter-title'>Two Categorical Variables: the Chi-square Test</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/chi-square.html#further-reading",
+    "href": "basic-stats/chi-square.html#further-reading",
+    "title": "27  Two Categorical Variables: the Chi-square Test",
+    "section": "27.8 Further reading",
+    "text": "27.8 Further reading\n\nD. Navarro, Learning Statistics with R, Chapter 12, Categorical data analysis: goodness of fit, the test of independence, Fisher’s exact test, effect sizes.\nR. A. Poldrack, Statistical Thinking for the 21st Century, Modeling categorical relationships.",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>27</span>  <span class='chapter-title'>Two Categorical Variables: the Chi-square Test</span>"
+    ]
+  },
+  {
+    "objectID": "basic-stats/chi-square.html#exercises",
+    "href": "basic-stats/chi-square.html#exercises",
+    "title": "27  Two Categorical Variables: the Chi-square Test",
+    "section": "27.9 Exercises",
+    "text": "27.9 Exercises\n1. The tech_grant_funding_gender_gap dataset has one row per technology domain. Pick two domains and, for each one, build the two-by-two table of funded and not-funded applications by gender and run chisq.test(). Is the gender difference the same in every domain? How does this relate to the overall table of this chapter?\n2. Take a random sample of 20 participants from detection (use set.seed(1) and slice_sample()), make the contingency table, and look at the expected counts. Run both chisq.test() and fisher.test(). Which one is appropriate, and why?\n3. Compute Cramér’s V for the grants table. Compare it with the p-value: what does each one tell you?",
+    "crumbs": [
+      "Basic Statistics",
+      "<span class='chapter-number'>27</span>  <span class='chapter-title'>Two Categorical Variables: the Chi-square Test</span>"
     ]
   }
 ]

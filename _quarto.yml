@@ -74,6 +74,9 @@ book:
         - basic-stats/central-tendency-dispersion.qmd
         - basic-stats/correlation.qmd
         - basic-stats/comparing-two-groups.qmd
+        - basic-stats/anova.qmd
+        - basic-stats/multiple-comparisons.qmd
+        - basic-stats/chi-square.qmd
 
     # - part: productivity/installations.qmd
     #   chapters:

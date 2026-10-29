@@ -1,0 +1,163 @@
+# Two Categorical Variables: the Chi-square Test {#sec-chi-square}
+
+:::{.callout-warning}
+## Draft
+This chapter is a **draft**, written with an AI assistant (Claude) on 29 October 2026, and not yet reviewed by the instructor. It may be substantially rewritten or removed.
+:::
+
+So far, our outcomes were numbers: reaction times, scores, error counts. Many behavioural outcomes are categories instead: whether a participant detected a target or not, which of two interfaces they preferred, whether an application was funded. When both variables are categorical, means make no sense: we count how many observations fall in each combination of categories, and we ask whether the two variables are associated. The usual tool is the *chi-square test* (χ², from the Greek letter *chi*).
+
+:::{.callout-note}
+This chapter is original material written for this book; it is not part of Irizarry's *Introduction to Data Science*.
+:::
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(behdslabs)
+```
+
+## Contingency tables
+
+Suppose 150 participants take part in a visual detection study. Each participant sees a single display, in one of three versions (a static, a flashing or a moving target), and gives a single answer: they either detected the target or not. The data are simulated:
+
+```{r}
+detection <- tibble(
+  display = factor(rep(c("static", "flashing", "moving"), each = 50),
+                   levels = c("static", "flashing", "moving")),
+  detected = c(rep(c("yes", "no"), c(27, 23)),
+               rep(c("yes", "no"), c(35, 15)),
+               rep(c("yes", "no"), c(43, 7)))
+)
+```
+
+A table of counts for two categorical variables is called a *contingency table*:
+
+```{r}
+tab <- table(detection$display, detection$detected)
+tab
+```
+
+Because the groups can have different sizes, we compare *proportions* within each row. `prop.table(tab, 1)` divides each row by its total:
+
+```{r}
+prop.table(tab, 1) |> round(2)
+```
+
+A stacked bar plot of the same proportions:
+
+```{r detection-bars}
+detection |>
+  ggplot(aes(display, fill = detected)) +
+  geom_bar(position = "fill") +
+  labs(x = "Display", y = "Proportion of participants", fill = "Detected")
+```
+
+The moving target was detected most often, the static one least often. Could differences this large arise by chance if the display had no effect on detection?
+
+## Expected counts and the test
+
+The chi-square test starts from what the table would look like if the two variables were *independent*. Overall, `r sum(detection$detected == "yes")` of the 150 participants detected the target, about `r round(mean(detection$detected == "yes") * 100)`%. If the display made no difference, we would expect about `r round(mean(detection$detected == "yes") * 100)`% of each group of 50 to detect it. These are the *expected counts*, which R computes for us:
+
+```{r}
+chisq.test(tab)$expected
+```
+
+The test compares the observed counts with the expected ones. For each cell it takes the squared difference between observed and expected, divided by the expected count, and adds them up:
+
+$$
+\chi^2 = \sum \frac{(\text{observed} - \text{expected})^2}{\text{expected}}
+$$
+
+The larger the differences, the larger χ², and the smaller the p-value:
+
+```{r}
+chisq.test(tab)
+```
+
+The degrees of freedom are (rows − 1) × (columns − 1) = 2. The p-value is small: detection depends on the display. Like the ANOVA (@sec-anova), the test only says that there is an association somewhere in the table; to see where, look at the proportions, or compare pairs of displays, correcting for multiple comparisons (@sec-multiple-comparisons).
+
+## Two-by-two tables
+
+The simplest contingency table has two rows and two columns. The `tech_grant_funding_gender_gap` dataset in `behdslabs` records, for several technology domains, how many grant applications were submitted and funded, separately for men and women. Summing over domains, we can build a two-by-two table of funded and not-funded applications by gender:
+
+```{r}
+totals <- tech_grant_funding_gender_gap |>
+  summarize(across(c(applications_men, applications_women,
+                     awards_men, awards_women), sum))
+
+grants <- matrix(c(totals$awards_men, totals$applications_men - totals$awards_men,
+                   totals$awards_women, totals$applications_women - totals$awards_women),
+                 nrow = 2, byrow = TRUE,
+                 dimnames = list(gender = c("men", "women"), funded = c("yes", "no")))
+grants
+prop.table(grants, 1) |> round(3)
+```
+
+About `r round(prop.table(grants, 1)[1, 1] * 100, 1)`% of applications by men were funded, against `r round(prop.table(grants, 1)[2, 1] * 100, 1)`% by women. Is this difference larger than chance?
+
+```{r}
+chisq.test(grants)
+```
+
+The output mentions *Yates' continuity correction*: for two-by-two tables, `chisq.test()` applies by default a small correction that makes the test slightly more conservative. With large counts, as here, it makes little difference. The difference in success rates is statistically significant. Whether it reflects a bias is a different question: for example, men and women may apply in different proportions to domains with different success rates, which is worth checking before drawing conclusions (see exercise 1).
+
+## Assumptions
+
+Two conditions matter in practice.
+
+**Each observation is counted once, and observations are independent.** Every participant must appear in only one cell of the table. If each participant contributes many trials, for example 100 detection trials each, the trials of the same person are not independent, and a chi-square test on the trial counts gives p-values that are far too small. Summarize per participant first (for example, each participant's proportion of detected targets, compared with an ANOVA), or use models designed for repeated observations, which we meet later in the course.
+
+**The expected counts are not too small.** The chi-square test is an approximation that works well when every expected count is at least about 5. With small samples, use *Fisher's exact test*, `fisher.test()`, which does not rely on this approximation. Suppose a small pilot study with 12 participants:
+
+```{r}
+pilot <- matrix(c(2, 4,
+                  6, 0),
+                nrow = 2, byrow = TRUE,
+                dimnames = list(display = c("static", "moving"), detected = c("yes", "no")))
+pilot
+chisq.test(pilot)$expected
+fisher.test(pilot)
+```
+
+All expected counts are below 5, and `chisq.test()` would warn that the approximation may be incorrect; Fisher's test is the right choice here.
+
+## Effect size: Cramér's V
+
+As with other tests, a p-value does not tell us how strong an association is, and with very large samples even tiny differences become significant. A common effect size for contingency tables is *Cramér's V*, which goes from 0 (no association) to 1 (perfect association). It is computed from χ², the total number of observations $N$, and the smaller of the number of rows and columns:
+
+```{r}
+chi2 <- chisq.test(tab)$statistic
+N <- sum(tab)
+k <- min(dim(tab))
+sqrt(chi2 / (N * (k - 1)))
+```
+
+Rules of thumb call about 0.1 a small, 0.3 a medium and 0.5 a large association, for tables with two columns; like all such rules, they are conventions, not laws.
+
+## Goodness of fit
+
+The chi-square test can also compare the counts of a *single* categorical variable with the proportions we expect. For example, in a four-choice task, are participants' answers spread equally over the four response keys, or do they prefer some keys?
+
+```{r}
+keys <- c(A = 40, B = 20, C = 22, D = 38)
+chisq.test(keys, p = rep(1/4, 4))
+```
+
+The argument `p` gives the expected proportions, here one quarter for each key. A small p-value suggests a response bias.
+
+## From tests to models
+
+The chi-square test answers one question: are two categorical variables associated? When we want to estimate how much the probability of an outcome changes with several predictors at once, for example the probability of detecting a target depending on the display and on the participant's age, the tool is *logistic regression*, which we meet at the end of the course.
+
+## Further reading
+
+- D. Navarro, *Learning Statistics with R*, [Chapter 12, *Categorical data analysis*](https://learningstatisticswithr.com/12-chisquare.html): goodness of fit, the test of independence, Fisher's exact test, effect sizes.
+- R. A. Poldrack, *Statistical Thinking for the 21st Century*, [*Modeling categorical relationships*](https://statsthinking21.github.io/statsthinking21-core-site/modeling-categorical-relationships.html).
+
+## Exercises
+
+1\. The `tech_grant_funding_gender_gap` dataset has one row per technology domain. Pick two domains and, for each one, build the two-by-two table of funded and not-funded applications by gender and run `chisq.test()`. Is the gender difference the same in every domain? How does this relate to the overall table of this chapter?
+
+2\. Take a random sample of 20 participants from `detection` (use `set.seed(1)` and `slice_sample()`), make the contingency table, and look at the expected counts. Run both `chisq.test()` and `fisher.test()`. Which one is appropriate, and why?
+
+3\. Compute Cramér's V for the `grants` table. Compare it with the p-value: what does each one tell you?

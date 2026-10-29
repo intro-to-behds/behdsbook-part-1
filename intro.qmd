@@ -28,7 +28,7 @@ The third part uses several examples to familiarize the reader with **data wrang
 
 In the fourth part, we provide a brief introduction to the **productivity tools** we use on a day-to-day basis in data science projects. These are RStudio, UNIX/Linux shell, Git and GitHub, Quarto, and **knitr**.
 
-The final part, added for the Behavioural Data Science course, is a short refresher of **basic statistics**: measures of central tendency and dispersion, correlation, and the t-test and Wilcoxon test for comparing two groups. It is meant to be read when these concepts come up, and points to free books for a fuller treatment.
+The final part, added for the Behavioural Data Science course, is a short refresher of **basic statistics**: measures of central tendency and dispersion, correlation, the t-test and Wilcoxon test for comparing two groups, ANOVA, multiple comparisons, and the chi-square test. It is meant to be read when these concepts come up, and points to free books for a fuller treatment.
 
 ## Learning data science in the era of AI {.unnumbered}
 
