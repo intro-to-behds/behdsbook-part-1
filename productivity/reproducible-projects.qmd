@@ -62,7 +62,7 @@ Unlike a word processor, such as Microsoft Word, where what you see is what you 
 
 In R, we can produce literate programming documents using Quarto or R markdown. We recommend using Quarto because it is a newer and more flexible version of R markdown that permits the use of languages other than R. Because R markdown preceded Quarto by several years, many public and educational literate programming documents are written in R markdown. However, because the format is similar and both use the **knitr** package to execute the R code (details in @sec-knitr), most existing R markdown files can be rendered with Quarto without modification.
 
-In RStudio, you can start either a Quarto or R markdown document by clicking on *File*, *New File*, then *Quarto Document* or *R Markdown*, respectively. You will then be asked to enter a title and author for your document. We are going to prepare a report on gun murders so we will give it an appropriate name. You can also decide what format you would like the final report to be in: HTML, PDF, or Microsoft Word. Later, we can easily change this, but here we select html as it is the preferred format for debugging purposes:
+In RStudio, you can start either a Quarto or R markdown document by clicking on *File*, *New File*, then *Quarto Document* or *R Markdown*, respectively. You will then be asked to enter a title and author for your document. We are going to prepare a report on app data breaches so we will give it an appropriate name. You can also decide what format you would like the final report to be in: HTML, PDF, or Microsoft Word. Later, we can easily change this, but here we select html as it is the preferred format for debugging purposes:
 
 ::: {layout-ncol="2"}
 ![](img/windows-screenshots/VirtualBox_Windows-7-Enterprise_23_03_2018_14_53_18.png){width="35%"}
@@ -86,8 +86,8 @@ At the top you see:
 
 ```         
 ---
-title: "Report on Gun Murders"
-author: "Rafael Irizarry"
+title: "Report on App Data Breaches"
+author: "Your Name"
 format: html
 ---
 ```
@@ -141,7 +141,7 @@ We will not cover more details here, but as you become more experienced with R M
 
 ### knitR {#sec-knitr}
 
-We use the **knitR** package to compile Quarto or R markdown documents. The specific function used to compile is the `knit` function, which takes a filename as input. RStudio provides a button that makes it easier to compile the document. For the screenshot below, we have edited the document so that a report on gun murders is produced. You can see the file on GitHub^[<https://raw.githubusercontent.com/rairizarry/murders/master/report.qmd>]. You can now click on the `Render` button:
+We use the **knitR** package to compile Quarto or R markdown documents. The specific function used to compile is the `knit` function, which takes a filename as input. RStudio provides a button that makes it easier to compile the document. For the screenshot below, taken from the original edition of this book, the document was edited to produce a report on that edition's example project, on US gun murders^[<https://raw.githubusercontent.com/rairizarry/murders/master/report.qmd>]. You can now click on the `Render` button:
 
 ![](img/windows-screenshots/VirtualBox_Windows-7-Enterprise_23_03_2018_14_53_21.0.png){width="50%" fig-align="center"}
 
@@ -166,7 +166,7 @@ with R and knitr textbook^[<https://duhi23.github.io/Analisis-de-datos/Yihue.pdf
 
 ## Organizing a data science project {#sec-organizing}
 
-In this section we put it all together to create the US murders project and share it on GitHub.
+In this section we put it all together to create the app data breaches project and share it on GitHub. The screenshots come from the original edition of this book, where the same project was built on US gun murder data, so they show a `murders` directory instead of `breaches`.
 
 ### Create directories in Unix
 
@@ -175,14 +175,14 @@ In @sec-prep-project we demonstrated how to use Unix to prepare for a data scien
 ```{bash, eval=FALSE}
 cd ~
 cd projects
-mkdir murders
-cd murders
-mkdir data rdas 
+mkdir breaches
+cd breaches
+mkdir data rdas
 ```
 
 ### Create an RStudio project
 
-In the next section we will use create an RStudio project. In RStudio we go to *File* and then *New Project...* and when given the options we pick *Existing Directory*. We then write the full path of the `murders` directory created above.
+In the next section we will use create an RStudio project. In RStudio we go to *File* and then *New Project...* and when given the options we pick *Existing Directory*. We then write the full path of the `breaches` directory created above.
 
 ::: {layout-ncol="2"}
 ![](img/windows-screenshots/VirtualBox_Windows-7-Enterprise_23_03_2018_14_53_14.png){width="35%"}
@@ -194,7 +194,7 @@ Once you do this, you will see the `rdas` and `data` directories you created in 
 
 ![](img/windows-screenshots/VirtualBox_Windows-7-Enterprise_23_03_2018_14_53_16.png){width="50%" fig-align="center"}
 
-Keep in mind that when we are in this project, our default working directory will be `~/projects/murders`. You can confirm this by typing `getwd()` into your R session. This is important because it will help us organize the code when we need to write file paths.
+Keep in mind that when we are in this project, our default working directory will be `~/projects/breaches`. You can confirm this by typing `getwd()` into your R session. This is important because it will help us organize the code when we need to write file paths.
 
 ::: callout-tip
 Try to always use relative paths in code for data analysis projects. These should be relative to the default working directory. The problem with using full paths, including using the home directory `~` as part of your path, is that your code is unlikely to work on file systems other than yours since the directory structures will be different.
@@ -202,18 +202,17 @@ Try to always use relative paths in code for data analysis projects. These shoul
 
 ### Editting R scripts
 
-Let's now write a script that downloads a file into the data directory. We will call this file `download-data.R`.
+Let's now write a script that puts the raw data file into the data directory. We will call this file `get-data.R`. In a real project, this script would download the file from wherever the data are shared, as in @sec-importing-data; here we export it from the **behdslabs** package.
 
 The content of this file will be:
 
 ```{r, eval=FALSE}
-url <- "https://raw.githubusercontent.com/intro-to-behds/behdslabs/master/inst/
-extdata/murders.csv"
-dest_file <- "data/murders.csv"
-download.file(url, destfile = dest_file)
+library(behdslabs)
+dest_file <- "data/app_data_breaches.csv"
+write.csv(app_data_breaches, dest_file, row.names = FALSE)
 ```
 
-Notice that we are using the relative path `data/murders.csv`.
+Notice that we are using the relative path `data/app_data_breaches.csv`.
 
 Run this code in R and you will see that a file is added to the `data` directory.
 
@@ -221,10 +220,10 @@ Now we are ready to write a script to read this data and prepare a table that we
 
 ```{r, eval=FALSE}
 library(tidyverse)
-murders <- read_csv("data/murders.csv")
-murders <- murders |> mutate(region = factor(region),
-                             rate = total / population * 10^5)
-save(murders, file = "rdas/murders.rda")
+breaches <- read_csv("data/app_data_breaches.csv")
+breaches <- breaches |> mutate(region = factor(region),
+                               rate = incidents / population * 10^5)
+save(breaches, file = "rdas/breaches.rda")
 ```
 
 Again note that we use relative paths exclusively.
@@ -239,14 +238,14 @@ While `save` let's you save several objects that then get loaded with the same n
 
 ```{r}
 #| eval: false
-saveRDS(murders, file = "rdas/murders.rda")
+saveRDS(breaches, file = "rdas/breaches.rda")
 ```
 
 Then read it in in another session, using whatever object name you want:
 
 ```{r}
 #| eval: false
-dat <- readRDS("rdas/murders.rda")
+dat <- readRDS("rdas/breaches.rda")
 ```
 
 ### The main analysis file
@@ -255,9 +254,9 @@ Now we are ready to write the analysis file. Let's call it `analysis.R`. The con
 
 ```{r, eval=FALSE}
 library(tidyverse)
-load("rdas/murders.rda")
+load("rdas/breaches.rda")
 
-murders |> mutate(abb = reorder(abb, rate)) |>
+breaches |> mutate(abb = reorder(abb, rate)) |>
   ggplot(aes(abb, rate)) +
   geom_bar(width = 0.5, stat = "identity", color = "black") +
   coord_flip()
@@ -286,9 +285,10 @@ to your R script. If you run the script now, a png file will be saved into the `
 You now have a self-contained analysis in one directory. One final recommendation is to create a `README.txt` file describing what each of these files does for the benefit of others reading your code, including your future self. This would not be a script but just some notes. One of the options provided when opening a new file in RStudio is a text file. You can save something like this into the text file:
 
 ```         
-We analyze US gun murder data collected by the FBI.
+We analyze data-breach incidents in apps, by US state
+(app_data_breaches, behdslabs package).
 
-download-data.R - Downloads csv file to data directory
+get-data.R - Saves the raw csv file to the data directory
 
 wrangle-data.R - Creates a derived dataset and saves as R object in rdas
 directory
@@ -303,11 +303,11 @@ In @sec-init we demonstrated how to initialize a Git directory and connect it to
 We can do this in the Unix terminal:
 
 ```{bash, eval=FALSE}
-cd ~/projects/murders
+cd ~/projects/breaches
 git init
 git add README.txt
 git commit -m "First commit. Adding README.txt file just to get started"
-git remote add origin `https://github.com/rairizarry/murders.git`
+git remote add origin `https://github.com/your-username/breaches.git`
 git push -u origin remote
 ```
 
@@ -323,10 +323,12 @@ We can continue adding and committing each file, but it might be easier to use R
 ![](img/windows-screenshots/VirtualBox_Windows-7-Enterprise_23_03_2018_14_53_35.png){width="33%"}
 :::
 
-We can now go to GitHub and confirm that our files are there. You can see a version of this project, organized with Unix directories, on GitHub[^reproducible-projects-1]. You can download a copy to your computer by using the `git clone` command on your terminal. This command will create a directory called `murders` in your working directory, so be careful where you call it from.
-
-[^reproducible-projects-1]: <https://github.com/rairizarry/murders>
+We can now go to GitHub and confirm that our files are there. Anyone, including you on another computer, can then download a copy by using the `git clone` command on the terminal. This command will create a directory called `breaches` in the working directory, so be careful where you call it from.
 
 ```{r, eval=FALSE}
-git clone https://github.com/rairizarry/murders.git
+git clone https://github.com/your-username/breaches.git
 ```
+
+The original edition's version of this project, built on US gun murder data and organized with Unix directories, is on GitHub[^reproducible-projects-1].
+
+[^reproducible-projects-1]: <https://github.com/rairizarry/murders>

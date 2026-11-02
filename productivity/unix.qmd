@@ -414,9 +414,7 @@ If you are wondering why the command is called `less`, it is because the origina
 
 ## Case study: Preparing for a project {#sec-prep-project}
 
-We are now ready to prepare a directory for a project. We will use the US murders project[^unix-7] as an example.
-
-[^unix-7]: <https://github.com/rairizarry/murders>
+We are now ready to prepare a directory for a project. We will use a project on app data breaches as an example.
 
 You should start by creating a directory where you will keep all your projects. We recommend a directory called *projects* in your home directory. To do this you would type:
 
@@ -425,7 +423,7 @@ cd ~
 mkdir projects
 ```
 
-Our project relates to gun violence murders so we will call the directory for our project `murders`. It will be a subdirectory in our projects directories. In the `murders` directory, we will create two subdirectories to hold the raw data and intermediate data. We will call these `data` and `rda`, respectively.
+Our project relates to data-breach incidents in apps, so we will call the directory for our project `breaches`. It will be a subdirectory in our projects directories. In the `breaches` directory, we will create two subdirectories to hold the raw data and intermediate data. We will call these `data` and `rda`, respectively.
 
 Open a terminal and make sure you are in the home directory:
 
@@ -437,19 +435,19 @@ Now run the following commands to create the directory structure we want. At the
 
 ```         
 cd projects
-mkdir murders
-cd murders
-mkdir data rdas 
+mkdir breaches
+cd breaches
+mkdir data rdas
 ls
 pwd
 ```
 
-Note that the full path of our `murders` dataset is `~/projects/murders`.
+Note that the full path of our `breaches` directory is `~/projects/breaches`.
 
 So if we open a new terminal and want to navigate into that directory we type:
 
-```         
-cd projects/murders
+```
+cd projects/breaches
 ```
 
 In @sec-organizing we will describe how we can use RStudio to organize a data analysis project, once these directories have been created.

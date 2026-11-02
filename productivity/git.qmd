@@ -386,12 +386,6 @@ When you clone you are essentially making a complete copy of the entire director
 git clone https://github.com/intro-to-behds/behdsbook-part-1.git
 ```
 
-You can see a simple example with the murders directory created in the Unix chapter by cloning this repository:
-
-```
-git clone https://github.com/rairizarry/murders.git
-```
-
 If you use `git clone`, you do not need to initialize as the branch and remote will already be defined. Now, to push changes you need to be added as a collaborator. Otherwise you will have to follow the more complex process of a _pull request_, which we don't cover here.
 
 

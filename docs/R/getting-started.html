@@ -513,7 +513,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 <p>Another feature you may have noticed is that when you type <code>library(</code> the second parenthesis is automatically added. This will help you avoid one of the most common errors in coding: forgetting to close a parenthesis.</p>
-<p>Now we can continue to write code. As an example, we will make a graph showing murder totals versus population totals by state. Once you are done writing the code needed to make this plot, you can try it out by <em>executing</em> the code. To do this, click on the <em>Run</em> button on the upper right side of the editing pane. You can also use the key binding: Ctrl+Shift+Enter on Windows or command+shift+return on the Mac.</p>
+<p>Now we can continue to write code. As an example, we will make a graph showing totals versus population totals by state. (The screenshots in this section come from the original edition of this book, whose example used US murder totals; in this edition we use data-breach incidents, from the <code>app_data_breaches</code> dataset.) Once you are done writing the code needed to make this plot, you can try it out by <em>executing</em> the code. To do this, click on the <em>Run</em> button on the upper right side of the editing pane. You can also use the key binding: Ctrl+Shift+Enter on Windows or command+shift+return on the Mac.</p>
 <p>Once you run the code, you will see it appear in the R console and, in this case, the generated plot appears in the plots console. Note that the plot console has a useful interface that permits you to click back and forward across different plots, zoom in to the plot, or save the plots as files.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -540,19 +540,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"tidyverse"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This book also uses <strong>behdslabs</strong>, a course-specific fork of the <strong>dslabs</strong> package that we use to share datasets and code related to this book. Because it is not on CRAN, it cannot be installed with <code>install.packages</code>; instead we install it directly from GitHub using the <strong>remotes</strong> package:</p>
+<p>This book also uses <strong>behdslabs</strong>, a course-specific fork of the <strong>dslabs</strong> package that we use to share datasets and code related to this book. Because it is not on CRAN, it cannot be installed with <code>install.packages</code>; instead we install it directly from GitHub using the <strong>pak</strong> package:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"remotes"</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"intro-to-behds/behdslabs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"pak"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pak<span class="sc">::</span><span class="fu">pak</span>(<span class="st">"intro-to-behds/behdslabs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>In RStudio, you can navigate to the <em>Tools</em> tab and select install packages for CRAN packages such as <strong>tidyverse</strong> – this dialog does not support GitHub-only packages like <strong>behdslabs</strong>, which must be installed with <code>remotes::install_github</code> as shown above. We can then load a package into our R sessions using the <code>library</code> function:</p>
+<p>The same command also updates <strong>behdslabs</strong> when a new version is released. The <strong>remotes</strong> package is an alternative:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(behdslabs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"remotes"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"intro-to-behds/behdslabs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In RStudio, you can navigate to the <em>Tools</em> tab and select install packages for CRAN packages such as <strong>tidyverse</strong> – this dialog does not support GitHub-only packages like <strong>behdslabs</strong>, which must be installed with <code>pak::pak</code> or <code>remotes::install_github</code> as shown above. We can then load a package into our R sessions using the <code>library</code> function:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(behdslabs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>As you go through this book, you will see that we load packages without installing them. This is because once you install a package, it remains installed and only needs to be loaded with <code>library</code>. The package remains loaded until we quit the R session. If you try to load a package and get an error, it probably means you need to install it first.</p>
 <p>We can install more than one CRAN package at once by feeding a character vector to <code>install.packages</code>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"tidyverse"</span>, <span class="st">"ggrepel"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"tidyverse"</span>, <span class="st">"ggrepel"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>One advantage of using RStudio is that it auto-completes package names once you start typing, which is helpful when you do not remember the exact spelling of the package.</p>
 <p>Note that installing <strong>tidyverse</strong> actually installs several packages. This commonly occurs when a package has <em>dependencies</em>, or uses functions from other packages. When you load a package using <code>library</code>, you also load its dependencies.</p>
@@ -560,7 +565,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>It is helpful to keep a list of all the packages you need for your work in a script because if you need to perform a fresh install of R, you can re-install all your packages by simply running a script.</p>
 <p>You can see all the packages you have installed using the following function:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">installed.packages</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">installed.packages</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 

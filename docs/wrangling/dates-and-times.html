@@ -480,7 +480,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The functions <code>year</code>, <code>month</code> and <code>day</code> extract those values:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">date =</span> dates, <span class="at">month =</span> <span class="fu">month</span>(dates), <span class="at">day =</span> <span class="fu">day</span>(dates), <span class="at">year =</span> <span class="fu">year</span>(dates))</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 10 x 4</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 10 × 4</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   date       month   day  year</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;date&gt;     &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;</span></span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 2016-05-31     5    31  2016</span></span>
@@ -488,7 +488,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 2016-08-19     8    19  2016</span></span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 2016-09-22     9    22  2016</span></span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 2016-09-27     9    27  2016</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # i 5 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 5 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can also extract the month labels:</p>
 <div class="cell" data-layout-align="center">
@@ -530,19 +530,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The <strong>lubridate</strong> package is also useful for dealing with times. In base R, you can get the current time typing <code>Sys.time()</code>. The <strong>lubridate</strong> package provides a slightly more advanced function, <code>now</code>, that permits you to define the time zone:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>()</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "2026-09-09 19:53:29 CEST"</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "2026-11-02 15:25:53 CET"</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>(<span class="st">"GMT"</span>)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "2026-09-09 17:53:29 GMT"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "2026-11-02 14:25:53 GMT"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You can see all the available time zones with <code>OlsonNames()</code> function.</p>
 <p>We can also extract hours, minutes, and seconds:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>() <span class="sc">|&gt;</span> <span class="fu">hour</span>()</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 19</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 15</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>() <span class="sc">|&gt;</span> <span class="fu">minute</span>()</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 53</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 25</span></span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">now</span>() <span class="sc">|&gt;</span> <span class="fu">second</span>()</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 29.3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 53</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The package also includes a function to parse strings into times as well as parsers for time objects that include dates:</p>
 <div class="cell" data-layout-align="center">
@@ -605,19 +605,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="exercises" class="level2" data-number="13.4">
 <h2 data-number="13.4" class="anchored" data-anchor-id="exercises"><span class="header-section-number">13.4</span> Exercises</h2>
-<p>For these exercises we will use the following dataset:</p>
+<p>For these exercises we will use simulated data: the number of sessions per day of a wellbeing app, as exported from its server logs. Run this code to create them:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(behdslabs)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pr_death_counts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>dates <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">as.Date</span>(<span class="st">"2017-01-01"</span>), <span class="fu">as.Date</span>(<span class="st">"2018-06-30"</span>), <span class="at">by =</span> <span class="st">"day"</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>weekend <span class="ot">&lt;-</span> <span class="fu">as.POSIXlt</span>(dates)<span class="sc">$</span>wday <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">6</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>sessions <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="fu">length</span>(dates), <span class="at">lambda =</span> <span class="fu">ifelse</span>(weekend, <span class="dv">1700</span>, <span class="dv">1300</span>))</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>crash <span class="ot">&lt;-</span> dates <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2017-09-20"</span>) <span class="sc">&amp;</span> dates <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2017-10-03"</span>)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>sessions[crash] <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="fu">sum</span>(crash), <span class="dv">400</span>)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>may <span class="ot">&lt;-</span> dates <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2018-05-01"</span>) <span class="sc">&amp;</span> dates <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2018-05-31"</span>)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>sessions[may] <span class="ot">&lt;-</span> <span class="fu">round</span>(sessions[may] <span class="sc">*</span> <span class="fu">seq</span>(<span class="dv">1</span>, <span class="fl">0.1</span>, <span class="at">length.out =</span> <span class="fu">sum</span>(may)))</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>sessions[dates <span class="sc">&gt;</span> <span class="fu">as.Date</span>(<span class="st">"2018-05-31"</span>)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>app_sessions <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">date =</span> <span class="fu">format</span>(dates, <span class="st">"%d/%m/%Y"</span>),</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>                           <span class="at">sessions =</span> sessions)</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(app_sessions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>1. We want to make a plot of death counts versus date. Confirm that the <code>date</code> variable are in fact dates and not strings.</p>
-<p>2. Plot deaths versus date.</p>
+<p>1. We want to make a plot of the number of sessions versus date. Check whether the <code>date</code> variable contains dates or strings. If they are strings, convert them to dates with the appropriate <strong>lubridate</strong> function, and save the result in <code>dat</code>.</p>
+<p>2. Plot sessions versus date.</p>
 <p>3. What time period is represented in these data?</p>
-<p>4. Note that after May 31, 2018, the deaths are all 0. The data is probably not entered yet. We also see a drop off starting around May 1. Redefine <code>dat</code> to exclude observations taken on or after May 1, 2018. Then, remake the plot.</p>
+<p>4. Note that after May 31, 2018, the sessions are all 0. The logs have probably not been uploaded yet. We also see a drop off starting around May 1. Redefine <code>dat</code> to exclude observations taken on or after May 1, 2018. Then, remake the plot.</p>
 <p>5. Repeat the plot but use the day of the year on the x-axis instead of date.</p>
-<p>6. Compute the deaths per day by month.</p>
-<p>7. Show the deaths per days for July and for September. What do you notice?</p>
-<p>8. Compute deaths per week and make a plot.</p>
+<p>6. Compute the average number of sessions per day by month.</p>
+<p>7. Show the sessions per day for July and for September. What do you notice?</p>
+<p>8. Compute the sessions per week and make a plot.</p>
 
 
 </section>

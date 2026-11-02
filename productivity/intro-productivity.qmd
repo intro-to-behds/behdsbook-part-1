@@ -13,6 +13,6 @@ The data analysis process is also iterative and adaptive. As a result, we are co
 
 Finally, we learn to write reports in R markdown, which permits you to incorporate text and code into a single document. We will demonstrate how, using the `knitr` package, we can write reproducible and aesthetically pleasing reports by running the analysis and generating the report simultaneously.
 
-We will put all this together using the powerful integrated desktop environment RStudio[^productivity-intro-2]. Throughout the chapter we will be building up an example on US gun murders. The final project, which includes several files and folders, can be seen in the GitHub repository *rairizarry/murders*^[<https://github.com/rairizarry/murders>]. 
+We will put all this together using the powerful integrated desktop environment RStudio[^productivity-intro-2]. Throughout the chapter we will be building up an example project on app data breaches, using the `app_data_breaches` dataset from **behdslabs**. The original edition of this book built the same project on US gun murder data; that version, which includes several files and folders, can be seen in the GitHub repository *rairizarry/murders*^[<https://github.com/rairizarry/murders>], and some screenshots in these chapters still show it.
 
 [^productivity-intro-2]: <https://www.rstudio.com/>

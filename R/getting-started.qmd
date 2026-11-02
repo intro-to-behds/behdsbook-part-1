@@ -92,7 +92,7 @@ Now we are ready to start editing our first script. The first lines of code in a
 
 Another feature you may have noticed is that when you type `library(` the second parenthesis is automatically added. This will help you avoid one of the most common errors in coding: forgetting to close a parenthesis.
 
-Now we can continue to write code. As an example, we will make a graph showing murder totals versus population totals by state. Once you are done writing the code needed to make this plot, you can try it out by *executing* the code. To do this, click on the *Run* button on the upper right side of the editing pane. You can also use the key binding: Ctrl+Shift+Enter on Windows or command+shift+return on the Mac.
+Now we can continue to write code. As an example, we will make a graph showing totals versus population totals by state. (The screenshots in this section come from the original edition of this book, whose example used US murder totals; in this edition we use data-breach incidents, from the `app_data_breaches` dataset.) Once you are done writing the code needed to make this plot, you can try it out by *executing* the code. To do this, click on the *Run* button on the upper right side of the editing pane. You can also use the key binding: Ctrl+Shift+Enter on Windows or command+shift+return on the Mac.
 
 Once you run the code, you will see it appear in the R console and, in this case, the generated plot appears in the plots console. Note that the plot console has a useful interface that permits you to click back and forward across different plots, zoom in to the plot, or save the plots as files.
 
@@ -119,14 +119,21 @@ The functionality provided by a fresh install of R is only a small fraction of w
 install.packages("tidyverse")
 ```
 
-This book also uses **behdslabs**, a course-specific fork of the **dslabs** package that we use to share datasets and code related to this book. Because it is not on CRAN, it cannot be installed with `install.packages`; instead we install it directly from GitHub using the **remotes** package:
+This book also uses **behdslabs**, a course-specific fork of the **dslabs** package that we use to share datasets and code related to this book. Because it is not on CRAN, it cannot be installed with `install.packages`; instead we install it directly from GitHub using the **pak** package:
+
+```{r,eval=FALSE}
+install.packages("pak")
+pak::pak("intro-to-behds/behdslabs")
+```
+
+The same command also updates **behdslabs** when a new version is released. The **remotes** package is an alternative:
 
 ```{r,eval=FALSE}
 install.packages("remotes")
 remotes::install_github("intro-to-behds/behdslabs")
 ```
 
-In RStudio, you can navigate to the *Tools* tab and select install packages for CRAN packages such as **tidyverse** -- this dialog does not support GitHub-only packages like **behdslabs**, which must be installed with `remotes::install_github` as shown above. We can then load a package into our R sessions using the `library` function:
+In RStudio, you can navigate to the *Tools* tab and select install packages for CRAN packages such as **tidyverse** -- this dialog does not support GitHub-only packages like **behdslabs**, which must be installed with `pak::pak` or `remotes::install_github` as shown above. We can then load a package into our R sessions using the `library` function:
 
 ```{r}
 library(behdslabs)

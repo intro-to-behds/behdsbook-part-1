@@ -714,23 +714,23 @@ less cv.tex </code></pre>
 </section>
 <section id="sec-prep-project" class="level2" data-number="18.6">
 <h2 data-number="18.6" class="anchored" data-anchor-id="sec-prep-project"><span class="header-section-number">18.6</span> Case study: Preparing for a project</h2>
-<p>We are now ready to prepare a directory for a project. We will use the US murders project<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> as an example.</p>
+<p>We are now ready to prepare a directory for a project. We will use a project on app data breaches as an example.</p>
 <p>You should start by creating a directory where you will keep all your projects. We recommend a directory called <em>projects</em> in your home directory. To do this you would type:</p>
 <pre><code>cd ~
 mkdir projects</code></pre>
-<p>Our project relates to gun violence murders so we will call the directory for our project <code>murders</code>. It will be a subdirectory in our projects directories. In the <code>murders</code> directory, we will create two subdirectories to hold the raw data and intermediate data. We will call these <code>data</code> and <code>rda</code>, respectively.</p>
+<p>Our project relates to data-breach incidents in apps, so we will call the directory for our project <code>breaches</code>. It will be a subdirectory in our projects directories. In the <code>breaches</code> directory, we will create two subdirectories to hold the raw data and intermediate data. We will call these <code>data</code> and <code>rda</code>, respectively.</p>
 <p>Open a terminal and make sure you are in the home directory:</p>
 <pre><code>cd ~</code></pre>
 <p>Now run the following commands to create the directory structure we want. At the end, we use <code>ls</code> and <code>pwd</code> to confirm we have generated the correct directories in the correct working directory:</p>
 <pre><code>cd projects
-mkdir murders
-cd murders
-mkdir data rdas 
+mkdir breaches
+cd breaches
+mkdir data rdas
 ls
 pwd</code></pre>
-<p>Note that the full path of our <code>murders</code> dataset is <code>~/projects/murders</code>.</p>
+<p>Note that the full path of our <code>breaches</code> directory is <code>~/projects/breaches</code>.</p>
 <p>So if we open a new terminal and want to navigate into that directory we type:</p>
-<pre><code>cd projects/murders</code></pre>
+<pre><code>cd projects/breaches</code></pre>
 <p>In <a href="reproducible-projects.html#sec-organizing" class="quarto-xref"><span>Section 20.3</span></a> we will describe how we can use RStudio to organize a data analysis project, once these directories have been created.</p>
 </section>
 <section id="advanced-unix" class="level2" data-number="18.7">
@@ -866,7 +866,7 @@ pwd</code></pre>
 </section>
 <section id="file-manipulation-in-r" class="level3" data-number="18.7.10">
 <h3 data-number="18.7.10" class="anchored" data-anchor-id="file-manipulation-in-r"><span class="header-section-number">18.7.10</span> File manipulation in R</h3>
-<p>We can also perform file management from within R. The key functions to learn about can be seen by looking at the help file for <code>?files</code><a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>. Another useful function is <code>unlink</code>.</p>
+<p>We can also perform file management from within R. The key functions to learn about can be seen by looking at the help file for <code>?files</code><a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>. Another useful function is <code>unlink</code>.</p>
 <p>Although not generally recommended, you can run Unix commands in R using <code>system</code>.</p>
 
 
@@ -883,8 +883,7 @@ pwd</code></pre>
 <li id="fn6"><p><a href="https://jvns.ca/blog/2018/08/05/new-zine--bite-size-command-line/" class="uri">https://jvns.ca/blog/2018/08/05/new-zine--bite-size-command-line/</a><a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn7"><p><a href="https://library.si.edu/sites/default/files/tutorial/pdf/filenamingorganizing20180227.pdf" class="uri">https://library.si.edu/sites/default/files/tutorial/pdf/filenamingorganizing20180227.pdf</a><a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn8"><p><a href="https://style.tidyverse.org/" class="uri">https://style.tidyverse.org/</a><a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn9"><p><a href="https://github.com/rairizarry/murders" class="uri">https://github.com/rairizarry/murders</a><a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn10"><p><a href="https://rdrr.io/r/base/files.html" class="uri">https://rdrr.io/r/base/files.html</a><a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p><a href="https://rdrr.io/r/base/files.html" class="uri">https://rdrr.io/r/base/files.html</a><a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

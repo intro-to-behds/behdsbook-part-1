@@ -14,7 +14,7 @@
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/R/getting-started.html</loc>
-    <lastmod>2026-09-16T11:20:58.771Z</lastmod>
+    <lastmod>2026-11-02T14:23:20.294Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/R/R-basics.html</loc>
@@ -34,7 +34,7 @@
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/R/importing-data.html</loc>
-    <lastmod>2026-09-16T11:20:58.771Z</lastmod>
+    <lastmod>2026-11-02T14:30:05.419Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/dataviz/intro-dataviz.html</loc>
@@ -70,7 +70,7 @@
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/wrangling/dates-and-times.html</loc>
-    <lastmod>2026-09-16T11:20:59.092Z</lastmod>
+    <lastmod>2026-11-02T14:24:04.861Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/wrangling/locales.html</loc>
@@ -90,19 +90,19 @@
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/productivity/intro-productivity.html</loc>
-    <lastmod>2026-07-11T14:56:40.954Z</lastmod>
+    <lastmod>2026-11-02T14:22:28.259Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/productivity/unix.html</loc>
-    <lastmod>2026-07-11T14:56:40.954Z</lastmod>
+    <lastmod>2026-11-02T14:22:30.658Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/productivity/git.html</loc>
-    <lastmod>2026-09-16T11:20:59.078Z</lastmod>
+    <lastmod>2026-11-02T14:22:31.556Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/productivity/reproducible-projects.html</loc>
-    <lastmod>2026-09-16T11:20:59.084Z</lastmod>
+    <lastmod>2026-11-02T14:30:06.205Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/productivity/ai-assisted-coding.html</loc>
@@ -122,7 +122,7 @@
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/basic-stats/comparing-two-groups.html</loc>
-    <lastmod>2026-10-29T12:45:55.760Z</lastmod>
+    <lastmod>2026-11-02T14:21:09.337Z</lastmod>
   </url>
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/basic-stats/anova.html</loc>
@@ -135,5 +135,9 @@
   <url>
     <loc>https://intro-to-behds.github.io/behdsbook-part-1/basic-stats/chi-square.html</loc>
     <lastmod>2026-10-29T14:38:25.234Z</lastmod>
+  </url>
+  <url>
+    <loc>https://intro-to-behds.github.io/behdsbook-part-1/Introduction-to-Behavioural-Data-Science.pdf</loc>
+    <lastmod>2026-11-02T14:33:40.154Z</lastmod>
   </url>
 </urlset>

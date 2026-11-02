@@ -189,26 +189,36 @@ object.size(as.IDate(product_launch_forecast$startdate))
 
 ## Exercises
 
-For these exercises we will use the following dataset:
+For these exercises we will use simulated data: the number of sessions per day of a wellbeing app, as exported from its server logs. Run this code to create them:
 
 ```{r}
 #| eval: false
-library(behdslabs)
-head(pr_death_counts)
+set.seed(2026)
+dates <- seq(as.Date("2017-01-01"), as.Date("2018-06-30"), by = "day")
+weekend <- as.POSIXlt(dates)$wday %in% c(0, 6)
+sessions <- rpois(length(dates), lambda = ifelse(weekend, 1700, 1300))
+crash <- dates >= as.Date("2017-09-20") & dates <= as.Date("2017-10-03")
+sessions[crash] <- rpois(sum(crash), 400)
+may <- dates >= as.Date("2018-05-01") & dates <= as.Date("2018-05-31")
+sessions[may] <- round(sessions[may] * seq(1, 0.1, length.out = sum(may)))
+sessions[dates > as.Date("2018-05-31")] <- 0
+app_sessions <- data.frame(date = format(dates, "%d/%m/%Y"),
+                           sessions = sessions)
+head(app_sessions)
 ```
 
-1\. We want to make a plot of death counts versus date. Confirm that the `date` variable are in fact dates and not strings.
+1\. We want to make a plot of the number of sessions versus date. Check whether the `date` variable contains dates or strings. If they are strings, convert them to dates with the appropriate __lubridate__ function, and save the result in `dat`.
 
-2\. Plot deaths versus date. 
+2\. Plot sessions versus date.
 
 3\. What time period is represented in these data?
 
-4\. Note that after May 31, 2018, the deaths are all 0. The data is probably not entered yet. We also see a drop off starting around May 1. Redefine `dat` to exclude observations taken on or after May 1, 2018. Then, remake the plot.
+4\. Note that after May 31, 2018, the sessions are all 0. The logs have probably not been uploaded yet. We also see a drop off starting around May 1. Redefine `dat` to exclude observations taken on or after May 1, 2018. Then, remake the plot.
 
 5\. Repeat the plot but use the day of the year on the x-axis instead of date.
- 
-6\. Compute the deaths per day by month.
 
-7\. Show the deaths per days for July and for September. What do you notice?
+6\. Compute the average number of sessions per day by month.
 
-8\. Compute deaths per week and make a plot.
+7\. Show the sessions per day for July and for September. What do you notice?
+
+8\. Compute the sessions per week and make a plot.
