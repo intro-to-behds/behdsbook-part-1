@@ -1,6 +1,10 @@
 project:
   type: book
   output-dir: docs
+  # Redirect pages for the Basic Statistics chapters, moved to Part 2 on
+  # 2 Nov 2026: they keep the old links (slides, Moodle) working.
+  resources:
+    - basic-stats/*.html
 
 execute:
   cache: true
@@ -68,15 +72,6 @@ book:
         - productivity/git.qmd
         - productivity/reproducible-projects.qmd
         - productivity/ai-assisted-coding.qmd
-
-    - part: basic-stats/intro-basic-stats.qmd
-      chapters:
-        - basic-stats/central-tendency-dispersion.qmd
-        - basic-stats/correlation.qmd
-        - basic-stats/comparing-two-groups.qmd
-        - basic-stats/anova.qmd
-        - basic-stats/multiple-comparisons.qmd
-        - basic-stats/chi-square.qmd
 
     # - part: productivity/installations.qmd
     #   chapters:
