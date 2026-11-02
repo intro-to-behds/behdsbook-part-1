@@ -22,6 +22,7 @@ under which this adaptation is distributed.
 - `productivity/intro-productivity.qmd`, `unix.qmd`, `git.qmd`, `reproducible-projects.qmd`: the running example project is now on app data breaches (`app_data_breaches`, directory `breaches`) instead of US gun murders. The original project (`rairizarry/murders`) is cited as the original edition's version, and the text says that the screenshots still show it.
 - `wrangling/dates-and-times.qmd`, exercises: Irizarry's `pr_death_counts` (Puerto Rico death counts) replaced by simulated daily sessions of a wellbeing app, with the same eight questions.
 - `basic-stats/comparing-two-groups.qmd`: the t-statistic follows a t-distribution only approximately in Welch's version (now stated); new section *Parametric and non-parametric tests*, with *Checking the assumptions* (independence, normality by group or of the paired differences, equal variances with `var.test()` and `car::leveneTest()`). Draft, not yet reviewed.
+- `basic-stats/comparing-two-groups.qmd`, *The t-distribution*: Student's and Welch's t-tests are now presented one after the other, each with its formula, degrees of freedom (pooled $N_1+N_2-2$ vs Welch–Satterthwaite) and a hand computation checked against `t.test()`, followed by *Student or Welch?*, a comparison table and why Welch is the default. Draft, not yet reviewed.
 
 ### Added
 - `R/importing-data.qmd`: a short section on the **haven** package (`read_sav()`, `read_dta()`, `read_sas()`, value labels), since SPSS files are common in psychology.

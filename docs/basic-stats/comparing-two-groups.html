@@ -422,7 +422,12 @@ window.Quarto = {
    
   <ul>
   <li><a href="#the-difference-between-two-averages" id="toc-the-difference-between-two-averages" class="nav-link active" data-scroll-target="#the-difference-between-two-averages"><span class="header-section-number">24.1</span> The difference between two averages</a></li>
-  <li><a href="#sec-t-dist" id="toc-sec-t-dist" class="nav-link" data-scroll-target="#sec-t-dist"><span class="header-section-number">24.2</span> The t-distribution</a></li>
+  <li><a href="#sec-t-dist" id="toc-sec-t-dist" class="nav-link" data-scroll-target="#sec-t-dist"><span class="header-section-number">24.2</span> The t-distribution</a>
+  <ul class="collapse">
+  <li><a href="#students-t-test" id="toc-students-t-test" class="nav-link" data-scroll-target="#students-t-test"><span class="header-section-number">24.2.1</span> Student’s t-test</a></li>
+  <li><a href="#welchs-t-test" id="toc-welchs-t-test" class="nav-link" data-scroll-target="#welchs-t-test"><span class="header-section-number">24.2.2</span> Welch’s t-test</a></li>
+  <li><a href="#student-or-welch" id="toc-student-or-welch" class="nav-link" data-scroll-target="#student-or-welch"><span class="header-section-number">24.2.3</span> Student or Welch?</a></li>
+  </ul></li>
   <li><a href="#the-t-test-in-r" id="toc-the-t-test-in-r" class="nav-link" data-scroll-target="#the-t-test-in-r"><span class="header-section-number">24.3</span> The t-test in R</a></li>
   <li><a href="#paired-designs" id="toc-paired-designs" class="nav-link" data-scroll-target="#paired-designs"><span class="header-section-number">24.4</span> Paired designs</a></li>
   <li><a href="#when-the-data-are-not-normal-the-wilcoxon-test" id="toc-when-the-data-are-not-normal-the-wilcoxon-test" class="nav-link" data-scroll-target="#when-the-data-are-not-normal-the-wilcoxon-test"><span class="header-section-number">24.5</span> When the data are not normal: the Wilcoxon test</a></li>
@@ -519,11 +524,11 @@ Draft
 </section>
 <section id="sec-t-dist" class="level2" data-number="24.2">
 <h2 data-number="24.2" class="anchored" data-anchor-id="sec-t-dist"><span class="header-section-number">24.2</span> The t-distribution</h2>
-<p>In psychology, samples are often much smaller than this. A lab study may test 15 or 20 participants per group. With small samples, plugging in <span class="math inline">\(s\)</span> for <span class="math inline">\(\sigma\)</span> adds extra variability that the normal approximation ignores. The statistic we use,</p>
+<p>In psychology, samples are often much smaller than this. A lab study may test 15 or 20 participants per group. With small samples, plugging in <span class="math inline">\(s\)</span> for <span class="math inline">\(\sigma\)</span> adds extra variability that the normal approximation ignores. The statistic we use has the general form</p>
 <p><span class="math display">\[
-t = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{s_1^2/N_1 + s_2^2/N_2}},
+t = \frac{\bar{X}_1 - \bar{X}_2}{\widehat{\mathrm{SE}}},
 \]</span></p>
-<p>is called a <em>t-statistic</em>. If the data in each group are approximately normal, theory tells us that <span class="math inline">\(t\)</span> approximately follows a <em>Student’s t-distribution</em>. (The distribution is exact for the classic version of the test, which assumes equal standard deviations in the two groups and pools them; for the version above, Welch’s, it is a very good approximation.) Like the normal, the t-distribution is bell-shaped and centred at 0, but it has heavier tails. How heavy depends on a number called the <em>degrees of freedom</em> (df), which grows with the sample size:</p>
+<p>the difference between the two averages divided by its estimated standard error, and is called a <em>t-statistic</em>. There are two versions of it, Student’s and Welch’s, which differ in how they estimate the standard error; we present them below. If the data in each group are approximately normal, theory tells us that <span class="math inline">\(t\)</span> follows a <em>Student’s t-distribution</em>, exactly for Student’s version and approximately for Welch’s. Like the normal, the t-distribution is bell-shaped and centred at 0, but it has heavier tails. How heavy depends on a number called the <em>degrees of freedom</em> (df), which grows with the sample size:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -539,6 +544,96 @@ t = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{s_1^2/N_1 + s_2^2/N_2}},
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 3.18 2.57 2.13 2.04 1.98</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>For a few degrees of freedom, the multiplier is well above 1.96; by about 30, it is close; for large samples, the t-distribution and the normal are practically the same. This is why the t-distribution matters most exactly where behavioural studies often are: small samples.</p>
+<section id="students-t-test" class="level3" data-number="24.2.1">
+<h3 data-number="24.2.1" class="anchored" data-anchor-id="students-t-test"><span class="header-section-number">24.2.1</span> Student’s t-test</h3>
+<p>The classic version, <em>Student’s t-test</em>, assumes that the two populations have the same standard deviation, <span class="math inline">\(\sigma_1 = \sigma_2 = \sigma\)</span>. If they do, <span class="math inline">\(s_1\)</span> and <span class="math inline">\(s_2\)</span> are two estimates of the same <span class="math inline">\(\sigma\)</span>, and we can combine them into a single <em>pooled</em> estimate, a weighted average of the two variances in which the larger group counts more:</p>
+<p><span class="math display">\[
+s_p^2 = \frac{(N_1 - 1)\,s_1^2 + (N_2 - 1)\,s_2^2}{N_1 + N_2 - 2}.
+\]</span></p>
+<p>Putting <span class="math inline">\(s_p\)</span> in place of both <span class="math inline">\(\sigma_1\)</span> and <span class="math inline">\(\sigma_2\)</span> in the standard error gives</p>
+<p><span class="math display">\[
+t = \frac{\bar{X}_1 - \bar{X}_2}{s_p\sqrt{1/N_1 + 1/N_2}}, \qquad \mathrm{df} = N_1 + N_2 - 2.
+\]</span></p>
+<p>If the data in each group are normal and the two standard deviations are equal, this <span class="math inline">\(t\)</span> follows a t-distribution with <span class="math inline">\(N_1 + N_2 - 2\)</span> degrees of freedom <em>exactly</em>. For the UX scores:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>n1 <span class="ot">&lt;-</span> ux_sum<span class="sc">$</span>n[<span class="dv">1</span>]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>n2 <span class="ot">&lt;-</span> ux_sum<span class="sc">$</span>n[<span class="dv">2</span>]</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>s1 <span class="ot">&lt;-</span> ux_sum<span class="sc">$</span>sd[<span class="dv">1</span>]</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>s2 <span class="ot">&lt;-</span> ux_sum<span class="sc">$</span>sd[<span class="dv">2</span>]</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>s_p <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(((n1 <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span>s1<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> (n2 <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span>s2<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> (n1 <span class="sc">+</span> n2 <span class="sc">-</span> <span class="dv">2</span>))</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>t_student <span class="ot">&lt;-</span> ux_diff <span class="sc">/</span> (s_p <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">/</span>n1 <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span>n2))</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>df_student <span class="ot">&lt;-</span> n1 <span class="sc">+</span> n2 <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">t =</span> t_student, <span class="at">df =</span> df_student)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      t     df </span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   16.3 1048.0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="welchs-t-test" class="level3" data-number="24.2.2">
+<h3 data-number="24.2.2" class="anchored" data-anchor-id="welchs-t-test"><span class="header-section-number">24.2.2</span> Welch’s t-test</h3>
+<p><em>Welch’s t-test</em> drops the assumption of equal standard deviations. Each group keeps its own variance, and the standard error is the one we used at the start of the chapter:</p>
+<p><span class="math display">\[
+t = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{s_1^2/N_1 + s_2^2/N_2}}.
+\]</span></p>
+<p>The price is that this <span class="math inline">\(t\)</span> follows a t-distribution only <em>approximately</em>. The approximation is very good if the degrees of freedom are computed with the <em>Welch–Satterthwaite</em> formula:</p>
+<p><span class="math display">\[
+\mathrm{df} = \frac{\left(s_1^2/N_1 + s_2^2/N_2\right)^2}{\dfrac{\left(s_1^2/N_1\right)^2}{N_1 - 1} + \dfrac{\left(s_2^2/N_2\right)^2}{N_2 - 1}}.
+\]</span></p>
+<p>You don’t need to remember it: R computes it for us. It is usually not a whole number, and it always lies between <span class="math inline">\(\min(N_1, N_2) - 1\)</span> and <span class="math inline">\(N_1 + N_2 - 2\)</span>. For the UX scores:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>t_welch <span class="ot">&lt;-</span> ux_diff <span class="sc">/</span> <span class="fu">sqrt</span>(s1<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n1 <span class="sc">+</span> s2<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n2)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df_welch <span class="ot">&lt;-</span> (s1<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n1 <span class="sc">+</span> s2<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n2)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  ((s1<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n1)<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(n1 <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">+</span> (s2<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>n2)<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(n2 <span class="sc">-</span> <span class="dv">1</span>))</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">t =</span> t_welch, <span class="at">df =</span> df_welch)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     t    df </span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  15.9 374.4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="student-or-welch" class="level3" data-number="24.2.3">
+<h3 data-number="24.2.3" class="anchored" data-anchor-id="student-or-welch"><span class="header-section-number">24.2.3</span> Student or Welch?</h3>
+<p>The two versions differ in one assumption, and everything else follows from it:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Student’s t-test</th>
+<th>Welch’s t-test</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Standard deviations</td>
+<td>assumed equal, pooled</td>
+<td>estimated separately</td>
+</tr>
+<tr class="even">
+<td>Standard error</td>
+<td><span class="math inline">\(s_p\sqrt{1/N_1 + 1/N_2}\)</span></td>
+<td><span class="math inline">\(\sqrt{s_1^2/N_1 + s_2^2/N_2}\)</span></td>
+</tr>
+<tr class="odd">
+<td>Degrees of freedom</td>
+<td><span class="math inline">\(N_1 + N_2 - 2\)</span></td>
+<td>Welch–Satterthwaite</td>
+</tr>
+<tr class="even">
+<td>Distribution of <span class="math inline">\(t\)</span></td>
+<td>exactly t</td>
+<td>approximately t</td>
+</tr>
+<tr class="odd">
+<td>In R <code>t.test()</code></td>
+<td><code>var.equal = TRUE</code></td>
+<td>the default</td>
+</tr>
+</tbody>
+</table>
+<p>With the UX scores, the two <span class="math inline">\(t\)</span> values are close (16.28 and 15.93), because the two standard deviations are similar, but the degrees of freedom are not (1048 and 374.4), because the groups have very different sizes. When the two groups have the same size, the two standard errors are identical, so the two <span class="math inline">\(t\)</span> values are the same, and only the degrees of freedom differ.</p>
+<p>The differences matter when both the sizes and the standard deviations differ. If the smaller group is also the more variable one, the pooled <span class="math inline">\(s_p\)</span> is dominated by the larger, less variable group: Student’s test underestimates the standard error and gives too many false positives. Welch’s test does not have this problem, and when the standard deviations are in fact equal it loses almost nothing. This is why R, and this book, use Welch’s test by default.</p>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -550,44 +645,45 @@ t = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{s_1^2/N_1 + s_2^2/N_2}},
 </div>
 </div>
 </section>
+</section>
 <section id="the-t-test-in-r" class="level2" data-number="24.3">
 <h2 data-number="24.3" class="anchored" data-anchor-id="the-t-test-in-r"><span class="header-section-number">24.3</span> The t-test in R</h2>
 <p>The function <code>t.test()</code> computes the t-statistic, its degrees of freedom, the p-value for the null hypothesis that the two population means are equal, and a confidence interval for the difference:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(ux_score <span class="sc">~</span> device, <span class="at">data =</span> ux_scores)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Welch Two Sample t-test</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data:  ux_score by device</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; t = 16, df = 374, p-value &lt;2e-16</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true difference in means between group desktop and group mobile is not equal to 0</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  11.7 15.0</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; mean in group desktop  mean in group mobile </span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                  59.1                  45.7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(ux_score <span class="sc">~</span> device, <span class="at">data =</span> ux_scores)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Welch Two Sample t-test</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data:  ux_score by device</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; t = 16, df = 374, p-value &lt;2e-16</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true difference in means between group desktop and group mobile is not equal to 0</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  11.7 15.0</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; mean in group desktop  mean in group mobile </span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                  59.1                  45.7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The formula <code>ux_score ~ device</code> reads “UX score as a function of device”: the outcome goes on the left, the grouping variable on the right. The output shows the two group means, the confidence interval for their difference, and a p-value so small that R prints it in scientific notation.</p>
-<p>By default, R runs <em>Welch’s t-test</em>, which does not assume that the two groups have the same standard deviation. This is the version we recommend; the classic Student’s t-test, which assumes equal variances, is obtained with <code>var.equal = TRUE</code>.</p>
+<p>By default, R runs Welch’s t-test, the version we recommend; Student’s t-test is obtained with <code>var.equal = TRUE</code> (see <a href="#sec-t-dist" class="quarto-xref"><span>Section 24.2</span></a> for the differences).</p>
 <p>To see why sample size matters, suppose we had run a small lab study with only 15 users per device:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>ux_small <span class="ot">&lt;-</span> ux_scores <span class="sc">|&gt;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(device) <span class="sc">|&gt;</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">15</span>) <span class="sc">|&gt;</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(ux_score <span class="sc">~</span> device, <span class="at">data =</span> ux_small)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Welch Two Sample t-test</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data:  ux_score by device</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; t = 0.8, df = 17, p-value = 0.4</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true difference in means between group desktop and group mobile is not equal to 0</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  -6.93 15.66</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; mean in group desktop  mean in group mobile </span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                  52.3                  48.0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>ux_small <span class="ot">&lt;-</span> ux_scores <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(device) <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">15</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(ux_score <span class="sc">~</span> device, <span class="at">data =</span> ux_small)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Welch Two Sample t-test</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data:  ux_score by device</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; t = 0.8, df = 17, p-value = 0.4</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true difference in means between group desktop and group mobile is not equal to 0</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  -6.93 15.66</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; mean in group desktop  mean in group mobile </span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                  52.3                  48.0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The same population difference is there, but the confidence interval, from -6.9 to 15.7, now includes 0, and the p-value is 0.43. This is the lack of <em>power</em> described in <a href="https://intro-to-behds.github.io/behdsbook-part-2/inference/hypothesis-testing.html"><em>Hypothesis Testing</em></a> in Part 2: a small study can easily miss a real difference. A p-value above 0.05 does not show that the groups are the same; it only shows that this study could not tell.</p>
 </section>
@@ -595,50 +691,50 @@ t = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{s_1^2/N_1 + s_2^2/N_2}},
 <h2 data-number="24.4" class="anchored" data-anchor-id="paired-designs"><span class="header-section-number">24.4</span> Paired designs</h2>
 <p>So far, the two groups contained different people: a <em>between-subjects</em> design. In many experiments, the same participants are measured in both conditions: a <em>within-subjects</em> design (see <a href="https://intro-to-behds.github.io/behdsbook-part-2/behav/experimental-designs.html"><em>Experimental Designs in Psychology</em></a> in Part 2). In a Stroop task, for example, each participant responds to congruent trials (the word <em>red</em> printed in red) and incongruent trials (the word <em>red</em> printed in green). The following data are simulated: each of 20 participants has their own overall speed, and incongruent trials add some extra time.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">10</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">20</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>speed <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">500</span>, <span class="dv">80</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>stroop <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">participant =</span> <span class="fu">sprintf</span>(<span class="st">"P%02d"</span>, <span class="dv">1</span><span class="sc">:</span>n),</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">congruent =</span> <span class="fu">round</span>(speed <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="dv">20</span>)),</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">incongruent =</span> <span class="fu">round</span>(speed <span class="sc">+</span> <span class="dv">30</span> <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="dv">20</span>)))</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(stroop)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   participant congruent incongruent</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         P01       490         553</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2         P02       442         500</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3         P03       377         404</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4         P04       410         499</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5         P05       498         534</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6         P06       524         561</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">10</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>speed <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">500</span>, <span class="dv">80</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>stroop <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">participant =</span> <span class="fu">sprintf</span>(<span class="st">"P%02d"</span>, <span class="dv">1</span><span class="sc">:</span>n),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">congruent =</span> <span class="fu">round</span>(speed <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="dv">20</span>)),</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">incongruent =</span> <span class="fu">round</span>(speed <span class="sc">+</span> <span class="dv">30</span> <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="dv">20</span>)))</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(stroop)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   participant congruent incongruent</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         P01       490         553</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2         P02       442         500</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3         P03       377         404</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4         P04       410         499</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5         P05       498         534</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6         P06       524         561</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Participants differ a lot from each other in overall speed, but each participant is slower on incongruent trials. The two measurements of the same person are not independent, so the two-sample formula above does not apply. Instead, we compute each participant’s difference and test whether the average difference is 0. This is the <em>paired t-test</em>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(stroop<span class="sc">$</span>incongruent, stroop<span class="sc">$</span>congruent, <span class="at">paired =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Paired t-test</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data:  stroop$incongruent and stroop$congruent</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; t = 10, df = 19, p-value = 9e-09</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true mean difference is not equal to 0</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  37.3 57.9</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; mean difference </span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;            47.6</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(stroop<span class="sc">$</span>incongruent, stroop<span class="sc">$</span>congruent, <span class="at">paired =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Paired t-test</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data:  stroop$incongruent and stroop$congruent</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; t = 10, df = 19, p-value = 9e-09</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true mean difference is not equal to 0</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  37.3 57.9</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; mean difference </span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;            47.6</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Compare it with what we would get if we wrongly treated the two columns as independent groups:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(stroop<span class="sc">$</span>incongruent, stroop<span class="sc">$</span>congruent)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Welch Two Sample t-test</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data:  stroop$incongruent and stroop$congruent</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; t = 2, df = 38, p-value = 0.03</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true difference in means is not equal to 0</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   4.44 90.76</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; mean of x mean of y </span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       528       480</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(stroop<span class="sc">$</span>incongruent, stroop<span class="sc">$</span>congruent)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Welch Two Sample t-test</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data:  stroop$incongruent and stroop$congruent</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; t = 2, df = 38, p-value = 0.03</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true difference in means is not equal to 0</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 95 percent confidence interval:</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   4.44 90.76</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; sample estimates:</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; mean of x mean of y </span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       528       480</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The paired confidence interval, from 37 to 58 ms, is much narrower than the unpaired one, from 4 to 91 ms. Pairing removes the large differences between people from the comparison, leaving only the differences between conditions within each person. This is the main statistical advantage of within-subjects designs, and the reason the analysis must match the design.</p>
 </section>
@@ -646,28 +742,28 @@ t = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{s_1^2/N_1 + s_2^2/N_2}},
 <h2 data-number="24.5" class="anchored" data-anchor-id="when-the-data-are-not-normal-the-wilcoxon-test"><span class="header-section-number">24.5</span> When the data are not normal: the Wilcoxon test</h2>
 <p>The t-test compares means, and means are sensitive to skewed distributions and outliers (<a href="central-tendency-dispersion.html" class="quarto-xref"><span>Chapter 22</span></a>). Reaction times are a typical case: there is a floor below which no one can respond, and a long tail of slow responses, including occasional lapses of attention. Let’s take a small sample of 20 participants per group from <code>reaction_times</code>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>rt_small <span class="ot">&lt;-</span> reaction_times <span class="sc">|&gt;</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sex) <span class="sc">|&gt;</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">20</span>) <span class="sc">|&gt;</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(rt_ms <span class="sc">~</span> sex, <span class="at">data =</span> rt_small)<span class="sc">$</span>p.value</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.00216</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>rt_small <span class="ot">&lt;-</span> reaction_times <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sex) <span class="sc">|&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">20</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(rt_ms <span class="sc">~</span> sex, <span class="at">data =</span> rt_small)<span class="sc">$</span>p.value</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.00216</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now suppose that one participant had a lapse of attention and their reaction time was recorded as 2,500 ms:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>rt_lapse <span class="ot">&lt;-</span> rt_small</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>rt_lapse<span class="sc">$</span>rt_ms[<span class="fu">which</span>(rt_lapse<span class="sc">$</span>sex <span class="sc">==</span> <span class="st">"Male"</span>)[<span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="dv">2500</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(rt_ms <span class="sc">~</span> sex, <span class="at">data =</span> rt_lapse)<span class="sc">$</span>p.value</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.589</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>rt_lapse <span class="ot">&lt;-</span> rt_small</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>rt_lapse<span class="sc">$</span>rt_ms[<span class="fu">which</span>(rt_lapse<span class="sc">$</span>sex <span class="sc">==</span> <span class="st">"Male"</span>)[<span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="dv">2500</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(rt_ms <span class="sc">~</span> sex, <span class="at">data =</span> rt_lapse)<span class="sc">$</span>p.value</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.589</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>A single value changed the conclusion completely: the lapse inflates both the mean and the standard deviation of one group.</p>
 <p>The <em>Wilcoxon rank-sum test</em>, also known as the <em>Mann–Whitney test</em>, avoids this problem by replacing each value with its rank: the smallest value gets rank 1, the next rank 2, and so on, across both groups. The test then asks whether the ranks in one group tend to be higher than in the other. A lapse of 2,500 ms gets the highest rank, but it is just one rank higher than the next-slowest response, so it cannot dominate the result:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(rt_ms <span class="sc">~</span> sex, <span class="at">data =</span> rt_small)<span class="sc">$</span>p.value</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.00143</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(rt_ms <span class="sc">~</span> sex, <span class="at">data =</span> rt_lapse)<span class="sc">$</span>p.value</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.00948</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(rt_ms <span class="sc">~</span> sex, <span class="at">data =</span> rt_small)<span class="sc">$</span>p.value</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.00143</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(rt_ms <span class="sc">~</span> sex, <span class="at">data =</span> rt_lapse)<span class="sc">$</span>p.value</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.00948</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Because it uses only the order of the values, the Wilcoxon test is also appropriate for ordinal data, such as single Likert items, where the distance between “agree” and “strongly agree” is not known (see <a href="https://intro-to-behds.github.io/behdsbook-part-2/behav/measurement.html"><em>Measurement in Psychology</em></a> in Part 2). The ceiling example in that chapter shows a case where a t-test and a Wilcoxon test disagree for exactly this reason.</p>
 <div class="callout callout-style-simple callout-note">
@@ -682,13 +778,13 @@ t = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{s_1^2/N_1 + s_2^2/N_2}},
 </div>
 <p>For paired data, the corresponding test is the <em>Wilcoxon signed-rank test</em>, which ranks the within-person differences:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(stroop<span class="sc">$</span>incongruent, stroop<span class="sc">$</span>congruent, <span class="at">paired =</span> <span class="cn">TRUE</span>, <span class="at">exact =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Wilcoxon signed rank test with continuity correction</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data:  stroop$incongruent and stroop$congruent</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; V = 210, p-value = 1e-04</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true location shift is not equal to 0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(stroop<span class="sc">$</span>incongruent, stroop<span class="sc">$</span>congruent, <span class="at">paired =</span> <span class="cn">TRUE</span>, <span class="at">exact =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Wilcoxon signed rank test with continuity correction</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; data:  stroop$incongruent and stroop$congruent</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; V = 210, p-value = 1e-04</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; alternative hypothesis: true location shift is not equal to 0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We use <code>exact = FALSE</code> because some participants have identical differences (ties), and with ties R uses a normal approximation instead of the exact distribution.</p>
 </section>
@@ -706,15 +802,15 @@ t = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{s_1^2/N_1 + s_2^2/N_2}},
 <h3 data-number="24.6.1" class="anchored" data-anchor-id="checking-the-assumptions"><span class="header-section-number">24.6.1</span> Checking the assumptions</h3>
 <p><em>Independence</em> is not checked on the data: it follows from the design. Different people in the two groups give independent observations; the same people measured twice do not, and need a paired test.</p>
 <p><em>Normality within each group</em> is best checked with plots: a histogram or a boxplot per group, or a QQ plot per group (see <a href="https://intro-to-behds.github.io/behdsbook-part-2/summaries/comparing-groups.html#sec-qqplots"><em>Assessing normality with QQ plots</em></a> in Part 2). For a paired test, what must be approximately normal are the within-person differences, not the two conditions separately. With large samples, the Central Limit Theorem makes this assumption less important, as noted above. Formal tests of normality exist, such as the Shapiro–Wilk test (<code>shapiro.test()</code>), but they are of limited help: with large samples they flag deviations too small to matter, and with small samples they miss large ones.</p>
-<p><em>Equal standard deviations</em> are assumed only by the classic Student’s t-test (<code>var.equal = TRUE</code>). We can reason about them before seeing the data, for example from past studies with the same measure, or because slower groups usually have more variable reaction times. We can also test them, with the null hypothesis that the two variances are equal. The F test, <code>var.test()</code>, assumes normal data; Levene’s test, <code>leveneTest()</code> in the <strong>car</strong> package, is more robust to non-normal data:</p>
+<p><em>Equal standard deviations</em> are assumed only by the classic Student’s t-test (<code>var.equal = TRUE</code>; see <a href="#sec-t-dist" class="quarto-xref"><span>Section 24.2</span></a>). We can reason about them before seeing the data, for example from past studies with the same measure, or because slower groups usually have more variable reaction times. We can also test them, with the null hypothesis that the two variances are equal. The F test, <code>var.test()</code>, assumes normal data; Levene’s test, <code>leveneTest()</code> in the <strong>car</strong> package, is more robust to non-normal data:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var.test</span>(ux_score <span class="sc">~</span> device, <span class="at">data =</span> ux_scores)<span class="sc">$</span>p.value</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.423</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">leveneTest</span>(ux_score <span class="sc">~</span> device, <span class="at">data =</span> ux_scores)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Levene's Test for Homogeneity of Variance (center = median)</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         Df F value Pr(&gt;F)</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; group    1    0.01   0.92</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       1048</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var.test</span>(ux_score <span class="sc">~</span> device, <span class="at">data =</span> ux_scores)<span class="sc">$</span>p.value</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.423</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">leveneTest</span>(ux_score <span class="sc">~</span> device, <span class="at">data =</span> ux_scores)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Levene's Test for Homogeneity of Variance (center = median)</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         Df F value Pr(&gt;F)</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; group    1    0.01   0.92</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       1048</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Here, neither test gives a reason to doubt that the two standard deviations are similar. But a large p-value does not prove that they are equal (see <a href="https://intro-to-behds.github.io/behdsbook-part-2/inference/hypothesis-testing.html"><em>Hypothesis Testing</em></a> in Part 2). This is one more reason to use Welch’s t-test by default: it works whether the standard deviations are equal or not.</p>
 </section>
@@ -758,9 +854,9 @@ t = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{s_1^2/N_1 + s_2^2/N_2}},
 d = \frac{\bar{X}_1 - \bar{X}_2}{s_{\text{pooled}}}, \quad s_{\text{pooled}} = \sqrt{\frac{(N_1 - 1)s_1^2 + (N_2 - 1)s_2^2}{N_1 + N_2 - 2}}
 \]</span></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>s_pooled <span class="ot">&lt;-</span> <span class="fu">with</span>(ux_sum, <span class="fu">sqrt</span>(((n[<span class="dv">1</span>] <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span>sd[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> (n[<span class="dv">2</span>] <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span>sd[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span>(<span class="fu">sum</span>(n) <span class="sc">-</span> <span class="dv">2</span>)))</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>ux_diff <span class="sc">/</span> s_pooled</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 1.2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>s_pooled <span class="ot">&lt;-</span> <span class="fu">with</span>(ux_sum, <span class="fu">sqrt</span>(((n[<span class="dv">1</span>] <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span>sd[<span class="dv">1</span>]<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> (n[<span class="dv">2</span>] <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span>sd[<span class="dv">2</span>]<span class="sc">^</span><span class="dv">2</span>)<span class="sc">/</span>(<span class="fu">sum</span>(n) <span class="sc">-</span> <span class="dv">2</span>)))</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>ux_diff <span class="sc">/</span> s_pooled</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 1.2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>A difference of about 1.2 standard deviations is large by the usual rules of thumb (0.2 small, 0.5 medium, 0.8 large), which are, like the 0.05 threshold, conventions rather than laws.</p>
 </section>
