@@ -383,6 +383,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<p><em>Original chapter by Rafael A. Irizarry, from <a href="https://rafalab.dfci.harvard.edu/dsbook-part-1/wrangling/web-scraping.html"><em>Introduction to Data Science</em></a>. Unchanged in this edition, so its examples still use Irizarry’s original data.</em></p>
 <p>In today’s digital age, the internet serves as a treasure trove of data. This chapter describes approaches for retrieving this data and preparing for data analysis. We focus on two primary methodologies: scraping html and API integration. Scraping html allows us to programmatically navigate and extract data from web pages, transforming the unstructured content of the HTML pages into structured data ready for analysis. On the other hand, APIs provide a more direct and efficient and structured access to data provided by web services. This chapter aims to introduce the basics needed to starting leveraging the web’s vast data resources.</p>
 <section id="scraping-html" class="level2" data-number="15.1">
 <h2 data-number="15.1" class="anchored" data-anchor-id="scraping-html"><span class="header-section-number">15.1</span> Scraping HTML</h2>
@@ -482,7 +483,7 @@ title="List of U.S. states and territories by population"&gt;Population&lt;/a&gt
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> tab <span class="sc">|&gt;</span> <span class="fu">setNames</span>(<span class="fu">c</span>(<span class="st">"state"</span>, <span class="st">"population"</span>, <span class="st">"total"</span>, <span class="st">"murder_rate"</span>)) </span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(tab)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 x 4</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 4</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   state      population total murder_rate</span></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;       &lt;dbl&gt;</span></span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 Alabama    4,853,875  348           7.2</span></span>
@@ -490,7 +491,7 @@ title="List of U.S. states and territories by population"&gt;Population&lt;/a&gt
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 Arizona    6,817,565  309           4.5</span></span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 Arkansas   2,977,853  181           6.1</span></span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 California 38,993,940 1,861         4.8</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # i 1 more row</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 1 more row</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We still have some wrangling to do. For example, we need to remove the commas and turn characters into numbers. Before continuing with this, we will learn a more general approach to extracting information from web sites.</p>
 </section>

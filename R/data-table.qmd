@@ -1,5 +1,7 @@
 # data.table {#sec-data.table}
 
+_Original chapter by Rafael A. Irizarry, from [*Introduction to Data Science*](https://rafalab.dfci.harvard.edu/dsbook-part-1/R/data-table.html). Adapted by Giorgio Arcara: the examples use `app_data_breaches` and `reaction_times` instead of the US murders and heights data; the text is otherwise Irizarry's, with small edits to fit the new examples._
+
 In this book, we use tidyverse packages, primarily because they offer readability that is beneficial for beginners. This readability allows us to emphasize data analysis and statistical concepts. However, while tidyverse is beginner-friendly, there are other methods in R that are more efficient and can handle larger datasets more effectively. One such package is **data.table**, which is widely used in the R community. We'll briefly introduce **data.table** in this chapter. For those interested in diving deeper, there are numerous online resources, including the mentioned introduction[^data_table-1].
 
 [^data_table-1]: <https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html>

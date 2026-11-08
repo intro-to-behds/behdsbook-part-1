@@ -1,6 +1,6 @@
 # AI and responsible coding {#sec-ai-responsible-coding}
 
-_by Giorgio Arcara_
+_Written for this book by Giorgio Arcara. This chapter is not in Irizarry's *Introduction to Data Science*._
 
 ## The current situation
 

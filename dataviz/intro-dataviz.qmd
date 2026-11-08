@@ -1,5 +1,7 @@
 # Data Visualization {.unnumbered}
 
+_Original chapter by Rafael A. Irizarry, from [*Introduction to Data Science*](https://rafalab.dfci.harvard.edu/dsbook-part-1/dataviz/intro-dataviz.html). Adapted by Giorgio Arcara: the four motivating examples use app data breaches, fitness-app downloads, cognitive test scores and global tech adoption instead of murders, vaccines, exam scores and Gapminder; the text is otherwise Irizarry's, with small edits to fit the new examples._
+
 Looking at the numbers and character strings that define a dataset is rarely useful. To convince yourself, print and stare at a table of reported data-breach incidents by US state:
 
 ```{r, message=FALSE, warning=FALSE}
