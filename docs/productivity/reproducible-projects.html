@@ -137,6 +137,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <a href="../">Introduction to Behavioural Data Science</a> 
         <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/intro-to-behds/behdsbook-part-1/releases/download/book-pdf/Introduction-to-Behavioural-Data-Science.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+    <a href="https://github.com/intro-to-behds/behdsbook-part-1/releases/download/book-pdf/Introduction-to-Behavioural-Data-Science.epub" title="Download EPUB" class="quarto-navigation-tool px-1" aria-label="Download EPUB"><i class="bi bi-book"></i></a>
     <a href="https://github.com/intro-to-behds/behdsbook-part-1" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
@@ -391,6 +392,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<p><em>Original chapter by Rafael A. Irizarry, from <a href="https://rafalab.dfci.harvard.edu/dsbook-part-1/productivity/reproducible-projects.html"><em>Introduction to Data Science</em></a>. Adapted by Giorgio Arcara: the example project is on app data breaches instead of US murders; the screenshots still come from the original edition.</em></p>
 <p>The final product of a data analysis project is often a report. Many scientific publications can be thought of as a final report of a data analysis. The same is true for news articles based on data, an analysis report for your company, or lecture notes for a class on how to analyze data. The reports are often on paper or in a PDF that includes a textual description of the findings along with some figures and tables resulting from the analysis.</p>
 <p>Imagine that after you finish the analysis and the report, you are told that you were given the wrong dataset, you are sent a new one and you are asked to run the same analysis. Or what if you realize that a mistake was made and you need to re-examine the code, fix the error, and re-run the analysis? Or imagine that someone you are training wants to see your code and be able to reproduce the results to learn about your approach?</p>
 <p>Situations like the ones just described are actually quite common for a data analyst. Here, we describe how you can keep your projects organized with RStudio so that re-running an analysis is straight-forward. We then demonstrate how to generate reproducible reports with quarto or R markdown. The <strong>knitR</strong> package will greatly help with recreating reports with minimal work. This is possible due to the fact that markdown documents permit code and textual descriptions to be combined into the same document, and the figures and tables produced by the code are automatically added to the document.</p>

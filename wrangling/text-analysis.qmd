@@ -1,5 +1,7 @@
 # Text analysis
 
+_Original chapter by Rafael A. Irizarry, from [*Introduction to Data Science*](https://rafalab.dfci.harvard.edu/dsbook-part-1/wrangling/text-analysis.html). Adapted by Giorgio Arcara: the case study on Trump's tweets was replaced by a new one comparing human and ChatGPT answers (HC3 corpus); the general text is Irizarry's._
+
 With the exception of labels used to represent categorical data, we have focused on numerical data. But in many applications, data starts as text. Well-known examples are spam filtering, cyber-crime prevention, counter-terrorism, and sentiment analysis. In all these cases, the raw data is composed of free-form text. Our task is to extract insights from these data. In this section, we learn how to generate useful numerical summaries from text data to which we can apply some of the powerful data visualization and analysis techniques we have learned.
 
 ## Case study: human versus AI answers

@@ -1,5 +1,7 @@
 # Locales {#sec-locales}
 
+_Original chapter by Rafael A. Irizarry, from [*Introduction to Data Science*](https://rafalab.dfci.harvard.edu/dsbook-part-1/wrangling/locales.html). Unchanged in this edition, except for links and package names._
+
 Computer settings change depending on language and location, and being unaware of this possibility can make certain data wrangling challenges difficult to overcome. 
 
 The purpose of _locales_ is to group together common settings that can affect:

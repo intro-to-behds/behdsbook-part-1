@@ -18,6 +18,7 @@ fixsh.R
 *.tex
 !before-body.tex
 *.pdf
+*.epub
 ziptex
 crc-stuff/
 irizarrycr9781032116556introductiontodatasciencep/

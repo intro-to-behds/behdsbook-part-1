@@ -1,5 +1,7 @@
 # Data visualization in practice {#sec-dataviz-in-practice}
 
+_Original chapter by Rafael A. Irizarry, from [*Introduction to Data Science*](https://rafalab.dfci.harvard.edu/dsbook-part-1/dataviz/dataviz-in-practice.html). Adapted by Giorgio Arcara: the case studies use global tech adoption instead of Gapminder, and fitness-app downloads instead of vaccines and infectious diseases; the text is otherwise Irizarry's, with small edits to fit the new examples._
+
 In this chapter, we will demonstrate how relatively simple **ggplot2** code can create insightful and aesthetically pleasing plots. As motivation we will create plots that help us better understand trends in global technology adoption. We will implement what we learned in @sec-ggplot2 and @sec-dataviz-principles and learn how to augment the code to perfect the plots. As we go through our case study, we will describe relevant general data visualization principles and learn concepts such as *faceting*, *time series plots*, *transformations*, and *ridge plots*.
 
 ## Case study 1: rethinking the digital divide

@@ -34,6 +34,9 @@ book:
       - icon: file-pdf
         href: https://github.com/intro-to-behds/behdsbook-part-1/releases/download/book-pdf/Introduction-to-Behavioural-Data-Science.pdf
         text: Download PDF
+      - icon: book
+        href: https://github.com/intro-to-behds/behdsbook-part-1/releases/download/book-pdf/Introduction-to-Behavioural-Data-Science.epub
+        text: Download EPUB
 
   chapters:
     - index.qmd
@@ -86,6 +89,9 @@ format:
     code-link: true
     author-meta: "Rafael A. Irizarry (original); adapted by Giorgio Arcara for Behavioural Data Science"
     callout-appearance: simple
+  epub:
+    cover-image: cover.png
+
   pdf:
     documentclass: krantz
     classoption: [krantz2,10pt,twoside,onecolumn,final,openright]

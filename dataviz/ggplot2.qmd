@@ -1,5 +1,7 @@
 # ggplot2 {#sec-ggplot2}
 
+_Original chapter by Rafael A. Irizarry, from [*Introduction to Data Science*](https://rafalab.dfci.harvard.edu/dsbook-part-1/dataviz/ggplot2.html). Adapted by Giorgio Arcara: the examples use `app_data_breaches` instead of the US murders data; the text is otherwise Irizarry's, with small edits to fit the new examples._
+
 Exploratory data visualization is perhaps the greatest strength of R. One can quickly go from idea to data to plot with a unique balance of flexibility and ease. For example, Excel may be easier than R for some plots, but it is nowhere near as flexible. D3.js may be more flexible and powerful than R, but it takes much longer to generate a plot.
 
 Throughout the book, we will be creating plots using the **ggplot2**[^ggplot2-1] package.
