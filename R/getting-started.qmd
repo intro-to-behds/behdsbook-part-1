@@ -1,6 +1,6 @@
 # Getting started {#sec-getting-started}
 
-_Original chapter by Rafael A. Irizarry, from [*Introduction to Data Science*](https://rafalab.dfci.harvard.edu/dsbook-part-1/R/getting-started.html). Adapted by Giorgio Arcara: instructions to install `behdslabs` were added; the screenshots still come from the original edition._
+_Original chapter by Rafael A. Irizarry, from [*Introduction to Data Science*](https://rafalab.dfci.harvard.edu/dsbook-part-1/R/getting-started.html). Adapted by Giorgio Arcara: new instructions to install the course package; the screenshots still come from the original edition; the text is otherwise Irizarry's. Details in the [CHANGELOG](https://github.com/intro-to-behds/behdsbook-part-1/blob/main/CHANGELOG.md)._
 
 
 ## Why R?
