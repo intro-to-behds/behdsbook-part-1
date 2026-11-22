@@ -26,7 +26,10 @@ The websites for the two parts of the book are the following:
 
 # Disclaimers
 
+::: {.callout-warning}
+## Please read before using this material
 **The data in this book are not real: do not interpret or cite them as genuine behavioural data.**
+:::
 
 To fit a behavioural-science course, the examples were "reflavoured". The datasets of the original book (US murders, election polls, heights, Gapminder and others) were replaced with behavioural ones: reaction times, questionnaire scores, app usage, survey data. In most cases the numbers still come from the original real datasets, and only the variable names, the labels and the story around them were changed. Other datasets are simulated around fictional scenarios, with the code shown in the chapter or the exercise (for example the wellbeing-app sessions in the exercises of @sec-dates-and-times). The text was edited to fit the new examples. The changes, chapter by chapter, are listed in the [CHANGELOG](https://github.com/intro-to-behds/behdsbook-part-1/blob/main/CHANGELOG.md).
 
