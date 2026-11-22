@@ -8,6 +8,7 @@ under which this adaptation is distributed.
 ## [Unreleased] — Behavioural Data Science adaptation
 
 ### Changed
+- **Disclaimer rewritten** (2026-11-22): in `index.qmd` the warning callout under *Disclaimers* is replaced by plain text: one sentence saying the data are not real, a paragraph on how the examples were reflavoured, and a paragraph declaring the use of Claude (Sonnet 4.6, Sonnet 5, Opus 5, Opus 5.5) for programming, language revision, sketching drafts and reflavouring.
 - Retitled to "Introduction to Behavioural Data Science".
 - Every chapter (and part-intro, introduction and reading page) now opens with a two-sentence italic attribution line under its title: who wrote the original (Irizarry, with a link to his chapter, or this book's author) and what changed in this edition. `productivity/ai-assisted-coding.qmd`: the line replaces `_by Giorgio Arcara_`. The convention for new chapters is in `CLAUDE.md`.
 - Split `index.qmd` preface/acknowledgments into separate, clearly labeled sections for the adaptation vs. the original Irizarry edition.
