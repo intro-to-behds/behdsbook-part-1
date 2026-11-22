@@ -8,6 +8,7 @@ under which this adaptation is distributed.
 ## [Unreleased] — Behavioural Data Science adaptation
 
 ### Changed
+- **Chapter attribution lines shortened to one pattern** (2026-11-22): each adapted chapter now says only whether the datasets (or examples) are replaced with behavioural ones, which sections are new, and, generically, whether passages are rephrased or shortened, and links to this file. No dataset names or old → new mappings in the line any more; the previous detailed wording is kept in *Chapter attribution lines: previous detailed wording*, at the end of this file.
 - **Disclaimer rewritten** (2026-11-22): in `index.qmd` the warning callout under *Disclaimers* is replaced by plain text: one sentence saying the data are not real, a paragraph on how the examples were reflavoured, and a paragraph declaring the use of Claude (Sonnet 4.6, Sonnet 5, Opus 5, Opus 5.5) for programming, language revision, sketching drafts and reflavouring.
 - Retitled to "Introduction to Behavioural Data Science".
 - Every chapter (and part-intro, introduction and reading page) now opens with a two-sentence italic attribution line under its title: who wrote the original (Irizarry, with a link to his chapter, or this book's author) and what changed in this edition. `productivity/ai-assisted-coding.qmd`: the line replaces `_by Giorgio Arcara_`. The convention for new chapters is in `CLAUDE.md`.
@@ -41,3 +42,30 @@ under which this adaptation is distributed.
 
 ### Replaced
 - `dataviz/intro-dataviz.qmd`: all four motivating examples replaced with `behdslabs` (fork of `dslabs`) datasets — `murders` → `app_data_breaches` (opening table + scatterplot), `us_contagious_diseases` (measles/vaccines) → `fitness_app_downloads_by_state` (Guided Meditation app downloads, "vaccine introduced" reframed as "free OS feature bundled"), `nyc_regents_scores` → `cognitive_battery_scores` (histogram), `gapminder` → `global_tech_adoption` (animated/faceted scatter, world health/economics reframed as global tech adoption).
+
+### Chapter attribution lines: previous detailed wording
+
+On 2026-11-22 the attribution line under each chapter title was shortened to one pattern (datasets replaced, new sections, generic rephrasing, and a link here). The detailed wording it replaced is kept below, chapter by chapter; the other sections of this file give further details.
+
+- `intro.qmd` (*Introduction*): the list of case studies uses the new datasets, and the section *Learning data science in the era of AI* and a pointer to the Basic Statistics refresher were added; the text is otherwise Irizarry's, with small edits to fit the new examples.
+- `R/getting-started.qmd` (*Getting started*): instructions to install `behdslabs` were added; the screenshots still come from the original edition.
+- `R/R-basics.qmd` (*R basics*): the US gun murders example was replaced by app data-breach incidents (`app_data_breaches`); the text is otherwise Irizarry's, with small edits to fit the new examples.
+- `R/programming-basics.qmd` (*Programming basics*): the examples use `app_data_breaches` and `daily_mood_ratings` instead of the US murders data; the text is otherwise Irizarry's, with small edits to fit the new examples.
+- `R/tidyverse.qmd` (*The tidyverse*): the examples use `app_data_breaches` and `reaction_times` instead of the US murders and heights data; the text is otherwise Irizarry's, with small edits to fit the new examples.
+- `R/data-table.qmd` (*data.table*): the examples use `app_data_breaches` and `reaction_times` instead of the US murders and heights data; the text is otherwise Irizarry's, with small edits to fit the new examples.
+- `R/importing-data.qmd` (*Importing data*): the example file is an app-price table instead of the US murders data, and the section *haven* (SPSS, Stata and SAS files) was added; the text is otherwise Irizarry's, with small edits to fit the new examples.
+- `dataviz/intro-dataviz.qmd` (*Data Visualization*): the four motivating examples use app data breaches, fitness-app downloads, cognitive test scores and global tech adoption instead of murders, vaccines, exam scores and Gapminder; the text is otherwise Irizarry's, with small edits to fit the new examples.
+- `dataviz/distributions.qmd` (*Visualizing data distributions*): the case study describes UX questionnaire scores (`ux_scores`) instead of student heights; the text is otherwise Irizarry's, with small edits to fit the new examples.
+- `dataviz/ggplot2.qmd` (*ggplot2*): the examples use `app_data_breaches` instead of the US murders data; the text is otherwise Irizarry's, with small edits to fit the new examples.
+- `dataviz/dataviz-principles.qmd` (*Data visualization principles*): the examples use technology and behavioural data (tech adoption, UX scores, app downloads, data breaches); the text is otherwise Irizarry's, with small edits to fit the new examples.
+- `dataviz/dataviz-in-practice.qmd` (*Data visualization in practice*): the case studies use global tech adoption instead of Gapminder, and fitness-app downloads instead of vaccines and infectious diseases; the text is otherwise Irizarry's, with small edits to fit the new examples.
+- `wrangling/intro-to-wrangling.qmd` (*Data Wrangling*): the datasets mentioned are those used in this edition; the text is otherwise Irizarry's, with small edits to fit the new examples.
+- `wrangling/reshaping-data.qmd` (*Reshaping data*): the examples use app-price and app task-completion data instead of fertility data; the text is otherwise Irizarry's, with small edits to fit the new examples.
+- `wrangling/joining-tables.qmd` (*Joining tables*): the examples use app data breaches, product launches and app ratings instead of murders and election results; the text is otherwise Irizarry's, with small edits to fit the new examples.
+- `wrangling/dates-and-times.qmd` (*Parsing dates and times*): the examples use product-launch forecasts instead of election polls, and the exercises use simulated wellbeing-app sessions instead of Puerto Rico death counts; the text is otherwise Irizarry's, with small edits to fit the new examples.
+- `wrangling/string-processing.qmd` (*String processing*): the main case study uses self-reported daily screen time instead of self-reported heights, and the other examples use this edition's datasets; the text is otherwise Irizarry's, with small edits to fit the new examples.
+- `wrangling/text-analysis.qmd` (*Text analysis*): the case study on Trump's tweets was replaced by a new one comparing human and ChatGPT answers (HC3 corpus); the general text is Irizarry's.
+- `productivity/intro-productivity.qmd` (*Productivity Tools*): the example project is on app data breaches instead of US murders; the text is otherwise Irizarry's, with small edits to fit the new examples.
+- `productivity/unix.qmd` (*Organizing with Unix*): the example project is on app data breaches instead of US murders; the text is otherwise Irizarry's, with small edits to fit the new examples.
+- `productivity/git.qmd` (*Git and GitHub*): the example repository is this book's instead of the US murders project; the screenshots still come from the original edition.
+- `productivity/reproducible-projects.qmd` (*Reproducible projects*): the example project is on app data breaches instead of US murders; the screenshots still come from the original edition.

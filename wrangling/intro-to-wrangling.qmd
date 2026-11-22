@@ -1,6 +1,6 @@
 # Data Wrangling {.unnumbered}
 
-_Original chapter by Rafael A. Irizarry, from [*Introduction to Data Science*](https://rafalab.dfci.harvard.edu/dsbook-part-1/wrangling/intro-to-wrangling.html). Adapted by Giorgio Arcara: the datasets mentioned are those used in this edition; the text is otherwise Irizarry's, with small edits to fit the new examples._
+_Original chapter by Rafael A. Irizarry, from [*Introduction to Data Science*](https://rafalab.dfci.harvard.edu/dsbook-part-1/wrangling/intro-to-wrangling.html). Adapted by Giorgio Arcara: the datasets are replaced with behavioural ones; the text is otherwise Irizarry's. Details in the [CHANGELOG](https://github.com/intro-to-behds/behdsbook-part-1/blob/main/CHANGELOG.md)._
 
 The datasets used in this book have been made available to you as R objects, specifically as data frames. The US data-breach incident data, the reaction-time data, and the global tech-adoption data were all data frames. These datasets come included in the **behdslabs** package and we loaded them using the `data` function. Furthermore, we have made the data available in what is referred to as `tidy` form. The tidyverse packages and functions assume that the data is `tidy` and this assumption is a big part of the reason these packages work so well together.
 

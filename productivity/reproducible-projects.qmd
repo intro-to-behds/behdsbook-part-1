@@ -1,6 +1,6 @@
 # Reproducible projects {#sec-projects}
 
-_Original chapter by Rafael A. Irizarry, from [*Introduction to Data Science*](https://rafalab.dfci.harvard.edu/dsbook-part-1/productivity/reproducible-projects.html). Adapted by Giorgio Arcara: the example project is on app data breaches instead of US murders; the screenshots still come from the original edition._
+_Original chapter by Rafael A. Irizarry, from [*Introduction to Data Science*](https://rafalab.dfci.harvard.edu/dsbook-part-1/productivity/reproducible-projects.html). Adapted by Giorgio Arcara: the datasets are replaced with behavioural ones; the screenshots still come from the original edition; the text is otherwise Irizarry's. Details in the [CHANGELOG](https://github.com/intro-to-behds/behdsbook-part-1/blob/main/CHANGELOG.md)._
 
 The final product of a data analysis project is often a report. Many scientific publications can be thought of as a final report of a data analysis. The same is true for news articles based on data, an analysis report for your company, or lecture notes for a class on how to analyze data. The reports are often on paper or in a PDF that includes a textual description of the findings along with some figures and tables resulting from the analysis.
 

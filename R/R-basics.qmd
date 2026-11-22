@@ -1,6 +1,6 @@
 # R basics {#sec-r-basics}
 
-_Original chapter by Rafael A. Irizarry, from [*Introduction to Data Science*](https://rafalab.dfci.harvard.edu/dsbook-part-1/R/R-basics.html). Adapted by Giorgio Arcara: the US gun murders example was replaced by app data-breach incidents (`app_data_breaches`); the text is otherwise Irizarry's, with small edits to fit the new examples._
+_Original chapter by Rafael A. Irizarry, from [*Introduction to Data Science*](https://rafalab.dfci.harvard.edu/dsbook-part-1/R/R-basics.html). Adapted by Giorgio Arcara: the datasets are replaced with behavioural ones; the text is otherwise Irizarry's. Details in the [CHANGELOG](https://github.com/intro-to-behds/behdsbook-part-1/blob/main/CHANGELOG.md)._
 
 ## Motivating example: US data breaches
 

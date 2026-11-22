@@ -31,10 +31,21 @@ This is a CC BY-NC-SA 4.0 adaptation of Rafael A. Irizarry's *Introduction to Da
 
 ### Chapter attribution line
 
-Every page in the sidebar except `index.qmd` and `work-in-progress.qmd` starts with a two-sentence italic line, directly under its `# Title {...}` line and before any setup chunk or Draft callout. The first sentence says who wrote the original, the second what changed in this edition. It is the only place that says who wrote a chapter: don't add `_by ..._` lines or "this chapter is original material" callouts. The details go in `CHANGELOG.md`. Use one of these three forms (`URL` is the same page in Irizarry's book, `https://rafalab.dfci.harvard.edu/dsbook-part-{1,2}/<path>.html`):
+Every page in the sidebar except `index.qmd` and `work-in-progress.qmd` starts with a short italic line, directly under its `# Title {...}` line and before any setup chunk or Draft callout. It says who wrote the original and, in a few words, what changed in this edition. It is the only place that says who wrote a chapter: don't add `_by ..._` lines or "this chapter is original material" callouts. Never mention AI assistance here (or anywhere in a chapter's visible text): AI use is declared once for the whole book, in the *Disclaimers* of `index.qmd`.
+
+**Default every time a chapter is drafted, reflavoured, gains or loses a section, or a hidden chapter is restored to `_quarto.yml`:** write or update its line in the same commit, following the rule below, and put every detail it leaves out in the chapter's `CHANGELOG.md` entry in that same commit.
+
+The line says explicitly, without details, only:
+1. whether the content is Irizarry's original;
+2. whether the change is only in the datasets (or examples): "the datasets are replaced with behavioural ones", or "the examples …" for chapters with no dataset;
+3. which sections are new, as a short list of their titles;
+4. generically, whether passages are rephrased, shortened or removed ("some passages are rephrased or shortened").
+
+No dataset or package names, no old → new mappings, no per-section list of edits, no exercise numbers: all of that goes to `CHANGELOG.md`. A one-off note that explains something the reader will see is fine (e.g. "the screenshots still come from the original edition").
+
+Use one of these three forms (`URL` is the same page in Irizarry's book, `https://rafalab.dfci.harvard.edu/dsbook-part-{1,2}/<path>.html`; `CHANGELOG-URL` is `https://github.com/intro-to-behds/<repo>/blob/main/CHANGELOG.md`):
 
 - Unchanged Irizarry chapter: `_Original chapter by Rafael A. Irizarry, from [*Introduction to Data Science*](URL). Unchanged in this edition, except for links and package names._`
-- Adapted Irizarry chapter: `_Original chapter by Rafael A. Irizarry, from [*Introduction to Data Science*](URL). Adapted by Giorgio Arcara: <what changed: old → new datasets, added sections by name>; the text is otherwise Irizarry's, with small edits to fit the new examples._`
-- New chapter: `_Written for this book by <author>. This chapter is not in Irizarry's *Introduction to Data Science*._` (author: `Giorgio Arcara`, `Cristiano Costa, with Giorgio Arcara`, or `Giorgio Arcara, with an AI assistant (Claude)` for chapters drafted with Claude; for a part-intro page, write "This part").
-
-Keep the line up to date: when a chapter is reflavoured, gains or loses a section, or a hidden chapter is restored to `_quarto.yml`, update or add its line in the same commit.
+- Adapted Irizarry chapter: `_Original chapter by Rafael A. Irizarry, from [*Introduction to Data Science*](URL). Adapted by Giorgio Arcara: <only the parts that apply, in this order: the datasets are replaced with behavioural ones; new sections *A* and *B*; some passages are rephrased or shortened>; the text is otherwise Irizarry's. Details in the [CHANGELOG](CHANGELOG-URL)._`
+  Example: `… Adapted by Giorgio Arcara: the datasets are replaced with behavioural ones; new sections *A binary predictor: dummy variables* and *Adjusting for a confounder*; the text is otherwise Irizarry's. Details in the [CHANGELOG](…)._`
+- New chapter: `_Written for this book by <authors>. This chapter is not in Irizarry's *Introduction to Data Science*._` (authors: `Giorgio Arcara`, `Cristiano Costa, with Giorgio Arcara`, …; for a part-intro page, write "This part").
